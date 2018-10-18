@@ -1,8 +1,9 @@
 # ETL
 extract, transform, load (ETL) project - semester work
 
-#Dependencies:
-##Kivy
+# Dependencies:
+
+## Kivy
 
 Now that python is installed, open the Command line and make sure python is available by typing python --version. Then, do the following to install.
 
@@ -35,8 +36,8 @@ Note
 
 If you encounter any permission denied errors, try opening the Command prompt as administrator and trying again.
 
-##BeautifulSoup4
+## BeautifulSoup4
 pip install requests BeautifulSoup4
 
-#References
+# References
 https://realpython.com/python-web-scraping-practical-introduction/
