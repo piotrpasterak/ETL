@@ -39,5 +39,9 @@ If you encounter any permission denied errors, try opening the Command prompt as
 ## BeautifulSoup4
 pip install requests BeautifulSoup4
 
+## Pony ORM
+if we want to put data to database:
+https://ponyorm.com
+
 # References
 https://realpython.com/python-web-scraping-practical-introduction/
