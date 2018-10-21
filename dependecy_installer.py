@@ -8,6 +8,7 @@ if __name__ == '__main__':
     subprocess.check_call(["python", '-m', 'pip', 'install', 'pypiwin32'])
     subprocess.check_call(["python", '-m', 'pip', 'install', 'kivy.deps.glew'])
     subprocess.check_call(["python", '-m', 'pip', 'install', 'kivy.deps.angle'])
+    subprocess.check_call(["python", '-m', 'pip', 'install', 'kivy.deps.sdl2'])
     subprocess.check_call(["python", '-m', 'pip', 'install', 'kivy'])
 #BeautifulSoup4 part
     subprocess.check_call(["python", '-m', 'pip', 'install', 'requests'])
