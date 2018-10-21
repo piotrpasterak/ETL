@@ -3,6 +3,10 @@ extract, transform, load (ETL) project - semester work
 
 # Dependencies:
 
+If you want (what is supposed to do at very begging) install all necessary dependency use dependency_installer.py
+Just run it as a scipt.
+Below details of used modules.
+
 ## Kivy
 
 Now that python is installed, open the Command line and make sure python is available by typing python --version. Then, do the following to install.
