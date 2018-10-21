@@ -2,6 +2,7 @@ import subprocess
 
 if __name__ == '__main__':
 #kikvy part
+    subprocess.check_call(["python", '-m', 'pip', 'install', '--upgrade', 'pip', 'wheel', 'setuptools'])
     subprocess.check_call(["python", '-m', 'pip', 'install', 'docutils'])
     subprocess.check_call(["python", '-m', 'pip', 'install', 'pygments'])
     subprocess.check_call(["python", '-m', 'pip', 'install', 'pypiwin32'])
