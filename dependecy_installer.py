@@ -1,4 +1,6 @@
 import subprocess
+from webdriverdownloader import ChromeDriverDownloader
+
 
 if __name__ == '__main__':
 #kikvy part
@@ -13,6 +15,14 @@ if __name__ == '__main__':
 #BeautifulSoup4 part
     subprocess.check_call(["python", '-m', 'pip', 'install', 'requests'])
     subprocess.check_call(["python", '-m', 'pip', 'install', 'BeautifulSoup4'])
+    subprocess.check_call(["python", '-m', 'pip', 'install', 'selenium'])
+    subprocess.check_call(["python", '-m', 'pip', 'install', 'webdriverdownloader'])
+    subprocess.check_call(["python", '-m', 'pip', 'install', 'lxml'])
+
+    dd = ChromeDriverDownloader()
+    dd.download_and_install()
+
+
 #Pony ORM
     subprocess.check_call(["python", '-m', 'pip', 'install', 'pony'])
 

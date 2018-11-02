@@ -4,23 +4,25 @@ from kivy.uix.gridlayout import GridLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
+from extract import scrapper
 
 
 class ETLApp(App):
     title = "ETL Project"
 
     def build(self):
-        buttonextract = Button(text="Extract", size_hint = (.2,.1), pos_hint ={'x': .1, 'y': .7})
-        buttontransform = Button(text="Transform",size_hint = (.2,.1), pos_hint ={'x': .4, 'y': .7})
-        buttonload = Button(text="Load", size_hint = (.2,.1), pos_hint ={'x': .7, 'y': .7})
-        buttoncomplete = Button(text="Complete Process", size_hint = (.2,.1), pos_hint ={'x': .4, 'y': .5})
+        button_extract = Button(text="Extract", size_hint = (.2,.1), pos_hint ={'x': .1, 'y': .7})
+        button_transform = Button(text="Transform",size_hint = (.2,.1), pos_hint ={'x': .4, 'y': .7})
+        button_load = Button(text="Load", size_hint = (.2,.1), pos_hint ={'x': .7, 'y': .7})
+        button_complete = Button(text="Complete Process", size_hint = (.2,.1), pos_hint ={'x': .4, 'y': .5})
         layout = FloatLayout()
-        layout.add_widget(buttonextract)
-        layout.add_widget(buttontransform)
-        layout.add_widget(buttonload)
-        layout.add_widget(buttoncomplete)
+        layout.add_widget(button_extract)
+        layout.add_widget(button_transform)
+        layout.add_widget(button_load)
+        layout.add_widget(button_complete)
 
-        buttoncomplete.bind(on_press=self.onButtonPress)
+        button_complete.bind(on_press=self.onButtonPress)
+        button_extract.bind(on_press=self.on_extract)
         return layout
 
     def onButtonPress(self, button):
@@ -35,7 +37,7 @@ class ETLApp(App):
 
         # Instantiate the modal popup and display
 
-        popup = Popup(title='Confirmation', content=layout)
+        popup = Popup(title='Confirmation', content=layout, )
 
         # content=(Label(text='This is a demo pop-up')))
 
@@ -44,6 +46,9 @@ class ETLApp(App):
         # Attach close button press with popup.dismiss action
 
         closeButton.bind(on_press=popup.dismiss)
+
+    def on_extract(self, button):
+        scrapper.get_content("http://www.booking.com/reviews/pl/hotel/cracowdayskrakow.html")
 
 
 if __name__ == '__main__':
