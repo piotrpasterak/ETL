@@ -9,9 +9,9 @@ import os
 
 def get_driver_path():
     """
-    get_driver_path - this function reconstruct correct path to Chrome driver.
-    Because ChromeDriverDownloader has been used for driver download,
-    then ChromeDriverDownloader is also use for determine path to driver
+    get_driver_path - this function reconstruct correct path to Firefox driver.
+    Because GeckoDriverDownloader has been used for driver download,
+    then GeckoDriverDownloader is also use for determine path to driver
     """
 
     firefox_downloader = GeckoDriverDownloader()
@@ -21,7 +21,7 @@ def get_driver_path():
 
 def get_driver():
     """
-    get_driver - This function return web Chrome driver created in headless mode (no visible browser)
+    get_driver - This function return web Firefox driver created in headless mode (no visible browser)
     """
     options = Options()
     options.headless = True
@@ -75,6 +75,6 @@ def scrap(url):
 if __name__ == '__main__':
     """
     main function for web scrapper, just result of scrapping wil be displayed. )
-    Please note that Chrome Web browser is required to be present in system! 
+    Please note that Firefox Web browser is required to be present in system! 
     """
     print(scrap("http://www.booking.com/reviews/pl/hotel/cracowdayskrakow.html"))

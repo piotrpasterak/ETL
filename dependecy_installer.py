@@ -1,6 +1,8 @@
 import subprocess
+import sys
 
 # TODO:need to separate below import - cyclic dependency
+# TODO: Unfortunately you will need to manually add path to firefox.exe into system PATH
 from webdriverdownloader import GeckoDriverDownloader
 
 
@@ -23,6 +25,8 @@ if __name__ == '__main__':
 
     dd = GeckoDriverDownloader()
     dd.download_and_install()
+
+    sys.path.append('''C:\code\my-library''')
 
 #Pony ORM
     subprocess.check_call(["python", '-m', 'pip', 'install', 'pony'])
