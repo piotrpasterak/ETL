@@ -1,7 +1,8 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import WebDriverException, NoSuchElementException
-from webdriverdownloader import ChromeDriverDownloader
+from webdriverdownloader import GeckoDriverDownloader
+from selenium.webdriver.support.ui import Select
 from bs4 import BeautifulSoup
 import os
 
@@ -13,9 +14,9 @@ def get_driver_path():
     then ChromeDriverDownloader is also use for determine path to driver
     """
 
-    chrome_downloader = ChromeDriverDownloader()
-    return chrome_downloader.get_download_path() + '\\' + os.listdir(chrome_downloader.get_download_path())[
-        0] + '\\' + chrome_downloader.get_driver_filename()
+    firefox_downloader = GeckoDriverDownloader()
+    return firefox_downloader.get_download_path() + '\\' + os.listdir(firefox_downloader.get_download_path())[
+        0] + '\\' + firefox_downloader.get_driver_filename()
 
 
 def get_driver():
@@ -23,10 +24,10 @@ def get_driver():
     get_driver - This function return web Chrome driver created in headless mode (no visible browser)
     """
     options = Options()
-    options.add_argument("headless")
+    options.headless = True
 
     try:
-        return webdriver.Chrome(executable_path=get_driver_path(), options=options)
+        return webdriver.Firefox(executable_path=get_driver_path(), options=options)
     except WebDriverException as e:
         print(e)
         return None
@@ -48,6 +49,12 @@ def scrap(url):
     """
     driver = get_driver()
     driver.get(url)
+
+    select = Select(driver.find_element_by_id('language'))
+    select.select_by_value('all')
+
+    input_button = driver.find_elements_by_css_selector("input[type='submit'][value='Zastosuj']")
+    input_button[0].click()
 
     review_list = []
     collect_reviews(driver, review_list)

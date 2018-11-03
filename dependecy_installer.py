@@ -1,5 +1,7 @@
 import subprocess
-from webdriverdownloader import ChromeDriverDownloader
+
+# TODO:need to separate below import - cyclic dependency
+from webdriverdownloader import GeckoDriverDownloader
 
 
 if __name__ == '__main__':
@@ -19,9 +21,8 @@ if __name__ == '__main__':
     subprocess.check_call(["python", '-m', 'pip', 'install', 'webdriverdownloader'])
     subprocess.check_call(["python", '-m', 'pip', 'install', 'lxml'])
 
-    dd = ChromeDriverDownloader()
+    dd = GeckoDriverDownloader()
     dd.download_and_install()
-
 
 #Pony ORM
     subprocess.check_call(["python", '-m', 'pip', 'install', 'pony'])
