@@ -22,9 +22,8 @@ class Review:
     def extract_date(hml_review):
         '''review put date extraction method'''
         date_raw = hml_review.find("p", {"class": "review_item_date"}).get_text(strip=True)
-       #TODO: introduce good translation (or force english input)
-       # date = datetime.strptime(date_raw, 'Ocena dodana: %d %B %Y')
-        return date_raw
+        date = datetime.strptime(date_raw, 'Reviewed: %d %B %Y')
+        return date
 
     @staticmethod
     def extract_name(hml_review):

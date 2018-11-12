@@ -19,6 +19,33 @@ def get_driver_path():
         0] + '\\' + firefox_downloader.get_driver_filename()
 
 
+def force_english_version(driver):
+    """
+    force_english_version - Makes site source coherently in english.
+    """
+
+    try:
+        language = driver.find_element_by_class_name('lang_en-gb')
+        eng_site = language.find_element_by_class_name('no_target_blank ').get_attribute("href")
+    except NoSuchElementException as e:
+        print(e)
+        return
+
+    driver.get(eng_site)
+
+    try:
+        select = Select(driver.find_element_by_id('language'))
+        select.select_by_value('all')
+
+        input_button = driver.find_elements_by_css_selector("input[type='submit'][value='Submit']")
+        input_button[0].click()
+
+    except NoSuchElementException as e:
+        print(e)
+        return
+
+
+
 def get_driver():
     """
     get_driver - This function return web Firefox driver created in headless mode (no visible browser)
@@ -48,13 +75,10 @@ def scrap(url):
     For navigation between pages "review_next_page_link" button is used.
     """
     driver = get_driver()
+
     driver.get(url)
 
-    select = Select(driver.find_element_by_id('language'))
-    select.select_by_value('all')
-
-    input_button = driver.find_elements_by_css_selector("input[type='submit'][value='Zastosuj']")
-    input_button[0].click()
+    force_english_version(driver)
 
     review_list = []
     collect_reviews(driver, review_list)
