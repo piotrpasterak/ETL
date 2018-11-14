@@ -4,11 +4,14 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
+import threading
 from extract import scrapper
+from transform import transformer
 
 
 class ETLApp(App):
     title = "ETL Project"
+    extract_list = []
 
     def build(self):
         button_extract = Button(text="Extract", size_hint = (.2,.1), pos_hint ={'x': .1, 'y': .7})
@@ -35,22 +38,32 @@ class ETLApp(App):
         return layout
 
     def on_complete(self, button):
-        self.show_popup('Extract & Transform & Load', 'Info')
+        self.show_popup('Starting Extract & Transform & Load ...', 'Info')
 
     def on_extract(self, button):
-        self.show_popup('Extract','Info')
-        #scrapper.scrap("http://www.booking.com/reviews/pl/hotel/cracowdayskrakow.html")
+        self.show_popup('Starting Extract ...', 'Info')
+        threading.Thread(target=self.extract_thread).start()
 
     def on_transform(self, button):
-        self.show_popup('Transform', 'Info')
+        if not self.extract_list:
+            self.show_popup('Empty result from Extract, please extract first!', 'Error')
+        else:
+            self.show_popup('Starting Transform ...', 'Info')
+            threading.Thread(target=self.transform_thread).start()
 
     def on_load(self, button):
-        self.show_popup('Load', 'Info')
+        self.show_popup('Starting Load ...', 'Info')
+
+    def extract_thread(self):
+        self.extract_list = scrapper.scrap("http://www.booking.com/reviews/pl/hotel/cracowdayskrakow.html")
+
+    def transform_thread(self):
+        transformer.transform(self.extract_list)
 
     def show_popup(self, process_info, label_info):
         layout = FloatLayout()
 
-        popup_label = Label(text="Starting \'" + process_info + '\'...')
+        popup_label = Label(text= process_info)
         close_button = Button(text="OK", size_hint=(.2,.1), pos_hint={'x': .4, 'y': .1})
 
         layout.add_widget(popup_label)
