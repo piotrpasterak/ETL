@@ -17,9 +17,8 @@ class ETLApp(App):
         button_extract = Button(text="Extract", size_hint = (.2,.1), pos_hint ={'x': .1, 'y': .7})
         button_transform = Button(text="Transform",size_hint = (.2,.1), pos_hint ={'x': .4, 'y': .7})
         button_load = Button(text="Load", size_hint = (.2,.1), pos_hint ={'x': .7, 'y': .7})
-        button_complete = Button(text="Complete Process", size_hint = (.2,.1), pos_hint ={'x': .4, 'y': .5})
+        button_complete = Button(text="Whole Process", size_hint = (.2,.1), pos_hint ={'x': .4, 'y': .5})
 
-        button_export_cvs = Button(text="Export to CVS", size_hint=(.2, .1), pos_hint={'x': .6, 'y': .3})
         button_show_database_content = Button(text="Show Database", size_hint=(.2, .1), pos_hint={'x': .2, 'y': .3})
 
         layout = FloatLayout()
@@ -28,7 +27,6 @@ class ETLApp(App):
         layout.add_widget(button_load)
         layout.add_widget(button_complete)
 
-        layout.add_widget(button_export_cvs)
         layout.add_widget(button_show_database_content)
 
         button_complete.bind(on_press=self.on_complete)

@@ -1,6 +1,15 @@
 import subprocess
+import pymysql
 # TODO: Unfortunately you will need to manually add path to firefox.exe into system PATH
 
+
+def create_database():
+
+    try:
+        conn = pymysql.connect(host='localhost', user='root', password='root')
+        conn.cursor().execute('create database etl')
+    except pymysql.Error as e:
+        print(e)
 
 if __name__ == '__main__':
 #kikvy part
@@ -23,4 +32,7 @@ if __name__ == '__main__':
 
 #Pony ORM
     subprocess.check_call(["python", '-m', 'pip', 'install', 'pony'])
+    subprocess.check_call(["python", '-m', 'pip', 'install', 'pymysql'])
+
+    create_database()
 
