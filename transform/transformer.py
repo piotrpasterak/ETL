@@ -1,22 +1,34 @@
 from extract import scrapper
 from datetime import datetime
-import locale
+from load.hotel import Hotel
+from load.review import Review
 
 
-class Review:
+class Transformer:
     '''Review class contains all collected data'''
-    def __init__(self, hml_review):
+    def __init__(self):
+        pass
 
-        self.date = Review.extract_date(hml_review)
-        self.name = Review.extract_name(hml_review)
-        self.country = Review.extract_country(hml_review)
-        self.user_age_group = Review.extract_user_age_group(hml_review)
-        self.review_count = Review.extract_user_age_group(hml_review)
-        self.score = Review.extract_score(hml_review)
-        self.header = Review.extract_header(hml_review)
-        #TODO review_item_info_tags
-        self.pos_review = Review.extract_pos_review_body(hml_review)
-        self.neg_review = Review.extract_neg_review_body(hml_review)
+    def transform_all(self, html_review_list):
+        '''main transform method'''
+
+        hotel = Hotel(name="Cracowdays", address="ul. Grabowskiego 7/2, Old Town, 31-126 Krakow, Poland")
+
+        for html_review_sublist in html_review_list:
+            for html_review in html_review_sublist:
+                Review(hotel= hotel,
+                       name = Transformer.extract_name(html_review),
+                       date = Transformer.extract_date(html_review),
+                       header=Transformer.extract_header(html_review),
+                       country= Transformer.extract_country(html_review),
+                       user_age_group =Transformer.extract_user_age_group(html_review),
+                       review_count = Transformer.extract_review_count(html_review),
+                       score = Transformer.extract_score(html_review),
+        #TODO review_item_info_tags,
+                       pos_review=Transformer.extract_pos_review_body(html_review),
+                       neg_review=Transformer.extract_neg_review_body(html_review))
+
+        return hotel
 
     @staticmethod
     def extract_date(hml_review):
@@ -49,13 +61,14 @@ class Review:
     def extract_review_count(hml_review):
         '''reviewer review count extraction method'''
         review_count = hml_review.find("div", {"class": "review_item_user_review_count"}).get_text(strip=True)
-        return review_count
+        numbers = [int(count) for count in review_count.split() if count.isdigit()]
+        return numbers[0]
 
     @staticmethod
     def extract_score(hml_review):
         '''reviewer score extraction method'''
         score = hml_review.find("span", {"class": "review-score-badge"}).get_text(strip=True)
-        return score
+        return float(score)
         
     @staticmethod
     def extract_header(hml_review):
@@ -91,20 +104,9 @@ class Review:
         return pos_body_text
 
 
-def transform(html_review_list):
-    '''main transform method'''
-    db_reviews = []
-
-    for html_review_sublist in html_review_list:
-        for html_review in html_review_sublist:
-            db_reviews.append(Review(html_review))
-
-    return db_reviews
-
-
 if __name__ == '__main__':
 
-    data = transform(scrapper.scrap("http://www.booking.com/reviews/pl/hotel/cracowdayskrakow.html"))
+    data = Transformer.transform_all(scrapper.scrap("http://www.booking.com/reviews/pl/hotel/cracowdayskrakow.html"))
 
     for review in data:
         print(review.date)
