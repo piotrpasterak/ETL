@@ -1,38 +1,50 @@
 import subprocess
-import pymysql
 # TODO: Unfortunately you will need to manually add path to firefox.exe into system PATH
 
+modules = [
+    ['--upgrade', 'pip', 'wheel', 'setuptools'],
+    ['docutils'],
+    ['pygments'],
+    ['pypiwin32'],
+    ['kivy.deps.glew'],
+    ['kivy.deps.angle'],
+    ['kivy.deps.sdl2'],
+    ['kivy'],
+    ['requests'],
+    ['BeautifulSoup4'],
+    ['selenium'],
+    ['webdriverdownloader'],
+    ['lxml'],
+    ['pony'],
+    ['pymysql']
+]
 
-def create_database():
+scripts = [
+    ['install_scripts/webdriver_installer.py'],
+    ['install_scripts/database_setup.py']]
 
-    try:
-        conn = pymysql.connect(host='localhost', user='root', password='root')
-        conn.cursor().execute('create database etl')
-    except pymysql.Error as e:
-        print(e)
+
+def install_step(install_args):
+    arguments = ["python", '-m', 'pip', 'install']
+    arguments.extend(install_args)
+
+    subprocess.call(arguments)
+
+
+def call_step(call_args):
+    arguments = ['python']
+    arguments.extend(call_args)
+
+    subprocess.call(arguments)
+
 
 if __name__ == '__main__':
-#kikvy part
-    subprocess.check_call(["python", '-m', 'pip', 'install', '--upgrade', 'pip', 'wheel', 'setuptools'])
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'docutils'])
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'pygments'])
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'pypiwin32'])
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'kivy.deps.glew'])
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'kivy.deps.angle'])
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'kivy.deps.sdl2'])
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'kivy'])
-#BeautifulSoup4 part
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'requests'])
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'BeautifulSoup4'])
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'selenium'])
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'webdriverdownloader'])
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'lxml'])
 
-    subprocess.check_call(["python", 'webdriver_installer.py'])
+    for module_name in modules:
+        install_step(module_name)
 
-#Pony ORM
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'pony'])
-    subprocess.check_call(["python", '-m', 'pip', 'install', 'pymysql'])
+    for script_name in scripts:
+        call_step(script_name)
 
-    create_database()
+
 
