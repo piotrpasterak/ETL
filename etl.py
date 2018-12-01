@@ -4,14 +4,17 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.button import Button
 from kivy.uix.label import Label
 from kivy.uix.popup import Popup
+from kivy.clock import Clock
+from functools import partial
 import threading
 from extract import scrapper
-from transform import transformer
+from transform.transformer import Transformer
 
 
 class ETLApp(App):
     title = "ETL Project"
     extract_list = []
+    close_button = False
 
     def build(self):
         button_extract = Button(text="Extract", size_hint = (.2,.1), pos_hint ={'x': .1, 'y': .7})
@@ -40,14 +43,24 @@ class ETLApp(App):
 
     def on_extract(self, button):
         self.show_popup('Starting Extract ...', 'Info')
-        threading.Thread(target=self.extract_thread).start()
+        thr = threading.Thread(target=self.extract_thread)
+        thr.start()
+        Clock.schedule_interval(partial(self.check_job, thr), 1)
+
+    def check_job(self, a_thread, what):
+        if not a_thread.isAlive():
+            self.close_button.disabled = False
+            return False
 
     def on_transform(self, button):
         if not self.extract_list:
             self.show_popup('Empty result from Extract, please extract first!', 'Error')
+            self.close_button.disabled = False
         else:
             self.show_popup('Starting Transform ...', 'Info')
-            threading.Thread(target=self.transform_thread).start()
+            thr = threading.Thread(target=self.transform_thread)
+            thr.start()
+            Clock.schedule_interval(partial(self.check_job, thr), 1)
 
     def on_load(self, button):
         self.show_popup('Starting Load ...', 'Info')
@@ -56,17 +69,17 @@ class ETLApp(App):
         self.extract_list = scrapper.scrap("http://www.booking.com/reviews/pl/hotel/cracowdayskrakow.html")
 
     def transform_thread(self):
-        transformer.transform(self.extract_list)
+        Transformer.transform_all(self.extract_list)
 
     def show_popup(self, process_info, label_info):
         layout = FloatLayout()
 
         popup_label = Label(text= process_info)
-        close_button = Button(text="OK", size_hint=(.2,.1), pos_hint={'x': .4, 'y': .1})
+        self.close_button = Button(text="OK", size_hint=(.2,.1), pos_hint={'x': .4, 'y': .1})
 
         layout.add_widget(popup_label)
 
-        layout.add_widget(close_button)
+        layout.add_widget(self.close_button)
 
         # Instantiate the modal popup and display
 
@@ -75,8 +88,8 @@ class ETLApp(App):
         popup.open()
 
         # Attach close button press with popup.dismiss action
-
-        close_button.bind(on_press=popup.dismiss)
+        self.close_button.disabled = True
+        self.close_button.bind(on_press=popup.dismiss)
 
 
 if __name__ == '__main__':

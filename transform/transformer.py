@@ -9,7 +9,8 @@ class Transformer:
     def __init__(self):
         pass
 
-    def transform_all(self, html_review_list):
+    @staticmethod
+    def transform_all(html_review_list):
         '''main transform method'''
 
         hotel = Hotel(name="Cracowdays", address="ul. Grabowskiego 7/2, Old Town, 31-126 Krakow, Poland")

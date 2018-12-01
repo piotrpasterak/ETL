@@ -45,6 +45,3 @@ if __name__ == '__main__':
 
     for script_name in scripts:
         call_step(script_name)
-
-
-

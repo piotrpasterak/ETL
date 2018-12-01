@@ -65,8 +65,37 @@ def collect_reviews(driver, review_list):
     collect_reviews - this function search and returns all reviews on one page(also archive)
     """
     content = BeautifulSoup(driver.page_source, 'lxml')
-    review_list.append(content.findAll("li", {"class": "review_item clearfix "}))
-    review_list.append(content.findAll("li", {"class": "review_item clearfix archive_item "}))
+    review_list.extend(content.findAll("li", {"class": "review_item clearfix "}))
+    review_list.extend(content.findAll("li", {"class": "review_item clearfix archive_item "}))
+
+
+def collect_hotels(driver, hotel_list):
+
+    content = BeautifulSoup(driver.page_source, 'lxml')
+    hotel_list.extend(content.findAll("a", {"class": "hotel_name_link url"}))
+
+
+def get_hotels_from_city(city):
+
+    driver = get_driver()
+
+    driver.get("http://www.booking.com")
+
+    #force_english_version(driver)
+
+    try:
+        city_search = driver.find_element_by_id('ss')
+        city_search.click()
+        city_search.clear()
+        city_search.send_keys(city)
+        driver.find_element_by_class_name("sb-searchbox__button  ").click()
+    except NoSuchElementException as e:
+        print(e)
+        return
+    hotels_list = []
+    collect_hotels(driver, hotels_list)
+
+    return hotels_list[:10]
 
 
 def scrap(url):
@@ -101,4 +130,6 @@ if __name__ == '__main__':
     main function for web scrapper, just result of scrapping wil be displayed. )
     Please note that Firefox Web browser is required to be present in system! 
     """
-    print(scrap("http://www.booking.com/reviews/pl/hotel/cracowdayskrakow.html"))
+    '''print(scrap("http://www.booking.com/reviews/pl/hotel/cracowdayskrakow.html"))'''
+
+    print(get_hotels_from_city('krakow'))
