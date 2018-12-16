@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>ETL extract, transform, load (ETL) project - semester work &#8212; ETL Project 0.0.1 documentation</title>
+    <title>ETL project &#8212; ETL Project 0.0.1 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -33,39 +33,16 @@
 
           <div class="body" role="main">
             
-  <div class="section" id="etl-extract-transform-load-etl-project-semester-work">
-<h1>ETL extract, transform, load (ETL) project - semester work<a class="headerlink" href="#etl-extract-transform-load-etl-project-semester-work" title="Permalink to this headline">¶</a></h1>
-<p># Dependencies:</p>
-<p>If you want (what is supposed to do at very begging) install all necessary dependency use dependency_installer.py
-Just run it as a scipt.
-Below details of used modules.</p>
-<p>## Kivy</p>
-<p>Now that python is installed, open the Command line and make sure python is available by typing python –version. Then, do the following to install.</p>
-<p>Ensure you have the latest pip and wheel:</p>
-<p>python -m pip install –upgrade pip wheel setuptools
-Install the dependencies (skip gstreamer (~120MB) if not needed, see Kivy’s dependencies):</p>
-<p>python -m pip install docutils pygments pypiwin32 kivy.deps.sdl2 kivy.deps.glew
-python -m pip install kivy.deps.gstreamer
-Note</p>
-<p>If you encounter a MemoryError while installing, add after pip install an option –no-cache-dir.</p>
-<p>For Python 3.5+, you can also use the angle backend instead of glew. This can be installed with:</p>
-<p>python -m pip install kivy.deps.angle
-Install kivy:</p>
-<p>python -m pip install kivy
-(Optionally) Install the kivy examples:</p>
-<p>python -m pip install kivy_examples
-The examples are installed in the share directory under the root directory where python is installed.</p>
-<p>That’s it. You should now be able to import kivy in python or run a basic example if you installed the kivy examples:</p>
-<p>python sharekivy-examplesdemoshowcasemain.py
-Note</p>
-<p>If you encounter any permission denied errors, try opening the Command prompt as administrator and trying again.</p>
-<p>## BeautifulSoup4
-pip install requests BeautifulSoup4</p>
-<p>## Pony ORM
-if we want to put data to database:
-<a class="reference external" href="https://ponyorm.com">https://ponyorm.com</a></p>
-<p># References
-<a class="reference external" href="https://realpython.com/python-web-scraping-practical-introduction/">https://realpython.com/python-web-scraping-practical-introduction/</a></p>
+  <div class="section" id="etl-project">
+<h1>ETL project<a class="headerlink" href="#etl-project" title="Permalink to this headline">¶</a></h1>
+<p>ETL (extract, transform, load) project - semester work project.</p>
+<p>Extract, Transform, Load (ETL) is the general procedure of copying data from one or more sources into a destination system,
+which represents the data differently from the source or sources.
+The process is combined from tree basic steps:
+- extract, so selecting and exporting data from the source
+- transform, data are change into form expected by the destination, usually next “load” step
+- load, the transformed data are loaded into the destination system, typically database.</p>
+<p>This application represent whole process ETL.</p>
 </div>
 
 
@@ -87,7 +64,7 @@ if we want to put data to database:
 <h3>Navigation</h3>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul class="current">
-<li class="toctree-l1 current"><a class="current reference internal" href="#">ETL extract, transform, load (ETL) project - semester work</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">ETL project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a></li>
 </ul>
