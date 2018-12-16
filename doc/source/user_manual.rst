@@ -13,7 +13,10 @@ Installation
 Features description
 ^^^^^^^^^^^^^^^^^^^^^
 - How to start application:
-    Application is started as Python application by following command:
+    Application is started as Python application by following command::
+
+        py <path to etl>etl.py
+
     In result such main window shall appear:
 
     .. image:: assets/main.png
@@ -36,21 +39,31 @@ Features description
 
     .. image:: assets/extract.png
 
-    Dring this process, modal dialog is visible, and after finish processing "OK" button is active.
+    During this process, modal dialog is visible, and after processing "OK" button is active.
+
+    .. image:: assets/modal_extract.png
 
 - Transform
+
     .. image:: assets/transform.png
-    During this process, modal dialog is visible, and after finish processing "OK" button is active.
+
+    During this process, modal dialog is visible, and after processing, "OK" button is active (as above).
 
 - Load
+
     .. image:: assets/load.png
-    During this process, modal dialog is visible, and after finish processing "OK" button is active.
+
+    During this process, modal dialog is visible, and after processing, "OK" button is active (as above).
 
 - Whole process
+
     .. image:: assets/whole.png
-    During this process, modal dialog is visible, and after finish processing "OK" button is active.
+
+    During this process, modal dialog is visible, and after processing, "OK" button is active (as above).
 
 - Display database content:
+
     .. image:: assets/show_database.png
+
     When button "Show Database" is clicked than, in dialog, after hotel choose,
     content of database for given hotel is shown. Also there is button "Clear" by which database can be cleared.
