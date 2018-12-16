@@ -10,7 +10,7 @@ Welcome to ETL Project's documentation!
    :maxdepth: 2
    :caption: Contents:
 
-   introduction
+   includeredme
    user_manual
    appendix
 
