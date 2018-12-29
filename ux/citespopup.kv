@@ -1,0 +1,33 @@
+#: kivy 1.0
+#: import RView etl.RV
+
+Popup:
+    title: "Hotel selection"
+    auto_dismiss: False
+    BoxLayout:
+        orientation: "vertical"
+        RV:
+            viewclass: 'SelectableLabel'
+            SelectableRecycleBoxLayout:
+                default_size: None, dp(56)
+                default_size_hint: 1, None
+                size_hint_y: None
+                height: self.minimum_height
+                orientation: 'vertical'
+        Button:
+            text: "Confirm"
+            orientation: 'vertical'
+            size_hint: (.2,.1)
+            pos_hint: {'x': .4}
+
+            on_release: root.dismiss()
+
+<SelectableLabel>:
+    # Draw a background to indicate selection
+    canvas.before:
+        Color:
+            rgba: (.0, 0.9, .1, .3) if self.selected else (0, 0, 0, 1)
+        Rectangle:
+            pos: self.pos
+            size: self.size
+

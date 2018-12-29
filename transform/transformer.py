@@ -32,6 +32,21 @@ class Transformer:
         return hotel
 
     @staticmethod
+    def transfom_hotels(raw_hotels_list):
+        hotels = {}
+
+        for raw_hotel in raw_hotels_list:
+            hotels[Transformer.extract_hotel_name(raw_hotel)] = Transformer.extract_hotel_link(raw_hotel)
+        return hotels
+
+    @staticmethod
+    def extract_hotel_name(raw_hotel):
+        return raw_hotel.find("span", {"class": "sr-hotel__name "}).get_text(strip=True)
+    @staticmethod
+    def extract_hotel_link(raw_hotel):
+        return 'ala'#raw_hotel.find("a", {"class": "hotel_name_link url"}).get_attr("href")
+
+    @staticmethod
     def extract_date(hml_review):
         '''review put date extraction method'''
         date_raw = hml_review.find("p", {"class": "review_item_date"}).get_text(strip=True)
