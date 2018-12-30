@@ -1,7 +1,5 @@
 from extract import scrapper
 from datetime import datetime
-from load.hotel import Hotel
-from load.review import Review
 
 
 class Transformer:
@@ -10,24 +8,22 @@ class Transformer:
         pass
 
     @staticmethod
-    def transform_all(html_review_list):
+    def transform_all(html_review_list, hotelname):
         '''main transform method'''
 
-        hotel = Hotel(name="Cracowdays", address="ul. Grabowskiego 7/2, Old Town, 31-126 Krakow, Poland")
+        hotel = {"name": hotelname, "address": "Fake Address", 'review': []}
 
-        for html_review_sublist in html_review_list:
-            for html_review in html_review_sublist:
-                Review(hotel= hotel,
-                       name = Transformer.extract_name(html_review),
-                       date = Transformer.extract_date(html_review),
-                       header=Transformer.extract_header(html_review),
-                       country= Transformer.extract_country(html_review),
-                       user_age_group =Transformer.extract_user_age_group(html_review),
-                       review_count = Transformer.extract_review_count(html_review),
-                       score = Transformer.extract_score(html_review),
-        #TODO review_item_info_tags,
-                       pos_review=Transformer.extract_pos_review_body(html_review),
-                       neg_review=Transformer.extract_neg_review_body(html_review))
+        for html_review in html_review_list:
+            hotel["review"].append({"name": Transformer.extract_name(html_review),
+                                    "date": Transformer.extract_date(html_review),
+                                    "header" :Transformer.extract_header(html_review),
+                                    "country": Transformer.extract_country(html_review),
+                                    "user_age_group": Transformer.extract_user_age_group(html_review),
+                                    "review_count": Transformer.extract_review_count(html_review),
+                                    "score": Transformer.extract_score(html_review),
+                                    #TODO review_item_info_tags,
+                                    "pos_review":Transformer.extract_pos_review_body(html_review),
+                                    "neg_review":Transformer.extract_neg_review_body(html_review)})
 
         return hotel
 
@@ -42,9 +38,13 @@ class Transformer:
     @staticmethod
     def extract_hotel_name(raw_hotel):
         return raw_hotel.find("span", {"class": "sr-hotel__name "}).get_text(strip=True)
+
     @staticmethod
     def extract_hotel_link(raw_hotel):
-        return 'ala'#raw_hotel.find("a", {"class": "hotel_name_link url"}).get_attr("href")
+        if raw_hotel:
+            return raw_hotel['href']
+        else:
+            return ""
 
     @staticmethod
     def extract_date(hml_review):
@@ -56,15 +56,13 @@ class Transformer:
     @staticmethod
     def extract_name(hml_review):
         '''reviewer name extraction method'''
-        name_part = hml_review.find("p", {"class": "reviewer_name"})
-        name = name_part.find("span", {"itemprop": "name"}).get_text(strip=True)
+        name = hml_review.find("p", {"class": "reviewer_name"}).get_text(strip=True)
         return name
 
     @staticmethod
     def extract_country(hml_review):
         '''reviewer coutry extraction method'''
-        country_part = hml_review.find("span", {"class": "reviewer_country"})
-        country = country_part.find("span", {"itemprop": "name"}).get_text(strip=True)
+        country= hml_review.find("span", {"class": "reviewer_country"}).get_text(strip=True)
         return country
 
     @staticmethod
@@ -76,9 +74,9 @@ class Transformer:
     @staticmethod
     def extract_review_count(hml_review):
         '''reviewer review count extraction method'''
-        review_count = hml_review.find("div", {"class": "review_item_user_review_count"}).get_text(strip=True)
-        numbers = [int(count) for count in review_count.split() if count.isdigit()]
-        return numbers[0]
+        #review_count = hml_review.find("div", {"class": "review_item_user_review_count"}).get_text(strip=True)
+        #numbers = [int(count) for count in review_count.split() if count.isdigit()]
+        return 1#numbers[0]
 
     @staticmethod
     def extract_score(hml_review):
@@ -89,8 +87,10 @@ class Transformer:
     @staticmethod
     def extract_header(hml_review):
         '''review header extraction method'''
-        header_part = hml_review.find("div", {"class": "review_item_header_content "})
-        header = header_part.find("span", {"itemprop": "name"}).get_text(strip=True)
+        header = ""
+        header_part = hml_review.find("div", {"class": "review_item_header_content high_score_word review_item_header_scoreword "})
+        if header_part:
+            header = header_part.get_text(strip=True)
         return header
 
     @staticmethod

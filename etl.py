@@ -10,6 +10,7 @@ from functools import partial
 import threading
 from extract import scrapper
 from transform.transformer import Transformer
+import load.loader
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.properties import BooleanProperty
@@ -17,6 +18,7 @@ from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.recyclegridlayout import RecycleGridLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
+
 
 class SelectableButton(RecycleDataViewBehavior, Button):
     ''' Add selection support to the Button '''
@@ -46,6 +48,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     index = None
     selected = BooleanProperty(False)
     selectable = BooleanProperty(True)
+    selecteddata=""
 
     def refresh_view_attrs(self, rv, index, data):
         ''' Catch and handle the view changes '''
@@ -64,12 +67,13 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         ''' Respond to the selection of items in the view. '''
         self.selected = is_selected
         if is_selected:
-            print("selection changed to {0}".format(rv.data[index]))
+            SelectableLabel.selecteddata = rv.data[index]['text']
 
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                  RecycleBoxLayout):
     ''' Adds selection and focus behaviour to the view. '''
+
 
 class SelectableRecycleGridLayout(FocusBehavior, LayoutSelectionBehavior,
                                   RecycleGridLayout):
@@ -86,14 +90,15 @@ class RV(RecycleView):
 
     def __init__(self, **kwargs):
         super(RV, self).__init__(**kwargs)
-        self.hotels_data = Transformer.transfom_hotels((scrapper.get_hotels_from_city(RV.city)))
+        RV.hotels_data = Transformer.transfom_hotels((scrapper.get_hotels_from_city(RV.city)))
         self.data = [{'text': name} for name
-                     in self.hotels_data.keys()]
+                     in RV.hotels_data.keys()]
 
 
 class ETLApp(App):
     title = "ETL Project"
     extract_list = []
+    transfrom_result={}
     close_button = False
     text_city = None
 
@@ -125,6 +130,9 @@ class ETLApp(App):
         button_transform.bind(on_press=self.on_transform)
         button_city_input.bind(on_press=self.on_city_find)
         button_show_database_content.bind(on_press=self.on_show_database)
+
+        load.loader.init_connection()
+
         return layout
 
     def on_complete(self, _):
@@ -152,13 +160,25 @@ class ETLApp(App):
             Clock.schedule_interval(partial(self.check_job, thr), 1)
 
     def on_load(self, _):
-        self.show_popup('Starting Load ...', 'Info')
+        if not self.transfrom_result:
+            self.show_popup('Empty result from Transform, please transform first!', 'Error')
+            self.close_button.disabled = False
+        else:
+            self.show_popup('Starting Load ...', 'Info')
+            thr = threading.Thread(target=self.load_thread)
+            thr.start()
+            Clock.schedule_interval(partial(self.check_job, thr), 1)
 
     def extract_thread(self):
-        self.extract_list = scrapper.scrap("http://www.booking.com/reviews/pl/hotel/cracowdayskrakow.html")
+        hotel_name = SelectableLabel.selecteddata
+        hlink = RV.hotels_data[hotel_name]
+        self.extract_list = scrapper.scrap("http://www.booking.com/" + hlink)
 
     def transform_thread(self):
-        Transformer.transform_all(self.extract_list)
+        self.transfrom_result = Transformer.transform_all(self.extract_list, SelectableLabel.selecteddata)
+
+    def load_thread(self):
+        load.loader.update_hotel_with_data(self.transfrom_result)
 
     def show_popup(self, process_info, label_info):
         layout = FloatLayout()
