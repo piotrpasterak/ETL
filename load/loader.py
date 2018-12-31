@@ -11,7 +11,6 @@ def init_connection():
 @db_session
 def get_data_for_hotel(hotel_name):
     loc_hotel = Hotel.get(name=hotel_name)
-
     if loc_hotel is None:
         return None
     else:
@@ -19,13 +18,15 @@ def get_data_for_hotel(hotel_name):
 
 
 @db_session
-def clear_data_for_hotel(hotel_id):
-    delete(rev for rev in Review if rev.hotel.id == hotel_id)
+def clear_data_for_hotel(hotel_name):
+    loc_hotel = Hotel.get(name=hotel_name)
+    if loc_hotel:
+        delete(rev for rev in Review if rev.hotel.id == loc_hotel.id)
 
 
 @db_session
 def get_all_hotels():
-    pass
+    return select(hotel for hotel in Hotel)
 
 
 @db_session
@@ -35,7 +36,7 @@ def update_hotel_with_data(hotel_data):
     if loc_hotel is None:
         loc_hotel = Hotel(name=hotel_data["name"], address=hotel_data["address"])
     else:
-        clear_data_for_hotel(loc_hotel.id)
+        clear_data_for_hotel(loc_hotel.name)
 
     for review_data in hotel_data["review"]:
         Review(hotel=loc_hotel,

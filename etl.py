@@ -57,7 +57,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     index = None
     selected = BooleanProperty(False)
     selectable = BooleanProperty(True)
-    selecteddata=""
+    selected_hotel= ""
 
     def refresh_view_attrs(self, rv, index, data):
         ''' Catch and handle the view changes '''
@@ -76,7 +76,7 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
         ''' Respond to the selection of items in the view. '''
         self.selected = is_selected
         if is_selected:
-            SelectableLabel.selecteddata = rv.data[index]['text']
+            SelectableLabel.selected_hotel = rv.data[index]['text']
 
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
@@ -99,13 +99,17 @@ class TableView(RecycleView):
     def get_reviews(self):
         data = load.loader.get_data_for_hotel("Armon Residence")
 
-        # create data_items
-        for row in data:
-            for col in row:
-                self.data_items.append(col)
+        if data:
+            for row in data:
+                for col in row:
+                    self.data_items.append(col)
 
     def get_row_number(self):
         return int(len(self.data_items)/9)
+
+    def delete_all_reviews(self):
+        load.loader.clear_data_for_hotel("Armon Residence")
+        self.data_items = []
 
 
 class RV(RecycleView):
@@ -163,6 +167,18 @@ class ETLApp(App):
 
     def on_complete(self, _):
         self.show_popup('Starting Extract & Transform & Load ...', 'Info')
+        threxecute = threading.Thread(target=self.extract_thread)
+        thrtransform = threading.Thread(target=self.transform_thread)
+        thrload = threading.Thread(target=self.load_thread)
+
+        threxecute.start()
+        threxecute.join()
+        thrtransform.start()
+        thrtransform.join()
+        thrload.start()
+
+        Clock.schedule_interval(partial(self.check_job, thrload), 1)
+
 
     def on_extract(self, _):
         self.show_popup('Starting Extract ...', 'Info')
@@ -196,12 +212,13 @@ class ETLApp(App):
             Clock.schedule_interval(partial(self.check_job, thr), 1)
 
     def extract_thread(self):
-        hotel_name = SelectableLabel.selecteddata
+        "TODO: check if hotel seletecd"
+        hotel_name = SelectableLabel.selected_hotel
         hlink = RV.hotels_data[hotel_name]
         self.extract_list = scrapper.scrap("http://www.booking.com/" + hlink)
 
     def transform_thread(self):
-        self.transfrom_result = Transformer.transform_all(self.extract_list, SelectableLabel.selecteddata)
+        self.transfrom_result = Transformer.transform_all(self.extract_list, SelectableLabel.selected_hotel)
 
     def load_thread(self):
         load.loader.update_hotel_with_data(self.transfrom_result)

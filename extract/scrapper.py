@@ -109,9 +109,14 @@ def scrap(url):
 
     driver.get(url)
 
-    #force_english_version(driver)
+    force_english_version(driver)
 
-    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CLASS_NAME, "close_warning"))).click()
+    warning_dialog = driver.find_element_by_class_name("close_warning")
+
+    if warning_dialog:
+        element = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, "close_warning")))
+        element.click()
+        WebDriverWait(driver, 20).until(EC.invisibility_of_element(element))
 
     WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CLASS_NAME, "show_all_reviews_btn"))).click()
 

@@ -4,6 +4,7 @@
 Popup:
     title: "Database content"
     auto_dismiss: False
+    on_open: tableview.get_reviews()
     BoxLayout:
         orientation: "vertical"
         height:40
@@ -13,6 +14,7 @@ Popup:
             orientation: 'vertical'
             size_hint: (.2,.1)
             pos_hint: {'x': .4}
+            on_release: tableview.delete_all_reviews()
 
         Button:
             text: "Close"
