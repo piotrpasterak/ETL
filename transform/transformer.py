@@ -62,7 +62,8 @@ class Transformer:
     @staticmethod
     def extract_country(hml_review):
         '''reviewer coutry extraction method'''
-        country= hml_review.find("span", {"class": "reviewer_country"}).get_text(strip=True)
+        country_part = hml_review.find("span", {"class": "reviewer_country"})
+        country = country_part.find("span", {"itemprop": "name"}).get_text(strip=True)
         return country
 
     @staticmethod
@@ -74,9 +75,9 @@ class Transformer:
     @staticmethod
     def extract_review_count(hml_review):
         '''reviewer review count extraction method'''
-        #review_count = hml_review.find("div", {"class": "review_item_user_review_count"}).get_text(strip=True)
-        #numbers = [int(count) for count in review_count.split() if count.isdigit()]
-        return 1#numbers[0]
+        review_count = hml_review.find("div", {"class": "review_item_user_review_count"}).get_text(strip=True)
+        numbers = [int(count) for count in review_count.split() if count.isdigit()]
+        return numbers[0]
 
     @staticmethod
     def extract_score(hml_review):
@@ -87,10 +88,8 @@ class Transformer:
     @staticmethod
     def extract_header(hml_review):
         '''review header extraction method'''
-        header = ""
-        header_part = hml_review.find("div", {"class": "review_item_header_content high_score_word review_item_header_scoreword "})
-        if header_part:
-            header = header_part.get_text(strip=True)
+        header_part = hml_review.find("div", {"class": "review_item_header_content "})
+        header = header_part.find("span", {"itemprop": "name"}).get_text(strip=True)
         return header
 
     @staticmethod
@@ -118,22 +117,6 @@ class Transformer:
         if pos_body is not None:
             pos_body_text=pos_body.get_text(strip=True)
         return pos_body_text
-
-
-if __name__ == '__main__':
-
-    data = Transformer.transform_all(scrapper.scrap("http://www.booking.com/reviews/pl/hotel/cracowdayskrakow.html"))
-
-    for review in data:
-        print(review.date)
-        print(review.name)
-        print(review.header)
-        print(review.country)
-        print(review.score)
-        print(review.user_age_group)
-        print(review.review_count)
-        print(review.neg_review)
-        print(review.pos_review)
 
 
 

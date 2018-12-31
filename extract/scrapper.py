@@ -3,6 +3,9 @@ from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import WebDriverException, NoSuchElementException
 from webdriverdownloader import GeckoDriverDownloader
 from selenium.webdriver.support.ui import Select
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import os
 
@@ -43,7 +46,6 @@ def force_english_version(driver):
     except NoSuchElementException as e:
         print(e)
         return
-
 
 
 def get_driver():
@@ -107,14 +109,18 @@ def scrap(url):
 
     driver.get(url)
 
-    force_english_version(driver)
+    #force_english_version(driver)
+
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CLASS_NAME, "close_warning"))).click()
+
+    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CLASS_NAME, "show_all_reviews_btn"))).click()
 
     review_list = []
     collect_reviews(driver, review_list)
 
     while True:
         try:
-            button = driver.find_element_by_id("review_next_page_link")
+            button = driver.find_element_by_class_name("review_next_page_link")
         except NoSuchElementException:
             break
         button.click()
@@ -123,13 +129,3 @@ def scrap(url):
     driver.quit()
 
     return review_list
-
-
-if __name__ == '__main__':
-    """
-    main function for web scrapper, just result of scrapping wil be displayed. )
-    Please note that Firefox Web browser is required to be present in system! 
-    """
-    '''print(scrap("http://www.booking.com/reviews/pl/hotel/cracowdayskrakow.html"))'''
-
-    print(get_hotels_from_city('krakow'))
