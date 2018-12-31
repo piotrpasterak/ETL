@@ -13,14 +13,23 @@ from transform.transformer import Transformer
 import load.loader
 from kivy.uix.recycleview import RecycleView
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
-from kivy.properties import BooleanProperty
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.recyclegridlayout import RecycleGridLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
+from kivy.properties import BooleanProperty, ListProperty, StringProperty
+from kivy.uix.scrollview import ScrollView
+from kivy.uix.dropdown import DropDown
 
 
-class SelectableButton(RecycleDataViewBehavior, Button):
+class HotelsDropDown(DropDown):
+    pass
+
+class ScrollLabel(ScrollView):
+    text = StringProperty('')
+
+
+class SelectableButton(RecycleDataViewBehavior, ScrollLabel):
     ''' Add selection support to the Button '''
     index = None
     selected = BooleanProperty(False)
@@ -81,8 +90,22 @@ class SelectableRecycleGridLayout(FocusBehavior, LayoutSelectionBehavior,
 
 
 class TableView(RecycleView):
+    data_items = ListProperty([])
+
     def __init__(self, **kwargs):
         super(TableView, self).__init__(**kwargs)
+        self.get_reviews()
+
+    def get_reviews(self):
+        data = load.loader.get_data_for_hotel("Armon Residence")
+
+        # create data_items
+        for row in data:
+            for col in row:
+                self.data_items.append(col)
+
+    def get_row_number(self):
+        return int(len(self.data_items)/9)
 
 
 class RV(RecycleView):
@@ -90,6 +113,8 @@ class RV(RecycleView):
 
     def __init__(self, **kwargs):
         super(RV, self).__init__(**kwargs)
+
+    def updatedata(self):
         RV.hotels_data = Transformer.transfom_hotels((scrapper.get_hotels_from_city(RV.city)))
         self.data = [{'text': name} for name
                      in RV.hotels_data.keys()]
@@ -132,7 +157,8 @@ class ETLApp(App):
         button_show_database_content.bind(on_press=self.on_show_database)
 
         load.loader.init_connection()
-
+        self.tablepopup = Builder.load_file('ux/tablepopup.kv')
+        self.citypopup = Builder.load_file('ux/citespopup.kv')
         return layout
 
     def on_complete(self, _):
@@ -202,12 +228,12 @@ class ETLApp(App):
 
     def on_city_find(self, _):
         RV.city = self.text_city.text
-        popup = Builder.load_file('ux/citespopup.kv')
-        popup.open()
+        if self.citypopup:
+            self.citypopup.open()
 
     def on_show_database(self, _):
-        popup = Builder.load_file('ux/tablepopup.kv')
-        popup.open()
+        if self.tablepopup:
+            self.tablepopup.open()
 
 
 if __name__ == '__main__':

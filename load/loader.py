@@ -10,7 +10,12 @@ def init_connection():
 
 @db_session
 def get_data_for_hotel(hotel_name):
-    pass
+    loc_hotel = Hotel.get(name=hotel_name)
+
+    if loc_hotel is None:
+        return None
+    else:
+        return [rev.serialize_data() for rev in loc_hotel.reviews]
 
 
 @db_session

@@ -6,7 +6,8 @@ Popup:
     auto_dismiss: False
     BoxLayout:
         orientation: "vertical"
-        height:25
+        height:40
+
         Button:
             text: "Delete All"
             orientation: 'vertical'
@@ -19,11 +20,14 @@ Popup:
             size_hint: (.2,.1)
             pos_hint: {'x': .4}
             on_release: root.dismiss()
+        Label:
+            text: 'Number of reviews:' + str(tableview.get_row_number())
+            size_hint: (.2,.1)
 
         TableView:
+            id: tableview
             BoxLayout:
                 orientation: "vertical"
-
                 GridLayout:
                     size_hint: 1, None
                     size_hint_y: None
@@ -51,14 +55,27 @@ Popup:
                 BoxLayout:
                     RecycleView:
                         viewclass: 'SelectableButton'
-                        data: []
+                        data: [{'text': str(x)} for x in tableview.data_items]
                         SelectableRecycleGridLayout:
                             cols: 9
-                            default_size: None, dp(26)
+                            default_size: None, dp(50)
                             default_size_hint: 1, None
                             size_hint_y: None
                             height: self.minimum_height
                             orientation: 'vertical'
+<ScrollView>:
+    scroll_type: ['bars']
+    bar_width: 10
+    bar_color: (200,0,0, 1.0)
+    bar_inactive_color: (50,0,0, 1.0)
+
+<ScrollLabel>:
+    Label:
+        text: root.text
+        font_size: 11
+        text_size: self.width, None
+        size_hint_y: None
+        height: self.texture_size[1]
 
 <SelectableButton>:
     # Draw a background to indicate selection

@@ -1,14 +1,18 @@
 #: kivy 1.0
 #: import RView etl.RV
+#: import SelectableLabel etl.SelectableLabel
 
 Popup:
-    title: "Hotel selection"
+    on_open: view.updatedata()
+    title: "Wait for data..." if len(view.data) is 0 else "Please select hotel"
     auto_dismiss: False
     BoxLayout:
         orientation: "vertical"
         RV:
+            id: view
             viewclass: 'SelectableLabel'
             SelectableRecycleBoxLayout:
+                id: layout
                 default_size: None, dp(56)
                 default_size_hint: 1, None
                 size_hint_y: None
@@ -19,7 +23,7 @@ Popup:
             orientation: 'vertical'
             size_hint: (.2,.1)
             pos_hint: {'x': .4}
-
+            disabled: False if SelectableLabel.selected else True
             on_release: root.dismiss()
 
 <SelectableLabel>:

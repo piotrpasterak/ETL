@@ -16,3 +16,14 @@ class Review(db.Entity):
     review_count = Required(int)
     neg_review = Optional(LongUnicode, nullable=True)
     pos_review = Optional(LongUnicode, nullable=True)
+
+    def serialize_data(self):
+        return [self.name,
+                self.date.strftime('%d.%m.%Y'),
+                self.header,
+                self.country,
+                self.user_age_group,
+                self.review_count,
+                self.score,
+                self.pos_review,
+                self.neg_review]
