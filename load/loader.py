@@ -26,7 +26,8 @@ def clear_data_for_hotel(hotel_name):
 
 @db_session
 def get_all_hotels():
-    return select(hotel for hotel in Hotel)
+    hotels = select(hotel for hotel in Hotel)
+    return hotels.fetch()
 
 
 @db_session

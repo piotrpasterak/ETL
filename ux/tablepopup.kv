@@ -4,10 +4,15 @@
 Popup:
     title: "Database content"
     auto_dismiss: False
-    on_open: tableview.get_reviews()
+    on_open: dropdown.create_hotels_list()
     BoxLayout:
+
         orientation: "vertical"
         height:40
+
+        # trick to not lost the Dropdown instance
+        # Dropdown itself is not really made to be used in kv.
+        __safe_id: [dropdown.__self__]
 
         Button:
             text: "Delete All"
@@ -22,6 +27,18 @@ Popup:
             size_hint: (.2,.1)
             pos_hint: {'x': .4}
             on_release: root.dismiss()
+        Button:
+            id: btn
+            text: 'Hotels list'
+            on_release: dropdown.open(self)
+            size_hint: (.2,.1)
+            pos_hint: {'x': .4}
+
+        HotelsDropDown:
+            id: dropdown
+            on_select:tableview.get_reviews(args[1])
+
+
         Label:
             text: 'Number of reviews:' + str(tableview.get_row_number())
             size_hint: (.2,.1)
@@ -70,6 +87,11 @@ Popup:
     bar_width: 10
     bar_color: (200,0,0, 1.0)
     bar_inactive_color: (50,0,0, 1.0)
+
+<HotelButton>:
+    size_hint_y: None
+    height: 30
+
 
 <ScrollLabel>:
     Label:

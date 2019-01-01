@@ -6,8 +6,8 @@ from kivy.uix.label import Label
 from kivy.uix.popup import Popup
 from kivy.clock import Clock
 from kivy.uix.textinput import TextInput
-from functools import partial
 import threading
+from functools import partial
 from extract import scrapper
 from transform.transformer import Transformer
 import load.loader
@@ -22,8 +22,18 @@ from kivy.uix.scrollview import ScrollView
 from kivy.uix.dropdown import DropDown
 
 
-class HotelsDropDown(DropDown):
+class HotelButton(Button):
     pass
+
+
+class HotelsDropDown(DropDown):
+    def create_hotels_list(self):
+        hotels = load.loader.get_all_hotels()
+
+        for hotel in hotels:
+            btn = HotelButton(text=hotel.name)
+            self.add_widget(btn)
+            btn.bind(on_release=lambda bt: self.select(bt.text))
 
 class ScrollLabel(ScrollView):
     text = StringProperty('')
@@ -94,10 +104,11 @@ class TableView(RecycleView):
 
     def __init__(self, **kwargs):
         super(TableView, self).__init__(**kwargs)
-        self.get_reviews()
 
-    def get_reviews(self):
-        data = load.loader.get_data_for_hotel("Armon Residence")
+    def get_reviews(self, name):
+        data = load.loader.get_data_for_hotel(name)
+
+        self.data_items = []
 
         if data:
             for row in data:
@@ -178,7 +189,6 @@ class ETLApp(App):
         thrload.start()
 
         Clock.schedule_interval(partial(self.check_job, thrload), 1)
-
 
     def on_extract(self, _):
         self.show_popup('Starting Extract ...', 'Info')
