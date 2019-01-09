@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>load package &#8212; ETL Project 0.0.1 documentation</title>
+    <title>load package &#8212; ETL Project 0.0.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -42,6 +42,7 @@
 <dt id="load.hotel.Hotel">
 <em class="property">class </em><code class="descclassname">load.hotel.</code><code class="descname">Hotel</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/hotel.html#Hotel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.hotel.Hotel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pony.orm.core.Entity</span></code></p>
+<p>Represent Hotel entity from database.</p>
 <dl class="attribute">
 <dt id="load.hotel.Hotel.address">
 <code class="descname">address</code><a class="headerlink" href="#load.hotel.Hotel.address" title="Permalink to this definition">¶</a></dt>
@@ -67,6 +68,57 @@
 </div>
 <div class="section" id="module-load.loader">
 <span id="load-loader-module"></span><h2>load.loader module<a class="headerlink" href="#module-load.loader" title="Permalink to this headline">¶</a></h2>
+<p>Load data to database module.</p>
+<p>This module implements ‘load’ to database functionality, in this particular case it update content of etl database.
+Mainly Pony ORM web drive is in use.</p>
+<dl class="function">
+<dt id="load.loader.clear_data_for_hotel">
+<code class="descclassname">load.loader.</code><code class="descname">clear_data_for_hotel</code><span class="sig-paren">(</span><em>hotel_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/loader.html#clear_data_for_hotel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.loader.clear_data_for_hotel" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes all reviews linked to Hotel.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hotel_name (str): The name of the Hotel.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="load.loader.get_all_hotels">
+<code class="descclassname">load.loader.</code><code class="descname">get_all_hotels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/loader.html#get_all_hotels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.loader.get_all_hotels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gives all hotels from database.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>List of all Hotels (objects).</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="load.loader.get_data_for_hotel">
+<code class="descclassname">load.loader.</code><code class="descname">get_data_for_hotel</code><span class="sig-paren">(</span><em>hotel_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/loader.html#get_data_for_hotel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.loader.get_data_for_hotel" title="Permalink to this definition">¶</a></dt>
+<dd><p>If all reviews from hotel are necessary.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hotel_name (str): The name of the Hotel.</dd>
+<dt>Returns:</dt>
+<dd>list of serialized data from Reviews of None if no data or no such Hotel.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="load.loader.init_connection">
+<code class="descclassname">load.loader.</code><code class="descname">init_connection</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/loader.html#init_connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.loader.init_connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialize default connection to database, and create tables if necessary.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="load.loader.update_hotel_with_data">
+<code class="descclassname">load.loader.</code><code class="descname">update_hotel_with_data</code><span class="sig-paren">(</span><em>hotel_data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/loader.html#update_hotel_with_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.loader.update_hotel_with_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Just clean all data if so, and create new Review entities in database.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hotel_data: The dictionary with all hotel data (also connected Reviews).</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-load.review">
 <span id="load-review-module"></span><h2>load.review module<a class="headerlink" href="#module-load.review" title="Permalink to this headline">¶</a></h2>
@@ -74,6 +126,7 @@
 <dt id="load.review.Review">
 <em class="property">class </em><code class="descclassname">load.review.</code><code class="descname">Review</code><span class="sig-paren">(</span><em>*args</em>, <em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/review.html#Review"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.review.Review" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">pony.orm.core.Entity</span></code></p>
+<p>Represent Review entity from database.</p>
 <dl class="attribute">
 <dt id="load.review.Review.country">
 <code class="descname">country</code><a class="headerlink" href="#load.review.Review.country" title="Permalink to this definition">¶</a></dt>
@@ -124,6 +177,11 @@
 <code class="descname">score</code><a class="headerlink" href="#load.review.Review.score" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
+<dl class="method">
+<dt id="load.review.Review.serialize_data">
+<code class="descname">serialize_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/review.html#Review.serialize_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.review.Review.serialize_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="load.review.Review.user_age_group">
 <code class="descname">user_age_group</code><a class="headerlink" href="#load.review.Review.user_age_group" title="Permalink to this definition">¶</a></dt>
@@ -157,6 +215,7 @@
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="includeredme.html">ETL project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arch.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a></li>
 </ul>

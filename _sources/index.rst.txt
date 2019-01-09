@@ -11,6 +11,7 @@ Welcome to ETL Project's documentation!
    :caption: Contents:
 
    includeredme
+   arch
    user_manual
    appendix
 

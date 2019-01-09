@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>Overview: module code &#8212; ETL Project 0.0.2 documentation</title>
+    <title>database_setup &#8212; ETL Project 0.0.2 documentation</title>
     <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
@@ -31,18 +31,31 @@
 
           <div class="body" role="main">
             
-  <h1>All modules for which code is available</h1>
-<ul><li><a href="database_setup.html">database_setup</a></li>
-<li><a href="dependecy_installer.html">dependecy_installer</a></li>
-<li><a href="etl.html">etl</a></li>
-<li><a href="extract/scrapper.html">extract.scrapper</a></li>
-<li><a href="load/hotel.html">load.hotel</a></li>
-<li><a href="load/loader.html">load.loader</a></li>
-<li><a href="load/review.html">load.review</a></li>
-<li><a href="pony/orm/core.html">pony.orm.core</a></li>
-<li><a href="transform/transformer.html">transform.transformer</a></li>
-<li><a href="webdriver_installer.html">webdriver_installer</a></li>
-</ul>
+  <h1>Source code for database_setup</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Tiny module for create database during installation process.</span>
+
+<span class="sd">Note:</span>
+<span class="sd">    Expected is that in database user &quot;root&quot; with password &#39;root&#39; exists.</span>
+<span class="sd">    Mysql is required.</span>
+
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">import</span> <span class="nn">pymysql</span>
+
+
+<div class="viewcode-block" id="create_database"><a class="viewcode-back" href="../database_setup.html#database_setup.create_database">[docs]</a><span class="k">def</span> <span class="nf">create_database</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Just create etl database (without tables).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">conn</span> <span class="o">=</span> <span class="n">pymysql</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">host</span><span class="o">=</span><span class="s1">&#39;localhost&#39;</span><span class="p">,</span> <span class="n">user</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">,</span> <span class="n">password</span><span class="o">=</span><span class="s1">&#39;root&#39;</span><span class="p">)</span>
+        <span class="n">conn</span><span class="o">.</span><span class="n">cursor</span><span class="p">()</span><span class="o">.</span><span class="n">execute</span><span class="p">(</span><span class="s1">&#39;create database etl&#39;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">pymysql</span><span class="o">.</span><span class="n">Error</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">create_database</span><span class="p">()</span>
+</pre></div>
 
           </div>
           
@@ -72,6 +85,8 @@
 <h3>Related Topics</h3>
 <ul>
   <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
   </ul></li>
 </ul>
 </div>

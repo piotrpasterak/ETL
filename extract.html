@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>extract package &#8212; ETL Project 0.0.1 documentation</title>
+    <title>extract package &#8212; ETL Project 0.0.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -38,47 +38,77 @@
 </div>
 <div class="section" id="module-extract.scrapper">
 <span id="extract-scrapper-module"></span><h2>extract.scrapper module<a class="headerlink" href="#module-extract.scrapper" title="Permalink to this headline">¶</a></h2>
+<p>Scrapping (or extracting) HTML module in Python.</p>
+<p>This module implements ‘extract’ functionality, in this particular case it is
+extracting reviews from hotels in www.booking.com page. Mainly Selenium web drive is in use.</p>
 <dl class="function">
 <dt id="extract.scrapper.collect_hotels">
 <code class="descclassname">extract.scrapper.</code><code class="descname">collect_hotels</code><span class="sig-paren">(</span><em>driver</em>, <em>hotel_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#collect_hotels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.collect_hotels" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Colect all hotels from given HTML page.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>driver: the web driver which gives ability to search in web content.
+hotel_list: list of partial search results, function extends this list with new results.</dd>
+</dl>
+</dd></dl>
 
 <dl class="function">
 <dt id="extract.scrapper.collect_reviews">
 <code class="descclassname">extract.scrapper.</code><code class="descname">collect_reviews</code><span class="sig-paren">(</span><em>driver</em>, <em>review_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#collect_reviews"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.collect_reviews" title="Permalink to this definition">¶</a></dt>
-<dd><p>collect_reviews - this function search and returns all reviews on one page(also archive)</p>
+<dd><p>Attach all reviews present on one page(also archived).</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>driver: The web driver which gives ability to search in web content.
+review_list: List of partial search results, function extends this list with new results.</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="extract.scrapper.force_english_version">
 <code class="descclassname">extract.scrapper.</code><code class="descname">force_english_version</code><span class="sig-paren">(</span><em>driver</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#force_english_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.force_english_version" title="Permalink to this definition">¶</a></dt>
-<dd><p>force_english_version - Makes site source coherently in english.</p>
+<dd><p>Makes site source coherently in english.</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="extract.scrapper.get_driver">
 <code class="descclassname">extract.scrapper.</code><code class="descname">get_driver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#get_driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.get_driver" title="Permalink to this definition">¶</a></dt>
-<dd><p>get_driver - This function return web Firefox driver created in headless mode (no visible browser)</p>
+<dd><p>Returns web Firefox driver created in headless mode (no visible browser).</p>
 </dd></dl>
 
 <dl class="function">
 <dt id="extract.scrapper.get_driver_path">
 <code class="descclassname">extract.scrapper.</code><code class="descname">get_driver_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#get_driver_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.get_driver_path" title="Permalink to this definition">¶</a></dt>
-<dd><p>get_driver_path - this function reconstruct correct path to Firefox driver.
-Because GeckoDriverDownloader has been used for driver download,
-then GeckoDriverDownloader is also use for determine path to driver</p>
+<dd><p>Reconstructs correct path to Firefox driver.</p>
+<dl class="docutils">
+<dt>Note:</dt>
+<dd>Because GeckoDriverDownloader has been used for driver download,
+then GeckoDriverDownloader is also use for determine path to driver</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="extract.scrapper.get_hotels_from_city">
 <code class="descclassname">extract.scrapper.</code><code class="descname">get_hotels_from_city</code><span class="sig-paren">(</span><em>city</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#get_hotels_from_city"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.get_hotels_from_city" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
+<dd><p>Colect all hotels from given city name.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>city (str): the web driver which gives ability to search in web content.</dd>
+<dt>Returns:</dt>
+<dd>Only 10 hotels’ list are returned. Content of this list is hotels data in HTML format.</dd>
+</dl>
+</dd></dl>
 
 <dl class="function">
 <dt id="extract.scrapper.scrap">
 <code class="descclassname">extract.scrapper.</code><code class="descname">scrap</code><span class="sig-paren">(</span><em>url</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#scrap"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.scrap" title="Permalink to this definition">¶</a></dt>
-<dd><p>scrap - main scrapping function, in general this function collects and returns all reviews from all pages.
+<dd><p>Main scrapping function, in general this function collects and returns all reviews from all pages.
 For navigation between pages “review_next_page_link” button is used.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>url (str): the url address to hotel page.</dd>
+<dt>Returns:</dt>
+<dd>List of reviews in HTML format.</dd>
+</dl>
 </dd></dl>
 
 </div>
@@ -107,6 +137,7 @@ For navigation between pages “review_next_page_link” button is used.</p>
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="includeredme.html">ETL project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arch.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a></li>
 </ul>

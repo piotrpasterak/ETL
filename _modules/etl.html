@@ -1,0 +1,536 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>etl &#8212; ETL Project 0.0.2 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for etl</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;Application and Ux module.</span>
+
+<span class="sd">This module implements application graphics and logic. Kivy has been chosen as graphic framework.</span>
+
+<span class="sd">.. Kivy site:</span>
+<span class="sd">   https://kivy.org/#home</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">kivy.app</span> <span class="k">import</span> <span class="n">App</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.floatlayout</span> <span class="k">import</span> <span class="n">FloatLayout</span>
+<span class="kn">from</span> <span class="nn">kivy.lang</span> <span class="k">import</span> <span class="n">Builder</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.button</span> <span class="k">import</span> <span class="n">Button</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.label</span> <span class="k">import</span> <span class="n">Label</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.popup</span> <span class="k">import</span> <span class="n">Popup</span>
+<span class="kn">from</span> <span class="nn">kivy.clock</span> <span class="k">import</span> <span class="n">Clock</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.textinput</span> <span class="k">import</span> <span class="n">TextInput</span>
+<span class="kn">import</span> <span class="nn">threading</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">extract</span> <span class="k">import</span> <span class="n">scrapper</span>
+<span class="kn">from</span> <span class="nn">transform.transformer</span> <span class="k">import</span> <span class="n">Transformer</span>
+<span class="kn">import</span> <span class="nn">load.loader</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.recycleview</span> <span class="k">import</span> <span class="n">RecycleView</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.recycleview.views</span> <span class="k">import</span> <span class="n">RecycleDataViewBehavior</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.recycleboxlayout</span> <span class="k">import</span> <span class="n">RecycleBoxLayout</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.recyclegridlayout</span> <span class="k">import</span> <span class="n">RecycleGridLayout</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.behaviors</span> <span class="k">import</span> <span class="n">FocusBehavior</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.recycleview.layout</span> <span class="k">import</span> <span class="n">LayoutSelectionBehavior</span>
+<span class="kn">from</span> <span class="nn">kivy.properties</span> <span class="k">import</span> <span class="n">BooleanProperty</span><span class="p">,</span> <span class="n">ListProperty</span><span class="p">,</span> <span class="n">StringProperty</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.scrollview</span> <span class="k">import</span> <span class="n">ScrollView</span>
+<span class="kn">from</span> <span class="nn">kivy.uix.dropdown</span> <span class="k">import</span> <span class="n">DropDown</span>
+
+
+<div class="viewcode-block" id="HotelButton"><a class="viewcode-back" href="../etl.html#etl.HotelButton">[docs]</a><span class="k">class</span> <span class="nc">HotelButton</span><span class="p">(</span><span class="n">Button</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent Hotel Button graphical element.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">pass</span></div>
+
+
+<div class="viewcode-block" id="HotelsDropDown"><a class="viewcode-back" href="../etl.html#etl.HotelsDropDown">[docs]</a><span class="k">class</span> <span class="nc">HotelsDropDown</span><span class="p">(</span><span class="n">DropDown</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent Hotel DropDown (aka combobox) graphical element.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="HotelsDropDown.create_hotels_list"><a class="viewcode-back" href="../etl.html#etl.HotelsDropDown.create_hotels_list">[docs]</a>    <span class="k">def</span> <span class="nf">create_hotels_list</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Creation Hotel list for DropDown.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">hotels</span> <span class="o">=</span> <span class="n">load</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">get_all_hotels</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">hotel</span> <span class="ow">in</span> <span class="n">hotels</span><span class="p">:</span>
+            <span class="n">btn</span> <span class="o">=</span> <span class="n">HotelButton</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="n">hotel</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">btn</span><span class="p">)</span>
+            <span class="n">btn</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">on_release</span><span class="o">=</span><span class="k">lambda</span> <span class="n">bt</span><span class="p">:</span> <span class="bp">self</span><span class="o">.</span><span class="n">select</span><span class="p">(</span><span class="n">bt</span><span class="o">.</span><span class="n">text</span><span class="p">))</span></div></div>
+
+
+<div class="viewcode-block" id="ScrollLabel"><a class="viewcode-back" href="../etl.html#etl.ScrollLabel">[docs]</a><span class="k">class</span> <span class="nc">ScrollLabel</span><span class="p">(</span><span class="n">ScrollView</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Represent Scrolling Label graphical element</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">text</span> <span class="o">=</span> <span class="n">StringProperty</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="SelectableButton"><a class="viewcode-back" href="../etl.html#etl.SelectableButton">[docs]</a><span class="k">class</span> <span class="nc">SelectableButton</span><span class="p">(</span><span class="n">RecycleDataViewBehavior</span><span class="p">,</span> <span class="n">ScrollLabel</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Adding selection support to the Button.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">selected</span> <span class="o">=</span> <span class="n">BooleanProperty</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">selectable</span> <span class="o">=</span> <span class="n">BooleanProperty</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+
+<div class="viewcode-block" id="SelectableButton.refresh_view_attrs"><a class="viewcode-back" href="../etl.html#etl.SelectableButton.refresh_view_attrs">[docs]</a>    <span class="k">def</span> <span class="nf">refresh_view_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Catch and handle the view changes.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">SelectableButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">refresh_view_attrs</span><span class="p">(</span><span class="n">rv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SelectableButton.on_touch_down"><a class="viewcode-back" href="../etl.html#etl.SelectableButton.on_touch_down">[docs]</a>    <span class="k">def</span> <span class="nf">on_touch_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">touch</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Add selection on touch down .</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">super</span><span class="p">(</span><span class="n">SelectableButton</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">on_touch_down</span><span class="p">(</span><span class="n">touch</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collide_point</span><span class="p">(</span><span class="o">*</span><span class="n">touch</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectable</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">select_with_touch</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">,</span> <span class="n">touch</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SelectableButton.apply_selection"><a class="viewcode-back" href="../etl.html#etl.SelectableButton.apply_selection">[docs]</a>    <span class="k">def</span> <span class="nf">apply_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">is_selected</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Respond to the selection of items in the view.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected</span> <span class="o">=</span> <span class="n">is_selected</span></div></div>
+
+
+<div class="viewcode-block" id="SelectableLabel"><a class="viewcode-back" href="../etl.html#etl.SelectableLabel">[docs]</a><span class="k">class</span> <span class="nc">SelectableLabel</span><span class="p">(</span><span class="n">RecycleDataViewBehavior</span><span class="p">,</span> <span class="n">Label</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Add selection support to the Label.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="n">selected</span> <span class="o">=</span> <span class="n">BooleanProperty</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+    <span class="n">selectable</span> <span class="o">=</span> <span class="n">BooleanProperty</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">selected_hotel</span><span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+<div class="viewcode-block" id="SelectableLabel.refresh_view_attrs"><a class="viewcode-back" href="../etl.html#etl.SelectableLabel.refresh_view_attrs">[docs]</a>    <span class="k">def</span> <span class="nf">refresh_view_attrs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Catch and handle the view changes.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">(</span><span class="n">SelectableLabel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">refresh_view_attrs</span><span class="p">(</span>
+            <span class="n">rv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">data</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SelectableLabel.on_touch_down"><a class="viewcode-back" href="../etl.html#etl.SelectableLabel.on_touch_down">[docs]</a>    <span class="k">def</span> <span class="nf">on_touch_down</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">touch</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot; Add selection on touch down.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">super</span><span class="p">(</span><span class="n">SelectableLabel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="n">on_touch_down</span><span class="p">(</span><span class="n">touch</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collide_point</span><span class="p">(</span><span class="o">*</span><span class="n">touch</span><span class="o">.</span><span class="n">pos</span><span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">selectable</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">parent</span><span class="o">.</span><span class="n">select_node</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">index</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="SelectableLabel.apply_selection"><a class="viewcode-back" href="../etl.html#etl.SelectableLabel.apply_selection">[docs]</a>    <span class="k">def</span> <span class="nf">apply_selection</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">rv</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">is_selected</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Respond to the selection of items in the view..</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">selected</span> <span class="o">=</span> <span class="n">is_selected</span>
+        <span class="k">if</span> <span class="n">is_selected</span><span class="p">:</span>
+            <span class="n">SelectableLabel</span><span class="o">.</span><span class="n">selected_hotel</span> <span class="o">=</span> <span class="n">rv</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">index</span><span class="p">][</span><span class="s1">&#39;text&#39;</span><span class="p">]</span></div></div>
+
+
+<div class="viewcode-block" id="SelectableRecycleBoxLayout"><a class="viewcode-back" href="../etl.html#etl.SelectableRecycleBoxLayout">[docs]</a><span class="k">class</span> <span class="nc">SelectableRecycleBoxLayout</span><span class="p">(</span><span class="n">FocusBehavior</span><span class="p">,</span> <span class="n">LayoutSelectionBehavior</span><span class="p">,</span>
+                                 <span class="n">RecycleBoxLayout</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Adds selection and focus behaviour to the view.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="SelectableRecycleGridLayout"><a class="viewcode-back" href="../etl.html#etl.SelectableRecycleGridLayout">[docs]</a><span class="k">class</span> <span class="nc">SelectableRecycleGridLayout</span><span class="p">(</span><span class="n">FocusBehavior</span><span class="p">,</span> <span class="n">LayoutSelectionBehavior</span><span class="p">,</span>
+                                  <span class="n">RecycleGridLayout</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot; Adds selection and focus behaviour to the view.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span></div>
+
+
+<div class="viewcode-block" id="TableView"><a class="viewcode-back" href="../etl.html#etl.TableView">[docs]</a><span class="k">class</span> <span class="nc">TableView</span><span class="p">(</span><span class="n">RecycleView</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Table selectable View.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">data_items</span> <span class="o">=</span> <span class="n">ListProperty</span><span class="p">([])</span>
+    <span class="n">hotel_name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">TableView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="TableView.get_reviews"><a class="viewcode-back" href="../etl.html#etl.TableView.get_reviews">[docs]</a>    <span class="k">def</span> <span class="nf">get_reviews</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extracting review for given Hotel name and update attribute.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            name (str): The Hotel name.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">load</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">get_data_for_hotel</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">hotel_name</span> <span class="o">=</span> <span class="n">name</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_items</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">data</span><span class="p">:</span>
+                <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">row</span><span class="p">:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">data_items</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TableView.get_row_number"><a class="viewcode-back" href="../etl.html#etl.TableView.get_row_number">[docs]</a>    <span class="k">def</span> <span class="nf">get_row_number</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extracting number or rows of data.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Rows number.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_items</span><span class="p">)</span><span class="o">/</span><span class="mi">9</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TableView.delete_all_reviews"><a class="viewcode-back" href="../etl.html#etl.TableView.delete_all_reviews">[docs]</a>    <span class="k">def</span> <span class="nf">delete_all_reviews</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;deleting all reviews from given hotel.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">load</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">clear_data_for_hotel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hotel_name</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_items</span> <span class="o">=</span> <span class="p">[]</span></div></div>
+
+
+<div class="viewcode-block" id="CityListView"><a class="viewcode-back" href="../etl.html#etl.CityListView">[docs]</a><span class="k">class</span> <span class="nc">CityListView</span><span class="p">(</span><span class="n">RecycleView</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;City List selectable View.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">city</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CityListView</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+<div class="viewcode-block" id="CityListView.update_data"><a class="viewcode-back" href="../etl.html#etl.CityListView.update_data">[docs]</a>    <span class="k">def</span> <span class="nf">update_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Update City list from database.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">CityListView</span><span class="o">.</span><span class="n">hotels_data</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">transform_hotels</span><span class="p">((</span><span class="n">scrapper</span><span class="o">.</span><span class="n">get_hotels_from_city</span><span class="p">(</span><span class="n">CityListView</span><span class="o">.</span><span class="n">city</span><span class="p">)))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data</span> <span class="o">=</span> <span class="p">[{</span><span class="s1">&#39;text&#39;</span><span class="p">:</span> <span class="n">name</span><span class="p">}</span> <span class="k">for</span> <span class="n">name</span>
+                     <span class="ow">in</span> <span class="n">CityListView</span><span class="o">.</span><span class="n">hotels_data</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span></div></div>
+
+
+<div class="viewcode-block" id="ETLApp"><a class="viewcode-back" href="../etl.html#etl.ETLApp">[docs]</a><span class="k">class</span> <span class="nc">ETLApp</span><span class="p">(</span><span class="n">App</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Main application.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">title</span> <span class="o">=</span> <span class="s2">&quot;ETL Project&quot;</span>
+    <span class="n">extract_list</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">transform_result</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">close_button</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">text_city</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="ETLApp.build"><a class="viewcode-back" href="../etl.html#etl.ETLApp.build">[docs]</a>    <span class="k">def</span> <span class="nf">build</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Build all graphical elements.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Build layout.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_city</span> <span class="o">=</span> <span class="n">TextInput</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s1">&#39;Please enter city&#39;</span><span class="p">,</span> <span class="n">multiline</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">size_hint</span> <span class="o">=</span> <span class="p">(</span><span class="o">.</span><span class="mi">6</span><span class="p">,</span><span class="o">.</span><span class="mi">1</span><span class="p">),</span> <span class="n">pos_hint</span> <span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">8</span><span class="p">})</span>
+        <span class="n">button_city_input</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Enter&quot;</span><span class="p">,</span> <span class="n">size_hint</span><span class="o">=</span><span class="p">(</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">),</span> <span class="n">pos_hint</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">8</span><span class="p">})</span>
+
+        <span class="n">button_extract</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Extract&quot;</span><span class="p">,</span> <span class="n">size_hint</span> <span class="o">=</span> <span class="p">(</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="o">.</span><span class="mi">1</span><span class="p">),</span> <span class="n">pos_hint</span> <span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">6</span><span class="p">})</span>
+        <span class="n">button_transform</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Transform&quot;</span><span class="p">,</span><span class="n">size_hint</span> <span class="o">=</span> <span class="p">(</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="o">.</span><span class="mi">1</span><span class="p">),</span> <span class="n">pos_hint</span> <span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">6</span><span class="p">})</span>
+        <span class="n">button_load</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Load&quot;</span><span class="p">,</span> <span class="n">size_hint</span> <span class="o">=</span> <span class="p">(</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="o">.</span><span class="mi">1</span><span class="p">),</span> <span class="n">pos_hint</span> <span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">7</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">6</span><span class="p">})</span>
+
+        <span class="n">button_complete</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Whole Process&quot;</span><span class="p">,</span> <span class="n">size_hint</span> <span class="o">=</span> <span class="p">(</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="o">.</span><span class="mi">1</span><span class="p">),</span> <span class="n">pos_hint</span> <span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">4</span><span class="p">})</span>
+
+        <span class="n">button_show_database_content</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;Show Database&quot;</span><span class="p">,</span> <span class="n">size_hint</span><span class="o">=</span><span class="p">(</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span> <span class="o">.</span><span class="mi">1</span><span class="p">),</span> <span class="n">pos_hint</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">2</span><span class="p">})</span>
+
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">FloatLayout</span><span class="p">()</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_city</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">button_city_input</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">button_extract</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">button_transform</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">button_load</span><span class="p">)</span>
+        <span class="n">layout</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">button_complete</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">button_show_database_content</span><span class="p">)</span>
+
+        <span class="n">button_complete</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">on_press</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_complete</span><span class="p">)</span>
+        <span class="n">button_extract</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">on_press</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_extract</span><span class="p">)</span>
+        <span class="n">button_load</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">on_press</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_load</span><span class="p">)</span>
+        <span class="n">button_transform</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">on_press</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_transform</span><span class="p">)</span>
+        <span class="n">button_city_input</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">on_press</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_city_find</span><span class="p">)</span>
+        <span class="n">button_show_database_content</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">on_press</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">on_show_database</span><span class="p">)</span>
+
+        <span class="n">load</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">init_connection</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">tablepopup</span> <span class="o">=</span> <span class="n">Builder</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="s1">&#39;ux/tablepopup.kv&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">citypopup</span> <span class="o">=</span> <span class="n">Builder</span><span class="o">.</span><span class="n">load_file</span><span class="p">(</span><span class="s1">&#39;ux/citespopup.kv&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">layout</span></div>
+
+<div class="viewcode-block" id="ETLApp.on_complete"><a class="viewcode-back" href="../etl.html#etl.ETLApp.on_complete">[docs]</a>    <span class="k">def</span> <span class="nf">on_complete</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler for &quot;Whole Process&quot; button.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            _: Ignored argument, Button (Button is not needed).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_popup</span><span class="p">(</span><span class="s1">&#39;Starting Extract &amp; Transform &amp; Load ...&#39;</span><span class="p">,</span> <span class="s1">&#39;Info&#39;</span><span class="p">)</span>
+        <span class="n">threxecute</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extract_thread</span><span class="p">)</span>
+        <span class="n">thrtransform</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transform_thread</span><span class="p">)</span>
+        <span class="n">thrload</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">load_thread</span><span class="p">)</span>
+
+        <span class="n">threxecute</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">threxecute</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+        <span class="n">thrtransform</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">thrtransform</span><span class="o">.</span><span class="n">join</span><span class="p">()</span>
+        <span class="n">thrload</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="n">Clock</span><span class="o">.</span><span class="n">schedule_interval</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_job</span><span class="p">,</span> <span class="n">thrload</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ETLApp.on_extract"><a class="viewcode-back" href="../etl.html#etl.ETLApp.on_extract">[docs]</a>    <span class="k">def</span> <span class="nf">on_extract</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler for &quot;Extract&quot; button.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            _: Ignored argument, Button (Button is not needed).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">show_popup</span><span class="p">(</span><span class="s1">&#39;Starting Extract ...&#39;</span><span class="p">,</span> <span class="s1">&#39;Info&#39;</span><span class="p">)</span>
+        <span class="n">thr</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">extract_thread</span><span class="p">)</span>
+        <span class="n">thr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">Clock</span><span class="o">.</span><span class="n">schedule_interval</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_job</span><span class="p">,</span> <span class="n">thr</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ETLApp.check_job"><a class="viewcode-back" href="../etl.html#etl.ETLApp.check_job">[docs]</a>    <span class="k">def</span> <span class="nf">check_job</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">a_thread</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checker if log term processing is finished now.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            a_thread (object): The target thread for monitoring.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            False if thread fished.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">a_thread</span><span class="o">.</span><span class="n">isAlive</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close_button</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ETLApp.on_transform"><a class="viewcode-back" href="../etl.html#etl.ETLApp.on_transform">[docs]</a>    <span class="k">def</span> <span class="nf">on_transform</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler for &quot;Transform&quot; button.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            _: Ignored argument, Button (Button is not needed).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">extract_list</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_popup</span><span class="p">(</span><span class="s1">&#39;Empty result from Extract, please extract first!&#39;</span><span class="p">,</span> <span class="s1">&#39;Error&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close_button</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_popup</span><span class="p">(</span><span class="s1">&#39;Starting Transform ...&#39;</span><span class="p">,</span> <span class="s1">&#39;Info&#39;</span><span class="p">)</span>
+            <span class="n">thr</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">transform_thread</span><span class="p">)</span>
+            <span class="n">thr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+            <span class="n">Clock</span><span class="o">.</span><span class="n">schedule_interval</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_job</span><span class="p">,</span> <span class="n">thr</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ETLApp.on_load"><a class="viewcode-back" href="../etl.html#etl.ETLApp.on_load">[docs]</a>    <span class="k">def</span> <span class="nf">on_load</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Handler for &quot;Load&quot; button.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            _: Ignored argument, Button (Button is not needed).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">transform_result</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_popup</span><span class="p">(</span><span class="s1">&#39;Empty result from Transform, please transform first!&#39;</span><span class="p">,</span> <span class="s1">&#39;Error&#39;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close_button</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_popup</span><span class="p">(</span><span class="s1">&#39;Load ongoing...&#39;</span><span class="p">,</span> <span class="s1">&#39;Info&#39;</span><span class="p">)</span>
+            <span class="n">thr</span> <span class="o">=</span> <span class="n">threading</span><span class="o">.</span><span class="n">Thread</span><span class="p">(</span><span class="n">target</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">load_thread</span><span class="p">)</span>
+            <span class="n">thr</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+            <span class="n">Clock</span><span class="o">.</span><span class="n">schedule_interval</span><span class="p">(</span><span class="n">partial</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">check_job</span><span class="p">,</span> <span class="n">thr</span><span class="p">),</span> <span class="mi">1</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ETLApp.extract_thread"><a class="viewcode-back" href="../etl.html#etl.ETLApp.extract_thread">[docs]</a>    <span class="k">def</span> <span class="nf">extract_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;worker &quot;extract&quot; thread function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="s2">&quot;TODO: check if hotel seletecd&quot;</span>
+        <span class="n">hotel_name</span> <span class="o">=</span> <span class="n">SelectableLabel</span><span class="o">.</span><span class="n">selected_hotel</span>
+        <span class="n">hlink</span> <span class="o">=</span> <span class="n">CityListView</span><span class="o">.</span><span class="n">hotels_data</span><span class="p">[</span><span class="n">hotel_name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extract_list</span> <span class="o">=</span> <span class="n">scrapper</span><span class="o">.</span><span class="n">scrap</span><span class="p">(</span><span class="s2">&quot;http://www.booking.com/&quot;</span> <span class="o">+</span> <span class="n">hlink</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ETLApp.transform_thread"><a class="viewcode-back" href="../etl.html#etl.ETLApp.transform_thread">[docs]</a>    <span class="k">def</span> <span class="nf">transform_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;worker &quot;transform&quot; thread function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform_result</span> <span class="o">=</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">transform_all</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">extract_list</span><span class="p">,</span> <span class="n">SelectableLabel</span><span class="o">.</span><span class="n">selected_hotel</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ETLApp.load_thread"><a class="viewcode-back" href="../etl.html#etl.ETLApp.load_thread">[docs]</a>    <span class="k">def</span> <span class="nf">load_thread</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;worker &quot;load&quot; thread function.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">load</span><span class="o">.</span><span class="n">loader</span><span class="o">.</span><span class="n">update_hotel_with_data</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">transform_result</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clear_temporary_data</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ETLApp.show_popup"><a class="viewcode-back" href="../etl.html#etl.ETLApp.show_popup">[docs]</a>    <span class="k">def</span> <span class="nf">show_popup</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">process_info</span><span class="p">,</span> <span class="n">label_info</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Extracting review positive opinion from raw HTML.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            process_info (str): info displayed inside popup.</span>
+<span class="sd">            label_info (str): popup header.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">layout</span> <span class="o">=</span> <span class="n">FloatLayout</span><span class="p">()</span>
+
+        <span class="n">popup_label</span> <span class="o">=</span> <span class="n">Label</span><span class="p">(</span><span class="n">text</span><span class="o">=</span> <span class="n">process_info</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_button</span> <span class="o">=</span> <span class="n">Button</span><span class="p">(</span><span class="n">text</span><span class="o">=</span><span class="s2">&quot;OK&quot;</span><span class="p">,</span> <span class="n">size_hint</span><span class="o">=</span><span class="p">(</span><span class="o">.</span><span class="mi">2</span><span class="p">,</span><span class="o">.</span><span class="mi">1</span><span class="p">),</span> <span class="n">pos_hint</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;x&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">4</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="o">.</span><span class="mi">1</span><span class="p">})</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="n">popup_label</span><span class="p">)</span>
+
+        <span class="n">layout</span><span class="o">.</span><span class="n">add_widget</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">close_button</span><span class="p">)</span>
+
+        <span class="c1"># Instantiate the modal popup and display</span>
+
+        <span class="n">popup</span> <span class="o">=</span> <span class="n">Popup</span><span class="p">(</span><span class="n">title</span><span class="o">=</span><span class="n">label_info</span><span class="p">,</span> <span class="n">content</span><span class="o">=</span><span class="n">layout</span><span class="p">)</span>
+
+        <span class="n">popup</span><span class="o">.</span><span class="n">open</span><span class="p">()</span>
+
+        <span class="c1"># Attach close button press with popup.dismiss action</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_button</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">close_button</span><span class="o">.</span><span class="n">bind</span><span class="p">(</span><span class="n">on_press</span><span class="o">=</span><span class="n">popup</span><span class="o">.</span><span class="n">dismiss</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ETLApp.is_default_city_name"><a class="viewcode-back" href="../etl.html#etl.ETLApp.is_default_city_name">[docs]</a>    <span class="k">def</span> <span class="nf">is_default_city_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Checks if city name is not default.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            True if city name is default, false if not.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">text_city</span><span class="o">.</span><span class="n">text</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_city</span><span class="o">.</span><span class="n">text</span> <span class="o">==</span> <span class="s2">&quot;Please enter city&quot;</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ETLApp.on_city_find"><a class="viewcode-back" href="../etl.html#etl.ETLApp.on_city_find">[docs]</a>    <span class="k">def</span> <span class="nf">on_city_find</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;City find handler.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            _: Ignored argument, Button (Button is not needed).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">CityListView</span><span class="o">.</span><span class="n">city</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">text_city</span><span class="o">.</span><span class="n">text</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">is_default_city_name</span><span class="p">():</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">show_popup</span><span class="p">(</span><span class="s2">&quot;Please enter correct city name!&quot;</span><span class="p">,</span> <span class="s2">&quot;Info&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">close_button</span><span class="o">.</span><span class="n">disabled</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">return</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">citypopup</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">citypopup</span><span class="o">.</span><span class="n">open</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ETLApp.on_show_database"><a class="viewcode-back" href="../etl.html#etl.ETLApp.on_show_database">[docs]</a>    <span class="k">def</span> <span class="nf">on_show_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Start show database popup handler.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            _: Ignored argument, Button (Button is not needed).</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">tablepopup</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">tablepopup</span><span class="o">.</span><span class="n">open</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="ETLApp.clear_temporary_data"><a class="viewcode-back" href="../etl.html#etl.ETLApp.clear_temporary_data">[docs]</a>    <span class="k">def</span> <span class="nf">clear_temporary_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Clear all data temporary stored in this class.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">extract_list</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">transform_result</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">text_city</span> <span class="o">=</span> <span class="kc">None</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Main application loop.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">ETLApp</span><span class="p">()</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">ETL Project</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<p class="caption"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../includeredme.html">ETL project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../arch.html">Architecture</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../user_manual.html">User Manual</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../appendix.html">Appendix</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2018, Piotr Pasterak.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.8.2</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

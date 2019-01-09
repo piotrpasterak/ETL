@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>transform package &#8212; ETL Project 0.0.1 documentation</title>
+    <title>transform package &#8212; ETL Project 0.0.2 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -38,69 +38,169 @@
 </div>
 <div class="section" id="module-transform.transformer">
 <span id="transform-transformer-module"></span><h2>transform.transformer module<a class="headerlink" href="#module-transform.transformer" title="Permalink to this headline">¶</a></h2>
+<p>Adapting data into format accepted by database module.</p>
+<p>This module implements ‘transform’ functionality (as a part of ETL model).
+Data are Extract module and Load module is receiver of adapted data.</p>
 <dl class="class">
 <dt id="transform.transformer.Transformer">
 <em class="property">class </em><code class="descclassname">transform.transformer.</code><code class="descname">Transformer</code><a class="reference internal" href="_modules/transform/transformer.html#Transformer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Review class contains all collected data</p>
+<p>Review class contains all necessary operations.</p>
 <dl class="staticmethod">
 <dt id="transform.transformer.Transformer.extract_country">
 <em class="property">static </em><code class="descname">extract_country</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_country"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_country" title="Permalink to this definition">¶</a></dt>
-<dd><p>reviewer coutry extraction method</p>
+<dd><p>Extracting country from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hml_review (object): HTML content with Review data.</dd>
+<dt>Returns:</dt>
+<dd>Review user country.</dd>
+</dl>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="transform.transformer.Transformer.extract_date">
 <em class="property">static </em><code class="descname">extract_date</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_date" title="Permalink to this definition">¶</a></dt>
-<dd><p>review put date extraction method</p>
+<dd><p>Extracting date from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hml_review (object): HTML content with Review data.</dd>
+<dt>Returns:</dt>
+<dd>Review data.</dd>
+</dl>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="transform.transformer.Transformer.extract_header">
 <em class="property">static </em><code class="descname">extract_header</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_header"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_header" title="Permalink to this definition">¶</a></dt>
-<dd><p>review header extraction method</p>
+<dd><p>Extracting review header from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hml_review (object): HTML content with Review data.</dd>
+<dt>Returns:</dt>
+<dd>Review header.</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="transform.transformer.Transformer.extract_hotel_link">
+<em class="property">static </em><code class="descname">extract_hotel_link</code><span class="sig-paren">(</span><em>raw_hotel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_hotel_link"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_hotel_link" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracting data from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>raw_hotel (object): HTML content with Hotel data.</dd>
+<dt>Returns:</dt>
+<dd>Hotel ref link if exist, if not empty string.</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="transform.transformer.Transformer.extract_hotel_name">
+<em class="property">static </em><code class="descname">extract_hotel_name</code><span class="sig-paren">(</span><em>raw_hotel</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_hotel_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_hotel_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracting data from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>raw_hotel (object): HTML content with Hotel data.</dd>
+<dt>Returns:</dt>
+<dd>Hotel name.</dd>
+</dl>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="transform.transformer.Transformer.extract_name">
 <em class="property">static </em><code class="descname">extract_name</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_name" title="Permalink to this definition">¶</a></dt>
-<dd><p>reviewer name extraction method</p>
+<dd><p>Extracting name from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hml_review (object): HTML content with Review data.</dd>
+<dt>Returns:</dt>
+<dd>Review user name.</dd>
+</dl>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="transform.transformer.Transformer.extract_neg_review_body">
 <em class="property">static </em><code class="descname">extract_neg_review_body</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_neg_review_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_neg_review_body" title="Permalink to this definition">¶</a></dt>
-<dd><p>negative review extraction method</p>
+<dd><p>Extracting review negative opinion from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hml_review (object): HTML content with Review data.</dd>
+<dt>Returns:</dt>
+<dd>Review user negative opinion.</dd>
+</dl>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="transform.transformer.Transformer.extract_pos_review_body">
 <em class="property">static </em><code class="descname">extract_pos_review_body</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_pos_review_body"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_pos_review_body" title="Permalink to this definition">¶</a></dt>
-<dd><p>positive review extraction method</p>
+<dd><p>Extracting review positive opinion from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hml_review (object): HTML content with Review data.</dd>
+<dt>Returns:</dt>
+<dd>Review user positive opinion.</dd>
+</dl>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="transform.transformer.Transformer.extract_review_count">
 <em class="property">static </em><code class="descname">extract_review_count</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_review_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_review_count" title="Permalink to this definition">¶</a></dt>
-<dd><p>reviewer review count extraction method</p>
+<dd><p>Extracting review count from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hml_review (object): HTML content with Review data.</dd>
+<dt>Returns:</dt>
+<dd>Review user review count.</dd>
+</dl>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="transform.transformer.Transformer.extract_score">
 <em class="property">static </em><code class="descname">extract_score</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_score"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_score" title="Permalink to this definition">¶</a></dt>
-<dd><p>reviewer score extraction method</p>
+<dd><p>Extracting review score from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hml_review (object): HTML content with Review data.</dd>
+<dt>Returns:</dt>
+<dd>Review user review score.</dd>
+</dl>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="transform.transformer.Transformer.extract_user_age_group">
 <em class="property">static </em><code class="descname">extract_user_age_group</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_user_age_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_user_age_group" title="Permalink to this definition">¶</a></dt>
-<dd><p>reviewer age group extraction method</p>
+<dd><p>Extracting age group from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hml_review (object): HTML content with Review data.</dd>
+<dt>Returns:</dt>
+<dd>Review user age group.</dd>
+</dl>
 </dd></dl>
 
 <dl class="staticmethod">
 <dt id="transform.transformer.Transformer.transform_all">
-<em class="property">static </em><code class="descname">transform_all</code><span class="sig-paren">(</span><em>html_review_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.transform_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.transform_all" title="Permalink to this definition">¶</a></dt>
-<dd><p>main transform method</p>
+<em class="property">static </em><code class="descname">transform_all</code><span class="sig-paren">(</span><em>html_review_list</em>, <em>hotel_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.transform_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.transform_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main transforming method’.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>html_review_list (str): HTML content of Reviews.
+hotel_name (str): Name of the hotel.</dd>
+<dt>Returns:</dt>
+<dd>Hotel dictionary with data.</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
+<dt id="transform.transformer.Transformer.transform_hotels">
+<em class="property">static </em><code class="descname">transform_hotels</code><span class="sig-paren">(</span><em>raw_hotels_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.transform_hotels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.transform_hotels" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracting data from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>raw_hotels_list: list of HTML content with Hotels data.</dd>
+<dt>Returns:</dt>
+<dd>Hotels list.</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
@@ -131,6 +231,7 @@
 <p class="caption"><span class="caption-text">Contents:</span></p>
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="includeredme.html">ETL project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="arch.html">Architecture</a></li>
 <li class="toctree-l1"><a class="reference internal" href="user_manual.html">User Manual</a></li>
 <li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a></li>
 </ul>

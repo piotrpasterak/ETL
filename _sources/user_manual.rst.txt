@@ -3,15 +3,16 @@ User Manual
 ============
 
 Installation
-^^^^^^^^^^^^^^^^^^^^^
+------------
     Application requires Python environment in version 3.6+. Firefox 63.0+ web browser is             also required, in case of malfunction (exceptions about lack of access to this binary), please add firefox.exe binary path to system PATH.
 
     For environment in which application can work additional python package (see appendix) are required.
 
     However, by execute dependecy_installer.py script all necessary packages shall be automatically downloaded and installed.
 
+    For database server mysql is required, with "root" named user and password "root".
 Features description
-^^^^^^^^^^^^^^^^^^^^^
+--------------------
 - How to start application:
     Application is started as Python application by following command::
 
@@ -67,3 +68,18 @@ Features description
 
     When button "Show Database" is clicked than, in dialog, after hotel choose,
     content of database for given hotel is shown. Also there is button "Clear" by which database can be cleared.
+
+Usage example
+-------------
+- Choose city.
+    .. image:: assets/example_city_enter.png
+- Choice hotel.
+    .. image:: assets/example_city_select.png
+- Extract reviews from hotel.
+    .. image:: assets/extract.png
+- Transform data.
+    .. image:: assets/transform.png
+- Load into database.
+    .. image:: assets/load.png
+- Check data.
+    .. image:: assets/example_database_content.png
