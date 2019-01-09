@@ -1,8 +1,16 @@
+"""Scrapping (or extracting) HTML module in Python.
+
+This module implements 'extract' functionality, in this particular case it is
+extracting reviews from hotels in www.booking.com page. Mainly Selenium web drive is in use.
+
+.. Introduction to web scrapping:
+   https://realpython.com/python-web-scraping-practical-introduction/
+"""
+
 from selenium import webdriver
 from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import WebDriverException, NoSuchElementException
 from webdriverdownloader import GeckoDriverDownloader
-from selenium.webdriver.support.ui import Select
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
@@ -11,10 +19,11 @@ import os
 
 
 def get_driver_path():
-    """
-    get_driver_path - this function reconstruct correct path to Firefox driver.
-    Because GeckoDriverDownloader has been used for driver download,
-    then GeckoDriverDownloader is also use for determine path to driver
+    """Reconstructs correct path to Firefox driver.
+
+    Note:
+        Because GeckoDriverDownloader has been used for driver download,
+        then GeckoDriverDownloader is also use for determine path to driver
     """
 
     firefox_downloader = GeckoDriverDownloader()
@@ -23,8 +32,7 @@ def get_driver_path():
 
 
 def force_english_version(driver):
-    """
-    force_english_version - Makes site source coherently in english.
+    """Makes site source coherently in english.
     """
 
     try:
@@ -36,21 +44,9 @@ def force_english_version(driver):
 
     driver.get(eng_site)
 
-    try:
-        select = Select(driver.find_element_by_id('language'))
-        select.select_by_value('all')
-
-        input_button = driver.find_elements_by_css_selector("input[type='submit'][value='Submit']")
-        input_button[0].click()
-
-    except NoSuchElementException as e:
-        print(e)
-        return
-
 
 def get_driver():
-    """
-    get_driver - This function return web Firefox driver created in headless mode (no visible browser)
+    """Returns web Firefox driver created in headless mode (no visible browser).
     """
     options = Options()
     options.headless = True
@@ -63,27 +59,45 @@ def get_driver():
 
 
 def collect_reviews(driver, review_list):
+    """Attach all reviews present on one page(also archived).
+
+    Args:
+        driver: The web driver which gives ability to search in web content.
+        review_list: List of partial search results, function extends this list with new results.
     """
-    collect_reviews - this function search and returns all reviews on one page(also archive)
-    """
+
     content = BeautifulSoup(driver.page_source, 'lxml')
     review_list.extend(content.findAll("li", {"class": "review_item clearfix "}))
     review_list.extend(content.findAll("li", {"class": "review_item clearfix archive_item "}))
 
 
 def collect_hotels(driver, hotel_list):
+    """Colect all hotels from given HTML page.
+
+    Args:
+        driver: the web driver which gives ability to search in web content.
+        hotel_list: list of partial search results, function extends this list with new results.
+    """
 
     content = BeautifulSoup(driver.page_source, 'lxml')
     hotel_list.extend(content.findAll("a", {"class": "hotel_name_link url"}))
 
 
 def get_hotels_from_city(city):
+    """Colect all hotels from given city name.
+
+    Args:
+        city (str): the web driver which gives ability to search in web content.
+
+    Returns:
+        Only 10 hotels' list are returned. Content of this list is hotels data in HTML format.
+    """
 
     driver = get_driver()
 
     driver.get("http://www.booking.com")
 
-    #force_english_version(driver)
+    force_english_version(driver)
 
     try:
         city_search = driver.find_element_by_id('ss')
@@ -101,9 +115,14 @@ def get_hotels_from_city(city):
 
 
 def scrap(url):
-    """
-    scrap - main scrapping function, in general this function collects and returns all reviews from all pages.
+    """Main scrapping function, in general this function collects and returns all reviews from all pages.
     For navigation between pages "review_next_page_link" button is used.
+
+    Args:
+        url (str): the url address to hotel page.
+
+    Returns:
+        List of reviews in HTML format.
     """
     driver = get_driver()
 

@@ -1,14 +1,14 @@
 #: kivy 1.0
-#: import RView etl.RV
+#: import CityListView etl.CityListView
 #: import SelectableLabel etl.SelectableLabel
 
 Popup:
-    on_open: view.updatedata()
+    on_open: view.update_data()
     title: "Wait for data..." if len(view.data) is 0 else "Please select hotel"
     auto_dismiss: False
     BoxLayout:
         orientation: "vertical"
-        RV:
+        CityListView:
             id: view
             viewclass: 'SelectableLabel'
             SelectableRecycleBoxLayout:

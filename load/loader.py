@@ -1,15 +1,36 @@
+"""Load data to database module.
+
+This module implements 'load' to database functionality, in this particular case it update content of etl database.
+Mainly Pony ORM web drive is in use.
+
+.. Pony ORM site:
+   https://ponyorm.com/
+"""
+
 from load.hotel import Hotel
 from load.review import Review
 from load import *
 
 
 def init_connection():
+    """Initialize default connection to database, and create tables if necessary.
+
+    """
+
     db.bind(provider='mysql', host='localhost', user='root', passwd='root', db='etl', charset='utf8mb4')
     db.generate_mapping(create_tables=True)
 
 
 @db_session
 def get_data_for_hotel(hotel_name):
+    """If all reviews from hotel are necessary.
+
+    Args:
+        hotel_name (str): The name of the Hotel.
+
+    Returns:
+        list of serialized data from Reviews of None if no data or no such Hotel.
+    """
     loc_hotel = Hotel.get(name=hotel_name)
     if loc_hotel is None:
         return None
@@ -19,6 +40,11 @@ def get_data_for_hotel(hotel_name):
 
 @db_session
 def clear_data_for_hotel(hotel_name):
+    """Deletes all reviews linked to Hotel.
+
+    Args:
+        hotel_name (str): The name of the Hotel.
+    """
     loc_hotel = Hotel.get(name=hotel_name)
     if loc_hotel:
         delete(rev for rev in Review if rev.hotel.id == loc_hotel.id)
@@ -26,12 +52,22 @@ def clear_data_for_hotel(hotel_name):
 
 @db_session
 def get_all_hotels():
+    """Gives all hotels from database.
+
+    Returns:
+        List of all Hotels (objects).
+    """
     hotels = select(hotel for hotel in Hotel)
     return hotels.fetch()
 
 
 @db_session
 def update_hotel_with_data(hotel_data):
+    """Just clean all data if so, and create new Review entities in database.
+
+    Args:
+        hotel_data: The dictionary with all hotel data (also connected Reviews).
+    """
     loc_hotel = Hotel.get(name=hotel_data["name"])
 
     if loc_hotel is None:

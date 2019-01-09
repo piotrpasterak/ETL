@@ -10,7 +10,7 @@ The process is combined from tree basic steps:
     - transform, data are change into form expected by the destination, usually next "load" step
     - load, the transformed data are loaded into the destination system, typically database.
 
-This application represent whole process ETL.
+This application represents whole process ETL.
 
 Application has been crated in Python 3.7.
 Database used in project is mysql.
@@ -18,3 +18,5 @@ All used package are listed in appendix.
 
 Application can be installed on each computer with Python 3.7 support,
 and has been tested on Windows operation system.
+
+Kivy has been chosen as Ux framework, also Kivy language (.kv) is in use.

@@ -1,3 +1,7 @@
+"""Installer.
+
+This module support automatic installation all necessary dependency.
+"""
 import subprocess
 # TODO: Unfortunately you will need to manually add path to firefox.exe into system PATH
 

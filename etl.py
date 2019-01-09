@@ -1,3 +1,10 @@
+"""Application and Ux module.
+
+This module implements application graphics and logic. Kivy has been chosen as graphic framework.
+
+.. Kivy site:
+   https://kivy.org/#home
+"""
 from kivy.app import App
 from kivy.uix.floatlayout import FloatLayout
 from kivy.lang import Builder
@@ -23,11 +30,20 @@ from kivy.uix.dropdown import DropDown
 
 
 class HotelButton(Button):
+    """Represent Hotel Button graphical element.
+
+    """
     pass
 
 
 class HotelsDropDown(DropDown):
+    """Represent Hotel DropDown (aka combobox) graphical element.
+
+    """
     def create_hotels_list(self):
+        """Creation Hotel list for DropDown.
+
+        """
         hotels = load.loader.get_all_hotels()
 
         for hotel in hotels:
@@ -35,55 +51,72 @@ class HotelsDropDown(DropDown):
             self.add_widget(btn)
             btn.bind(on_release=lambda bt: self.select(bt.text))
 
+
 class ScrollLabel(ScrollView):
+    """Represent Scrolling Label graphical element
+
+    """
     text = StringProperty('')
 
 
 class SelectableButton(RecycleDataViewBehavior, ScrollLabel):
-    ''' Add selection support to the Button '''
+    """Adding selection support to the Button.
+
+    """
     index = None
     selected = BooleanProperty(False)
     selectable = BooleanProperty(True)
 
     def refresh_view_attrs(self, rv, index, data):
-        ''' Catch and handle the view changes '''
+        """Catch and handle the view changes.
+
+        """
         self.index = index
         return super(SelectableButton, self).refresh_view_attrs(rv, index, data)
 
     def on_touch_down(self, touch):
-        ''' Add selection on touch down '''
+        """Add selection on touch down .
+
+        """
         if super(SelectableButton, self).on_touch_down(touch):
             return True
         if self.collide_point(*touch.pos) and self.selectable:
             return self.parent.select_with_touch(self.index, touch)
 
     def apply_selection(self, rv, index, is_selected):
-        ''' Respond to the selection of items in the view. '''
+        """Respond to the selection of items in the view.
+        """
         self.selected = is_selected
 
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
-    ''' Add selection support to the Label '''
+    """Add selection support to the Label.
+    """
     index = None
     selected = BooleanProperty(False)
     selectable = BooleanProperty(True)
     selected_hotel= ""
 
     def refresh_view_attrs(self, rv, index, data):
-        ''' Catch and handle the view changes '''
+        """Catch and handle the view changes.
+        """
         self.index = index
         return super(SelectableLabel, self).refresh_view_attrs(
             rv, index, data)
 
     def on_touch_down(self, touch):
-        ''' Add selection on touch down '''
+        """ Add selection on touch down.
+
+        """
         if super(SelectableLabel, self).on_touch_down(touch):
             return True
         if self.collide_point(*touch.pos) and self.selectable:
             return self.parent.select_node(self.index)
 
     def apply_selection(self, rv, index, is_selected):
-        ''' Respond to the selection of items in the view. '''
+        """Respond to the selection of items in the view..
+
+        """
         self.selected = is_selected
         if is_selected:
             SelectableLabel.selected_hotel = rv.data[index]['text']
@@ -91,22 +124,37 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                  RecycleBoxLayout):
-    ''' Adds selection and focus behaviour to the view. '''
+    """ Adds selection and focus behaviour to the view.
+
+    """
 
 
 class SelectableRecycleGridLayout(FocusBehavior, LayoutSelectionBehavior,
                                   RecycleGridLayout):
-    ''' Adds selection and focus behaviour to the view. '''
+    """ Adds selection and focus behaviour to the view.
+
+    """
 
 
 class TableView(RecycleView):
+    """Table selectable View.
+
+    """
     data_items = ListProperty([])
+    hotel_name = ''
 
     def __init__(self, **kwargs):
         super(TableView, self).__init__(**kwargs)
 
     def get_reviews(self, name):
+        """Extracting review for given Hotel name and update attribute.
+
+        Args:
+            name (str): The Hotel name.
+        """
         data = load.loader.get_data_for_hotel(name)
+
+        self.hotel_name = name
 
         self.data_items = []
 
@@ -116,33 +164,57 @@ class TableView(RecycleView):
                     self.data_items.append(col)
 
     def get_row_number(self):
+        """Extracting number or rows of data.
+
+        Returns:
+            Rows number.
+
+        """
         return int(len(self.data_items)/9)
 
     def delete_all_reviews(self):
-        load.loader.clear_data_for_hotel("Armon Residence")
+        """deleting all reviews from given hotel.
+
+        """
+        load.loader.clear_data_for_hotel(self.hotel_name)
         self.data_items = []
 
 
-class RV(RecycleView):
+class CityListView(RecycleView):
+    """City List selectable View.
+
+    """
     city = ""
 
     def __init__(self, **kwargs):
-        super(RV, self).__init__(**kwargs)
+        super(CityListView, self).__init__(**kwargs)
 
-    def updatedata(self):
-        RV.hotels_data = Transformer.transfom_hotels((scrapper.get_hotels_from_city(RV.city)))
+    def update_data(self):
+        """Update City list from database.
+
+        """
+        CityListView.hotels_data = Transformer.transform_hotels((scrapper.get_hotels_from_city(CityListView.city)))
         self.data = [{'text': name} for name
-                     in RV.hotels_data.keys()]
+                     in CityListView.hotels_data.keys()]
 
 
 class ETLApp(App):
+    """Main application.
+
+    """
     title = "ETL Project"
     extract_list = []
-    transfrom_result={}
+    transform_result = {}
     close_button = False
     text_city = None
 
     def build(self):
+        """Build all graphical elements.
+
+        Returns:
+            Build layout.
+
+        """
         self.text_city = TextInput(text='Please enter city', multiline=False, size_hint = (.6,.1), pos_hint ={'x': .1, 'y': .8})
         button_city_input = Button(text="Enter", size_hint=(.2, .1), pos_hint={'x': .7, 'y': .8})
 
@@ -177,6 +249,12 @@ class ETLApp(App):
         return layout
 
     def on_complete(self, _):
+        """Handler for "Whole Process" button.
+
+        Args:
+            _: Ignored argument, Button (Button is not needed).
+
+        """
         self.show_popup('Starting Extract & Transform & Load ...', 'Info')
         threxecute = threading.Thread(target=self.extract_thread)
         thrtransform = threading.Thread(target=self.transform_thread)
@@ -191,17 +269,38 @@ class ETLApp(App):
         Clock.schedule_interval(partial(self.check_job, thrload), 1)
 
     def on_extract(self, _):
+        """Handler for "Extract" button.
+
+        Args:
+            _: Ignored argument, Button (Button is not needed).
+
+        """
         self.show_popup('Starting Extract ...', 'Info')
         thr = threading.Thread(target=self.extract_thread)
         thr.start()
         Clock.schedule_interval(partial(self.check_job, thr), 1)
 
     def check_job(self, a_thread, _):
+        """Checker if log term processing is finished now.
+
+        Args:
+            a_thread (object): The target thread for monitoring.
+
+        Returns:
+            False if thread fished.
+
+        """
         if not a_thread.isAlive():
             self.close_button.disabled = False
             return False
 
     def on_transform(self, _):
+        """Handler for "Transform" button.
+
+        Args:
+            _: Ignored argument, Button (Button is not needed).
+
+        """
         if not self.extract_list:
             self.show_popup('Empty result from Extract, please extract first!', 'Error')
             self.close_button.disabled = False
@@ -212,28 +311,51 @@ class ETLApp(App):
             Clock.schedule_interval(partial(self.check_job, thr), 1)
 
     def on_load(self, _):
-        if not self.transfrom_result:
+        """Handler for "Load" button.
+
+        Args:
+            _: Ignored argument, Button (Button is not needed).
+
+        """
+        if not self.transform_result:
             self.show_popup('Empty result from Transform, please transform first!', 'Error')
             self.close_button.disabled = False
         else:
-            self.show_popup('Starting Load ...', 'Info')
+            self.show_popup('Load ongoing...', 'Info')
             thr = threading.Thread(target=self.load_thread)
             thr.start()
             Clock.schedule_interval(partial(self.check_job, thr), 1)
 
     def extract_thread(self):
+        """worker "extract" thread function.
+
+        """
         "TODO: check if hotel seletecd"
         hotel_name = SelectableLabel.selected_hotel
-        hlink = RV.hotels_data[hotel_name]
+        hlink = CityListView.hotels_data[hotel_name]
         self.extract_list = scrapper.scrap("http://www.booking.com/" + hlink)
 
     def transform_thread(self):
-        self.transfrom_result = Transformer.transform_all(self.extract_list, SelectableLabel.selected_hotel)
+        """worker "transform" thread function.
+
+        """
+        self.transform_result = Transformer.transform_all(self.extract_list, SelectableLabel.selected_hotel)
 
     def load_thread(self):
-        load.loader.update_hotel_with_data(self.transfrom_result)
+        """worker "load" thread function.
+
+        """
+        load.loader.update_hotel_with_data(self.transform_result)
+        self.clear_temporary_data()
 
     def show_popup(self, process_info, label_info):
+        """Extracting review positive opinion from raw HTML.
+
+        Args:
+            process_info (str): info displayed inside popup.
+            label_info (str): popup header.
+
+        """
         layout = FloatLayout()
 
         popup_label = Label(text= process_info)
@@ -253,15 +375,55 @@ class ETLApp(App):
         self.close_button.disabled = True
         self.close_button.bind(on_press=popup.dismiss)
 
+    def is_default_city_name(self):
+        """Checks if city name is not default.
+
+        Returns:
+            True if city name is default, false if not.
+
+        """
+        if len(self.text_city.text) == 0 or self.text_city.text == "Please enter city":
+            return True
+        return False
+
     def on_city_find(self, _):
-        RV.city = self.text_city.text
+        """City find handler.
+
+        Args:
+            _: Ignored argument, Button (Button is not needed).
+
+        """
+        CityListView.city = self.text_city.text
+
+        if self.is_default_city_name():
+            self.show_popup("Please enter correct city name!", "Info")
+            self.close_button.disabled = False
+            return
+
         if self.citypopup:
             self.citypopup.open()
 
     def on_show_database(self, _):
+        """Start show database popup handler.
+
+        Args:
+            _: Ignored argument, Button (Button is not needed).
+
+        """
         if self.tablepopup:
             self.tablepopup.open()
 
+    def clear_temporary_data(self):
+        """Clear all data temporary stored in this class.
+
+        """
+        self.extract_list = []
+        self.transform_result = {}
+        self.text_city = None
+
 
 if __name__ == '__main__':
+    """Main application loop.
+
+    """
     ETLApp().run()

@@ -4,6 +4,9 @@ from load.hotel import Hotel
 
 
 class Review(db.Entity):
+    """Represent Review entity from database.
+
+    """
     _table_ = 'reviews'
     id = PrimaryKey(int, auto=True)
     hotel = Required(Hotel)

@@ -1,3 +1,5 @@
+"""Tiny module for supporting installation process. Mainly uses Gecko driver downloader.
+"""
 from webdriverdownloader import GeckoDriverDownloader
 
 
