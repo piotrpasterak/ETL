@@ -69,9 +69,11 @@ def update_hotel_with_data(hotel_data):
         hotel_data: The dictionary with all hotel data (also connected Reviews).
     """
     loc_hotel = Hotel.get(name=hotel_data["name"])
+    obj_count = 0
 
     if loc_hotel is None:
         loc_hotel = Hotel(name=hotel_data["name"], address=hotel_data["address"])
+        obj_count += 1
     else:
         clear_data_for_hotel(loc_hotel.name)
 
@@ -87,7 +89,8 @@ def update_hotel_with_data(hotel_data):
                # TODO review_item_info_tags,
                pos_review=review_data['pos_review'],
                neg_review=review_data['neg_review'])
-
+        obj_count += 1
+    return obj_count
 
 
 

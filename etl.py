@@ -142,6 +142,7 @@ class TableView(RecycleView):
     """
     data_items = ListProperty([])
     hotel_name = ''
+    row_number = StringProperty()
 
     def __init__(self, **kwargs):
         super(TableView, self).__init__(**kwargs)
@@ -162,6 +163,7 @@ class TableView(RecycleView):
             for row in data:
                 for col in row:
                     self.data_items.append(col)
+        self.row_number = str(self.get_row_number())
 
     def get_row_number(self):
         """Extracting number or rows of data.
@@ -178,6 +180,8 @@ class TableView(RecycleView):
         """
         load.loader.clear_data_for_hotel(self.hotel_name)
         self.data_items = []
+
+        self.row_number = str(self.get_row_number())
 
 
 class CityListView(RecycleView):
@@ -207,6 +211,8 @@ class ETLApp(App):
     transform_result = {}
     close_button = False
     text_city = None
+    count_funct = classmethod
+    load_count = 0
 
     def build(self):
         """Build all graphical elements.
@@ -255,6 +261,7 @@ class ETLApp(App):
             _: Ignored argument, Button (Button is not needed).
 
         """
+        self.count_funct = lambda: self.load_count
         self.show_popup('Starting Extract & Transform & Load ...', 'Info')
         threxecute = threading.Thread(target=self.extract_thread)
         thrtransform = threading.Thread(target=self.transform_thread)
@@ -275,7 +282,8 @@ class ETLApp(App):
             _: Ignored argument, Button (Button is not needed).
 
         """
-        self.show_popup('Starting Extract ...', 'Info')
+        self.count_funct = lambda: len(self.extract_list)
+        self.show_popup('Extracting ongoing ...', 'Info')
         thr = threading.Thread(target=self.extract_thread)
         thr.start()
         Clock.schedule_interval(partial(self.check_job, thr), 1)
@@ -292,6 +300,7 @@ class ETLApp(App):
         """
         if not a_thread.isAlive():
             self.close_button.disabled = False
+            self.popup_label.text = "Process finished. Processed records:" + str(self.count_funct())
             return False
 
     def on_transform(self, _):
@@ -305,7 +314,8 @@ class ETLApp(App):
             self.show_popup('Empty result from Extract, please extract first!', 'Error')
             self.close_button.disabled = False
         else:
-            self.show_popup('Starting Transform ...', 'Info')
+            self.count_funct = lambda: len(self.transform_result['review']) if len(self.transform_result) > 0 else 0
+            self.show_popup('Transforming ongoing ...', 'Info')
             thr = threading.Thread(target=self.transform_thread)
             thr.start()
             Clock.schedule_interval(partial(self.check_job, thr), 1)
@@ -321,7 +331,8 @@ class ETLApp(App):
             self.show_popup('Empty result from Transform, please transform first!', 'Error')
             self.close_button.disabled = False
         else:
-            self.show_popup('Load ongoing...', 'Info')
+            self.count_funct = lambda: self.load_count
+            self.show_popup('Loading ongoing...', 'Info')
             thr = threading.Thread(target=self.load_thread)
             thr.start()
             Clock.schedule_interval(partial(self.check_job, thr), 1)
@@ -345,7 +356,7 @@ class ETLApp(App):
         """worker "load" thread function.
 
         """
-        load.loader.update_hotel_with_data(self.transform_result)
+        self.load_count = load.loader.update_hotel_with_data(self.transform_result)
         self.clear_temporary_data()
 
     def show_popup(self, process_info, label_info):
@@ -358,10 +369,10 @@ class ETLApp(App):
         """
         layout = FloatLayout()
 
-        popup_label = Label(text= process_info)
+        self.popup_label = Label(text= process_info)
         self.close_button = Button(text="OK", size_hint=(.2,.1), pos_hint={'x': .4, 'y': .1})
 
-        layout.add_widget(popup_label)
+        layout.add_widget(self.popup_label)
 
         layout.add_widget(self.close_button)
 

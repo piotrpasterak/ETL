@@ -40,7 +40,8 @@ Popup:
 
 
         Label:
-            text: 'Number of reviews:' + str(tableview.get_row_number())
+            id: nolabel
+            text: 'Number of reviews:' + tableview.row_number
             size_hint: (.2,.1)
 
         TableView:
