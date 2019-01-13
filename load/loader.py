@@ -21,8 +21,19 @@ def init_connection():
     db.generate_mapping(create_tables=True)
 
 
+def generate_raw_filer(filter_dic):
+    if len(filter_dic) == 0:
+        return ""
+
+    result_sql = ""
+    for key, value in filter_dic.items():
+        if value and len(value) != 0:
+            result_sql += " AND " + key + ' LIKE ' + "\'" + value + "\'"
+    return result_sql
+
+
 @db_session
-def get_data_for_hotel(hotel_name):
+def get_data_for_hotel(hotel_name, filter):
     """If all reviews from hotel are necessary.
 
     Args:
@@ -35,7 +46,14 @@ def get_data_for_hotel(hotel_name):
     if loc_hotel is None:
         return None
     else:
-        return [rev.serialize_data() for rev in loc_hotel.reviews]
+        raw_sql_filter = generate_raw_filer(filter)
+        if len(raw_sql_filter) == 0:
+            return [rev.serialize_data() for rev in loc_hotel.reviews]
+        else:
+            sqlquery = "SELECT * FROM reviews WHERE reviews.hotel = " + str(loc_hotel.id)
+            sqlquery += raw_sql_filter
+            revlist = Review .select_by_sql(sqlquery)
+            return [rev.serialize_data() for rev in revlist]
 
 
 @db_session
@@ -86,7 +104,7 @@ def update_hotel_with_data(hotel_data):
                user_age_group=review_data['user_age_group'],
                review_count=review_data['review_count'],
                score=review_data['score'],
-               # TODO review_item_info_tags,
+               info_tags=review_data['info_tags'],
                pos_review=review_data['pos_review'],
                neg_review=review_data['neg_review'])
         obj_count += 1

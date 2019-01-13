@@ -35,7 +35,7 @@ class Transformer:
                                     "user_age_group": Transformer.extract_user_age_group(html_review),
                                     "review_count": Transformer.extract_review_count(html_review),
                                     "score": Transformer.extract_score(html_review),
-                                    #TODO review_item_info_tags,
+                                    "info_tags":  Transformer.extract_info_tags(html_review),
                                     "pos_review": Transformer.extract_pos_review_body(html_review),
                                     "neg_review": Transformer.extract_neg_review_body(html_review)})
 
@@ -173,6 +173,26 @@ class Transformer:
         """
         score = hml_review.find("span", {"class": "review-score-badge"}).get_text(strip=True)
         return float(score)
+
+    @staticmethod
+    def extract_info_tags(hml_review):
+        """Extracting info tags from raw HTML.
+
+        Args:
+            hml_review (object): HTML content with Review data.
+
+        Returns:
+            Review item info tags.
+
+        """
+
+        info_tags_data = hml_review.findAll("li", {"class": "review_info_tag "})
+
+        info_tags_list = [tag.get_text(strip=True) for tag in info_tags_data]
+
+        info_tags = "".join(info_tags_list)
+
+        return info_tags
         
     @staticmethod
     def extract_header(hml_review):

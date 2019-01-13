@@ -14,6 +14,7 @@ class Review(db.Entity):
     name = Required(str)
     header = Required(str)
     country = Required(str)
+    info_tags = Optional(str)
     score = Required(float)
     user_age_group = Optional(str)
     review_count = Required(int)
@@ -28,5 +29,6 @@ class Review(db.Entity):
                 self.user_age_group,
                 self.review_count,
                 self.score,
+                self.info_tags,
                 self.pos_review,
                 self.neg_review]

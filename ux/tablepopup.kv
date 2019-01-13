@@ -36,53 +36,139 @@ Popup:
 
         HotelsDropDown:
             id: dropdown
-            on_select:tableview.get_reviews(args[1])
-
+            on_select:tableview.get_data()
+            on_select:tableview.set_hotel_name(args[1])
 
         Label:
             id: nolabel
             text: 'Number of reviews:' + tableview.row_number
             size_hint: (.2,.1)
-
-        TableView:
-            id: tableview
-            BoxLayout:
-                orientation: "vertical"
-                GridLayout:
-                    size_hint: 1, None
-                    size_hint_y: None
-                    height: 25
-                    cols: 9
-
-                    Label:
-                        text: "Name"
-                    Label:
-                        text: "Date"
-                    Label:
-                        text: "Header"
-                    Label:
-                        text: "Country"
-                    Label:
-                        text: "User age group"
-                    Label:
-                        text: "Review count"
-                    Label:
-                        text: "Score"
-                    Label:
-                        text: "Positive review"
-                    Label:
-                        text: "Negative review"
-                BoxLayout:
-                    RecycleView:
-                        viewclass: 'SelectableButton'
-                        data: [{'text': str(x)} for x in tableview.data_items]
-                        SelectableRecycleGridLayout:
-                            cols: 9
-                            default_size: None, dp(50)
-                            default_size_hint: 1, None
+        TabbedPanel:
+            do_default_tab: False
+            TabbedPanelItem:
+                text: 'Data'
+                TableView:
+                    id: tableview
+                    BoxLayout:
+                        orientation: "vertical"
+                        GridLayout:
+                            size_hint: 1, None
                             size_hint_y: None
-                            height: self.minimum_height
-                            orientation: 'vertical'
+                            height: 25
+                            cols: 10
+
+                            Label:
+                                text: "Name"
+                            Label:
+                                text: "Date"
+                            Label:
+                                text: "Header"
+                            Label:
+                                text: "Country"
+                            Label:
+                                text: "User age group"
+                            Label:
+                                text: "Review count"
+                            Label:
+                                text: "Score"
+                            Label:
+                                text: "Info Tags"
+                            Label:
+                                text: "Positive review"
+                            Label:
+                                text: "Negative review"
+                        BoxLayout:
+                            RecycleView:
+                                viewclass: 'SelectableButton'
+                                data: [{'text': str(x)} for x in tableview.data_items]
+                                SelectableRecycleGridLayout:
+                                    cols: 10
+                                    default_size: None, dp(50)
+                                    default_size_hint: 1, None
+                                    size_hint_y: None
+                                    height: self.minimum_height
+                                    orientation: 'vertical'
+            TabbedPanelItem:
+                text: "Filter"
+                BoxLayout:
+                    orientation: 'vertical'
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        Label:
+                            text: "Name"
+                        TextInput:
+                            id: name_input
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        Label:
+                            text: "Date"
+                        TextInput:
+                            id: date_input
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        Label:
+                            text: "Header"
+                        TextInput:
+                            id: header_input
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        Label:
+                            text: "Country"
+                        TextInput:
+                            id: country_input
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        Label:
+                            text: "User age group"
+                        TextInput:
+                            id: age_input
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        Label:
+                            text: "Review count"
+                        TextInput:
+                            id: count_input
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        Label:
+                            text: "Score"
+                        TextInput:
+                            id: score_input
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        Label:
+                            text: "Info Tags"
+                        TextInput:
+                            id: tags_input
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        Label:
+                            text: "Positive review"
+                        TextInput:
+                            id: preview_input
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        Label:
+                            text: "Negative review"
+                        TextInput:
+                            id: nreview_input
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        Button:
+                            text: 'Apply'
+                            on_release: tableview.get_data()
+                            on_release: tableview.filter['name'] = name_input.text
+                            on_release: tableview.filter['date'] = date_input.text
+                            on_release: tableview.filter['header'] = header_input.text
+                            on_release: tableview.filter['country'] = country_input.text
+                            on_release: tableview.filter['info_tags'] = tags_input.text
+                            on_release: tableview.filter['score'] = score_input.text
+                            on_release: tableview.filter['user_age_group'] = age_input.text
+                            on_release: tableview.filter['review_count'] = count_input.text
+                            on_release: tableview.filter['neg_review'] = nreview_input.text
+                            on_release: tableview.filter['pos_review'] = preview_input.text
+
+                            on_release: tableview.filter['name'] = name_input.text
 <ScrollView>:
     scroll_type: ['bars']
     bar_width: 10

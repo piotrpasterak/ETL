@@ -24,7 +24,7 @@ from kivy.uix.recycleboxlayout import RecycleBoxLayout
 from kivy.uix.recyclegridlayout import RecycleGridLayout
 from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
-from kivy.properties import BooleanProperty, ListProperty, StringProperty
+from kivy.properties import BooleanProperty, ListProperty, StringProperty,DictProperty
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.dropdown import DropDown
 
@@ -144,18 +144,21 @@ class TableView(RecycleView):
     hotel_name = ''
     row_number = StringProperty()
 
+    filter = DictProperty({})
+
     def __init__(self, **kwargs):
         super(TableView, self).__init__(**kwargs)
 
-    def get_reviews(self, name):
+    def set_hotel_name(self, name):
+        self.hotel_name = name
+
+    def get_data(self):
         """Extracting review for given Hotel name and update attribute.
 
         Args:
             name (str): The Hotel name.
         """
-        data = load.loader.get_data_for_hotel(name)
-
-        self.hotel_name = name
+        data = load.loader.get_data_for_hotel(self.hotel_name, self.filter)
 
         self.data_items = []
 
@@ -172,7 +175,7 @@ class TableView(RecycleView):
             Rows number.
 
         """
-        return int(len(self.data_items)/9)
+        return int(len(self.data_items)/10)
 
     def delete_all_reviews(self):
         """deleting all reviews from given hotel.
