@@ -168,6 +168,13 @@ class TableView(RecycleView):
                     self.data_items.append(col)
         self.row_number = str(self.get_row_number())
 
+    def csv_export(self):
+        if self.hotel_name:
+            load.loader.export_to_csv(self.hotel_name)
+
+    def csv_export_by_id(self, id):
+        load.loader.export_to_csv_by_id(id)
+
     def get_row_number(self):
         """Extracting number or rows of data.
 
@@ -175,7 +182,7 @@ class TableView(RecycleView):
             Rows number.
 
         """
-        return int(len(self.data_items)/10)
+        return int(len(self.data_items)/11)
 
     def delete_all_reviews(self):
         """deleting all reviews from given hotel.
@@ -434,7 +441,6 @@ class ETLApp(App):
         self.extract_list = []
         self.transform_result = {}
         self.text_city = None
-
 
 if __name__ == '__main__':
     """Main application loop.

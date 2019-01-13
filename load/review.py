@@ -22,7 +22,8 @@ class Review(db.Entity):
     pos_review = Optional(LongUnicode, nullable=True)
 
     def serialize_data(self):
-        return [self.name,
+        return [self.id,
+                self.name,
                 self.date.strftime('%d.%m.%Y'),
                 self.header,
                 self.country,

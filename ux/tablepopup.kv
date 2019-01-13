@@ -6,27 +6,11 @@ Popup:
     auto_dismiss: False
     on_open: dropdown.create_hotels_list()
     BoxLayout:
-
         orientation: "vertical"
-        height:40
-
         # trick to not lost the Dropdown instance
         # Dropdown itself is not really made to be used in kv.
         __safe_id: [dropdown.__self__]
 
-        Button:
-            text: "Delete All"
-            orientation: 'vertical'
-            size_hint: (.2,.1)
-            pos_hint: {'x': .4}
-            on_release: tableview.delete_all_reviews()
-
-        Button:
-            text: "Close"
-            orientation: 'vertical'
-            size_hint: (.2,.1)
-            pos_hint: {'x': .4}
-            on_release: root.dismiss()
         Button:
             id: btn
             text: 'Hotels list'
@@ -38,6 +22,37 @@ Popup:
             id: dropdown
             on_select:tableview.get_data()
             on_select:tableview.set_hotel_name(args[1])
+
+        Button:
+            text: "Delete All"
+            #orientation: 'vertical'
+            size_hint: (.2,.1)
+            pos_hint: {'x': .4}
+            on_release: tableview.delete_all_reviews()
+
+        Button:
+            text: "Close"
+            #orientation: 'vertical'
+            size_hint: (.2,.1)
+            pos_hint: {'x': .4}
+            on_release: root.dismiss()
+        Button:
+            text: "Export to CSV"
+            #orientation: 'vertical'
+            size_hint: (.2,.1)
+            pos_hint: {'x': .4}
+            on_release: tableview.csv_export()
+        BoxLayout:
+            size_hint: (.4,.1)
+            pos_hint: {'x': .4}
+            orientation: "horizontal"
+            Button:
+                text: "Export to CSV by ID"
+                on_release: tableview.csv_export_by_id(id_input.text)
+            TextInput:
+                id: id_input
+                multiline: False
+                input_filter: 'int'
 
         Label:
             id: nolabel
@@ -55,7 +70,10 @@ Popup:
                             size_hint: 1, None
                             size_hint_y: None
                             height: 25
-                            cols: 10
+                            cols: 11
+
+                            Label:
+                                text: "ID"
 
                             Label:
                                 text: "Name"
@@ -82,7 +100,7 @@ Popup:
                                 viewclass: 'SelectableButton'
                                 data: [{'text': str(x)} for x in tableview.data_items]
                                 SelectableRecycleGridLayout:
-                                    cols: 10
+                                    cols: 11
                                     default_size: None, dp(50)
                                     default_size_hint: 1, None
                                     size_hint_y: None

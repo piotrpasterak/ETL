@@ -10,7 +10,34 @@ Mainly Pony ORM web drive is in use.
 from load.hotel import Hotel
 from load.review import Review
 from load import *
+import csv
 
+
+@db_session
+def export_to_csv(hotel_name):
+    loc_hotel = Hotel.get(name=hotel_name)
+    fields = ['id', 'hotel', 'date', 'name', 'header', 'country', 'info_tags', 'score', 'user_age_group', 'review_count', 'neg_review', 'pos_review']
+
+    csv_file = open(hotel_name + '.csv', 'w',  encoding='utf-8')
+    if loc_hotel:
+        writer = csv.DictWriter(csv_file, fields)
+        writer.writeheader()
+        for rev in loc_hotel.reviews:
+            writer.writerow(rev.to_dict(fields))
+    csv_file.close()
+
+@db_session
+def export_to_csv_by_id(id):
+
+    loc_review = Review.get(id=id)
+    fields = ['id', 'hotel', 'date', 'name', 'header', 'country', 'info_tags', 'score', 'user_age_group', 'review_count', 'neg_review', 'pos_review']
+
+    csv_file = open("Review" + str(id) + '.csv', 'w',  encoding='utf-8')
+    if loc_review:
+        writer = csv.DictWriter(csv_file, fields)
+        writer.writeheader()
+        writer.writerow(loc_review.to_dict(fields))
+    csv_file.close()
 
 def init_connection():
     """Initialize default connection to database, and create tables if necessary.
