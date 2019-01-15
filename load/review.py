@@ -13,7 +13,7 @@ class Review(db.Entity):
     date = Required(datetime)
     name = Required(str)
     header = Required(str)
-    country = Required(str)
+    country = Optional(str)
     info_tags = Optional(str)
     score = Required(float)
     user_age_group = Optional(str)

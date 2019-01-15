@@ -13,7 +13,7 @@ class Transformer:
         pass
 
     @staticmethod
-    def transform_all(html_review_list, hotel_name):
+    def transform_all(html_review_list, hotel_name, hotel_address):
         """Main transforming method'.
 
         Args:
@@ -25,7 +25,7 @@ class Transformer:
 
         """
 
-        hotel = {"name": hotel_name, "address": "Fake Address", 'review': []}
+        hotel = {"name": hotel_name, "address": hotel_address, 'review': []}
 
         for html_review in html_review_list:
             hotel["review"].append({"name": Transformer.extract_name(html_review),

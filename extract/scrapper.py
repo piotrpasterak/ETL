@@ -8,12 +8,10 @@ extracting reviews from hotels in www.booking.com page. Mainly Selenium web driv
 """
 
 from selenium import webdriver
+import re
 from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import WebDriverException, NoSuchElementException
 from webdriverdownloader import GeckoDriverDownloader
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support import expected_conditions as EC
 from bs4 import BeautifulSoup
 import os
 
@@ -50,9 +48,14 @@ def get_driver():
     """
     options = Options()
     options.headless = True
+    profile = webdriver.FirefoxProfile()
+    # 1 - Allow all images
+    # 2 - Block all images
+    # 3 - Block 3rd party images
+    profile.set_preference("permissions.default.image", 2)
 
     try:
-        return webdriver.Firefox(executable_path=get_driver_path(), options=options)
+        return webdriver.Firefox(executable_path=get_driver_path(), options=options, firefox_profile=profile)
     except WebDriverException as e:
         print(e)
         return None
@@ -72,7 +75,7 @@ def collect_reviews(driver, review_list):
 
 
 def collect_hotels(driver, hotel_list):
-    """Colect all hotels from given HTML page.
+    """Collect all hotels from given HTML page.
 
     Args:
         driver: the web driver which gives ability to search in web content.
@@ -80,7 +83,17 @@ def collect_hotels(driver, hotel_list):
     """
 
     content = BeautifulSoup(driver.page_source, 'lxml')
-    hotel_list.extend(content.findAll("a", {"class": "hotel_name_link url"}))
+    hotel_item = content.find("a", {"class": "hotel_name_link url"})
+    if hotel_item:
+        hotel_list.append(hotel_item)
+
+    if hotel_item:
+        for i in range(9):
+            hotel_item = hotel_item.find_next("a", {"class": "hotel_name_link url"})
+            if hotel_item:
+                hotel_list.append(hotel_item)
+            else:
+                break
 
 
 def get_hotels_from_city(city):
@@ -111,7 +124,28 @@ def get_hotels_from_city(city):
     hotels_list = []
     collect_hotels(driver, hotels_list)
 
+    driver.close()
     return hotels_list[:10]
+
+
+def get_hotel_address(driver):
+
+    address = None
+    try:
+        address = driver.find_element_by_class_name("hotel_address")
+    except NoSuchElementException as e:
+        print(e)
+
+    return address.text if address is not None else ''
+
+
+def make_hotel_review_url(hotel_href):
+
+    result_stage_one = re.split("/hotel/[a-z]*/", hotel_href)
+
+    hotel_loc_part = re.search("/hotel/[a-z]*/", hotel_href)
+
+    return hotel_loc_part.group(0).replace("/hotel/", "/reviews/") + "hotel/" + result_stage_one[1];
 
 
 def scrap(url):
@@ -128,28 +162,18 @@ def scrap(url):
 
     driver.get(url)
 
-    force_english_version(driver)
-
-    warning_dialog = driver.find_element_by_class_name("close_warning")
-
-    if warning_dialog:
-        element = WebDriverWait(driver, 5).until(EC.element_to_be_clickable((By.CLASS_NAME, "close_warning")))
-        element.click()
-        WebDriverWait(driver, 20).until(EC.invisibility_of_element(element))
-
-    WebDriverWait(driver, 20).until(EC.element_to_be_clickable((By.CLASS_NAME, "show_all_reviews_btn"))).click()
-
     review_list = []
     collect_reviews(driver, review_list)
 
     while True:
         try:
-            button = driver.find_element_by_class_name("review_next_page_link")
+            driver.find_element_by_id("review_next_page_link").click()
         except NoSuchElementException:
             break
-        button.click()
         collect_reviews(driver, review_list)
+
+    hotel_address = get_hotel_address(driver)
 
     driver.quit()
 
-    return review_list
+    return review_list, hotel_address

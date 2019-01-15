@@ -26,6 +26,7 @@ def export_to_csv(hotel_name):
             writer.writerow(rev.to_dict(fields))
     csv_file.close()
 
+
 @db_session
 def export_to_csv_by_id(id):
 

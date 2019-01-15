@@ -223,6 +223,7 @@ class ETLApp(App):
     text_city = None
     count_funct = classmethod
     load_count = 0
+    hotel_address = ''
 
     def build(self):
         """Build all graphical elements.
@@ -354,13 +355,14 @@ class ETLApp(App):
         "TODO: check if hotel seletecd"
         hotel_name = SelectableLabel.selected_hotel
         hlink = CityListView.hotels_data[hotel_name]
-        self.extract_list = scrapper.scrap("http://www.booking.com/" + hlink)
+        self.extract_list, self.hotel_address = scrapper.scrap("http://www.booking.com/"
+                                                               + scrapper.make_hotel_review_url(hlink))
 
     def transform_thread(self):
         """worker "transform" thread function.
 
         """
-        self.transform_result = Transformer.transform_all(self.extract_list, SelectableLabel.selected_hotel)
+        self.transform_result = Transformer.transform_all(self.extract_list, SelectableLabel.selected_hotel, self.hotel_address)
 
     def load_thread(self):
         """worker "load" thread function.
@@ -440,7 +442,7 @@ class ETLApp(App):
         """
         self.extract_list = []
         self.transform_result = {}
-        self.text_city = None
+
 
 if __name__ == '__main__':
     """Main application loop.
