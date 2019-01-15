@@ -30,14 +30,16 @@ from kivy.uix.dropdown import DropDown
 
 
 class HotelButton(Button):
-    """Represent Hotel Button graphical element.
+    """
+    Represent Hotel Button graphical element.
 
     """
     pass
 
 
 class HotelsDropDown(DropDown):
-    """Represent Hotel DropDown (aka combobox) graphical element.
+    """
+    Represent Hotel DropDown (aka combobox) graphical element.
 
     """
     def create_hotels_list(self):
@@ -57,14 +59,16 @@ class HotelsDropDown(DropDown):
 
 
 class ScrollLabel(ScrollView):
-    """Represent Scrolling Label graphical element
+    """
+    Represents Scrolling Label graphical element
 
     """
     text = StringProperty('')
 
 
 class SelectableButton(RecycleDataViewBehavior, ScrollLabel):
-    """Adding selection support to the Button.
+    """
+    Adding selection support to the Button.
 
     """
     index = None
@@ -72,14 +76,16 @@ class SelectableButton(RecycleDataViewBehavior, ScrollLabel):
     selectable = BooleanProperty(True)
 
     def refresh_view_attrs(self, rv, index, data):
-        """Catch and handle the view changes.
+        """
+        Catch and handle the view changes.
 
         """
         self.index = index
         return super(SelectableButton, self).refresh_view_attrs(rv, index, data)
 
     def on_touch_down(self, touch):
-        """Add selection on touch down .
+        """
+        Add selection on touch down.
 
         """
         if super(SelectableButton, self).on_touch_down(touch):
@@ -88,13 +94,17 @@ class SelectableButton(RecycleDataViewBehavior, ScrollLabel):
             return self.parent.select_with_touch(self.index, touch)
 
     def apply_selection(self, rv, index, is_selected):
-        """Respond to the selection of items in the view.
+        """
+        Respond to the selection of items in the view.
+
         """
         self.selected = is_selected
 
 
 class SelectableLabel(RecycleDataViewBehavior, Label):
-    """Add selection support to the Label.
+    """
+    Add selection support to the Label.
+
     """
     index = None
     selected = BooleanProperty(False)
@@ -102,14 +112,17 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
     selected_hotel= ""
 
     def refresh_view_attrs(self, rv, index, data):
-        """Catch and handle the view changes.
+        """
+        Catch and handle the view changes.
+
         """
         self.index = index
         return super(SelectableLabel, self).refresh_view_attrs(
             rv, index, data)
 
     def on_touch_down(self, touch):
-        """ Add selection on touch down.
+        """
+        Add selection on touch down.
 
         """
         if super(SelectableLabel, self).on_touch_down(touch):
@@ -118,7 +131,8 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
             return self.parent.select_node(self.index)
 
     def apply_selection(self, rv, index, is_selected):
-        """Respond to the selection of items in the view..
+        """
+        Respond to the selection of items in the view..
 
         """
         self.selected = is_selected
@@ -128,20 +142,23 @@ class SelectableLabel(RecycleDataViewBehavior, Label):
 
 class SelectableRecycleBoxLayout(FocusBehavior, LayoutSelectionBehavior,
                                  RecycleBoxLayout):
-    """ Adds selection and focus behaviour to the view.
+    """
+    Adds selection and focus behaviour to the view.
 
     """
 
 
 class SelectableRecycleGridLayout(FocusBehavior, LayoutSelectionBehavior,
                                   RecycleGridLayout):
-    """ Adds selection and focus behaviour to the view.
+    """
+    Adds selection and focus behaviour to the view.
 
     """
 
 
 class TableView(RecycleView):
-    """Table selectable View.
+    """
+    Table selectable View.
 
     """
     data_items = ListProperty([])
@@ -158,7 +175,8 @@ class TableView(RecycleView):
         self.hotel_name = name
 
     def get_data(self):
-        """Extracting review for given Hotel name and update attribute.
+        """
+        Extracting review for given Hotel name and update attribute.
 
         Args:
             name (str): The Hotel name.
@@ -185,14 +203,15 @@ class TableView(RecycleView):
     def get_row_number(self):
         """Extracting number or rows of data.
 
-        Returns:
+        Args:urns
             Rows number.
 
         """
-        return int(len(self.data_items)/11)
+        return int(len(self.data_items)/12)
 
     def delete_all_reviews(self):
-        """deleting all reviews from given hotel.
+        """
+        Deleting all reviews from given hotel.
 
         """
         load.loader.clear_data_for_hotel(self.hotel_name)
@@ -202,7 +221,8 @@ class TableView(RecycleView):
 
 
 class CityListView(RecycleView):
-    """City List selectable View.
+    """
+    City List selectable View.
 
     """
     city = ""
@@ -211,7 +231,8 @@ class CityListView(RecycleView):
         super(CityListView, self).__init__(**kwargs)
 
     def update_data(self):
-        """Update City list from database.
+        """
+        Update City list from database.
 
         """
         CityListView.hotels_data = Transformer.transform_hotels((scrapper.get_hotels_from_city(CityListView.city)))
@@ -220,7 +241,8 @@ class CityListView(RecycleView):
 
 
 class ETLApp(App):
-    """Main application.
+    """
+    Main application class.
 
     """
     title = "ETL Project"

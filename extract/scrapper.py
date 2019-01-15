@@ -20,9 +20,10 @@ web_driver = None
 
 
 def get_driver_path():
-    """Reconstructs correct path to Firefox driver.
+    """
+    Reconstructs correct path to Firefox driver.
 
-    Note:
+    .. note::
         Because GeckoDriverDownloader has been used for driver download,
         then GeckoDriverDownloader is also use for determine path to driver
     """
@@ -33,7 +34,12 @@ def get_driver_path():
 
 
 def force_english_version(driver):
-    """Makes site source coherently in english.
+    """
+    Makes site source coherently in English.
+
+    Args:
+        driver: gecko web driver.
+
     """
 
     try:
@@ -47,12 +53,16 @@ def force_english_version(driver):
 
 
 def init_driver():
+    """
+    Initialise main web driver.
+    Effectively also headless web browser is started.
+
+    """
+
     options = Options()
     options.headless = True
     profile = webdriver.FirefoxProfile()
-    # 1 - Allow all images
     # 2 - Block all images
-    # 3 - Block 3rd party images
     profile.set_preference("permissions.default.image", 2)
 
     global web_driver
@@ -64,6 +74,11 @@ def init_driver():
 
 
 def remove_driver():
+    """
+    Close web driver.
+    Effectively also headless web browser is closed here.
+
+    """
     global web_driver
     if web_driver:
         web_driver.close()
@@ -71,14 +86,18 @@ def remove_driver():
 
 
 def get_driver():
-    """Returns:
+    """
+    Just returned web driver instance.
+
+    Returns:
         Web Firefox driver created in headless mode (no visible browser).
     """
     return web_driver
 
 
 def collect_reviews(driver, review_list):
-    """Attach all reviews present on one page(also archived).
+    """
+    Attach all reviews present on one page(also archived).
 
     Args:
         driver: The web driver which gives ability to search in web content.
@@ -91,7 +110,8 @@ def collect_reviews(driver, review_list):
 
 
 def collect_hotels(driver, hotel_list):
-    """Collect all hotels from given HTML page.
+    """
+    Collect all hotels from given HTML page.
 
     Args:
         driver: the web driver which gives ability to search in web content.
@@ -113,7 +133,8 @@ def collect_hotels(driver, hotel_list):
 
 
 def get_hotels_from_city(city):
-    """Colect all hotels from given city name.
+    """
+    Collect all hotels from given city name.
 
     Args:
         city (str): the web driver which gives ability to search in web content.
@@ -144,6 +165,15 @@ def get_hotels_from_city(city):
 
 
 def get_hotel_address(driver):
+    """
+    Return hotel address from web data.
+
+    Args:
+        driver: gecko web driver.
+
+    Returns:
+        string: hotel address.
+    """
 
     address = None
     try:
@@ -155,7 +185,15 @@ def get_hotel_address(driver):
 
 
 def make_hotel_review_url(hotel_href):
+    """
+    Create link to hotel's review by replace /hotel/xx/ by /reviews/xx/.
 
+    Args:
+        hotel_href: web link to hotel.
+
+    Returns:
+        string:web link to hotel's review.
+    """
     result_stage_one = re.split("/hotel/[a-z]*/", hotel_href)
 
     hotel_loc_part = re.search("/hotel/[a-z]*/", hotel_href)
@@ -164,6 +202,12 @@ def make_hotel_review_url(hotel_href):
 
 
 def set_all_language(driver):
+    """
+    Set all language for reviews.
+
+    Args:
+        driver: gecko web driver.
+    """
     try:
         select = Select(driver.find_element_by_id('language'))
         select.select_by_value('all')
@@ -173,13 +217,11 @@ def set_all_language(driver):
 
     except NoSuchElementException as e:
         print(e)
-        return
-
-
 
 
 def scrap(url):
-    """Main scrapping function, in general this function collects and returns all reviews from all pages.
+    """
+    Main scrapping function, in general this function collects and returns all reviews from all pages.
     For navigation between pages "review_next_page_link" button is used.
 
     Args:

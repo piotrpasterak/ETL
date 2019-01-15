@@ -2,7 +2,8 @@ from load import *
 
 
 class Hotel(db.Entity):
-    """Represent Hotel entity from database.
+    """
+    Represent Hotel entity from database.
 
     """
     _table_ = 'hotels'

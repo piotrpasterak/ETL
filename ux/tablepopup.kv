@@ -6,67 +6,63 @@ Popup:
     auto_dismiss: False
     on_open: dropdown.create_hotels_list()
     BoxLayout:
+        size: self.size
         orientation: "vertical"
         # trick to not lost the Dropdown instance
         # Dropdown itself is not really made to be used in kv.
         __safe_id: [dropdown.__self__]
 
-        Button:
-            id: btn
-            text: 'Hotels list'
-            on_release: dropdown.open(self)
-            size_hint: (.2,.1)
-            pos_hint: {'x': .4}
-
-        HotelsDropDown:
-            id: dropdown
-            on_select:tableview.get_data()
-            on_select:tableview.set_hotel_name(args[1])
-
-        Button:
-            text: "Delete All"
-            #orientation: 'vertical'
-            size_hint: (.2,.1)
-            pos_hint: {'x': .4}
-            on_release: tableview.delete_all_reviews()
-
-        Button:
-            text: "Close"
-            #orientation: 'vertical'
-            size_hint: (.2,.1)
-            pos_hint: {'x': .4}
-            on_release: root.dismiss()
-        Button:
-            text: "Export to CSV"
-            #orientation: 'vertical'
-            size_hint: (.2,.1)
-            pos_hint: {'x': .4}
-            on_release: tableview.csv_export()
-        BoxLayout:
-            size_hint: (.4,.1)
-            pos_hint: {'x': .4}
-            orientation: "horizontal"
-            Button:
-                text: "Export to CSV by ID"
-                on_release: tableview.csv_export_by_id(id_input.text)
-            TextInput:
-                id: id_input
-                multiline: False
-                input_filter: 'int'
-        BoxLayout:
-            #size_hint: (.0,.1)
-            pos_hint: {'x': .0}
-            size_hint_y : .1
-            orientation: "vertical"
+        FloatLayout:
             Label:
                 id: nolabel
-                pos_hint: {'x': .0}
+                pos_hint: {'x': -.1, 'y': -.2}
                 text: 'Number of reviews:' + tableview.row_number
             Label:
                 id: hotel_info
-                pos_hint: {'x': .0}
+                pos_hint: {'x': -.1 'y': -.4}
                 text: 'Hotel:' + tableview.hotel_full_data
+            Button:
+                id: btn
+                text: 'Hotels list'
+                on_release: dropdown.open(self)
+                size_hint: (.3,.2)
+                pos_hint: {'x': .0, 'y': .8}
+
+            HotelsDropDown:
+                id: dropdown
+                on_select:tableview.get_data()
+                on_select:tableview.set_hotel_name(args[1])
+
+            Button:
+                text: "Delete All"
+                size_hint: (.3,.2)
+                pos_hint: {'x': .6, 'y': .8}
+                on_release: tableview.delete_all_reviews()
+
+            Button:
+                text: "Close"
+                #orientation: 'vertical'
+                size_hint: (.3,.2)
+                pos_hint: {'x': .3, 'y': .8}
+                on_release: root.dismiss()
+            Button:
+                text: "Export to CSV"
+                size_hint: (.3,.2)
+                pos_hint: {'x': .3, 'y': .6}
+                on_release: tableview.csv_export()
+            BoxLayout:
+                size_hint: (.6,.2)
+                pos_hint: {'x': .3, 'y': .4}
+                orientation: "horizontal"
+                Button:
+                    text: "Export to CSV by ID"
+                    on_release: tableview.csv_export_by_id(id_input.text)
+                TextInput:
+                    id: id_input
+                    multiline: False
+                    input_filter: 'int'
         TabbedPanel:
+            size_hint_y: 3.0
             do_default_tab: False
             TabbedPanelItem:
                 text: 'Data'
@@ -78,11 +74,10 @@ Popup:
                             size_hint: 1, None
                             size_hint_y: None
                             height: 25
-                            cols: 11
+                            cols: 12
 
                             Label:
                                 text: "ID"
-                                width: 10
                             Label:
                                 text: "Name"
                             Label:
@@ -98,6 +93,8 @@ Popup:
                             Label:
                                 text: "Score"
                             Label:
+                                text: "Stay Date"
+                            Label:
                                 text: "Info Tags"
                             Label:
                                 text: "Positive review"
@@ -108,7 +105,7 @@ Popup:
                                 viewclass: 'SelectableButton'
                                 data: [{'text': str(x)} for x in tableview.data_items]
                                 SelectableRecycleGridLayout:
-                                    cols: 11
+                                    cols: 12
                                     default_size: None, dp(50)
                                     default_size_hint: 1, None
                                     size_hint_y: None
@@ -164,6 +161,12 @@ Popup:
                     BoxLayout:
                         orientation: 'horizontal'
                         Label:
+                            text: "Stay Date"
+                        TextInput:
+                            id: stay_date_input
+                    BoxLayout:
+                        orientation: 'horizontal'
+                        Label:
                             text: "Info Tags"
                         TextInput:
                             id: tags_input
@@ -190,6 +193,7 @@ Popup:
                             on_release: tableview.filter['country'] = country_input.text
                             on_release: tableview.filter['info_tags'] = tags_input.text
                             on_release: tableview.filter['score'] = score_input.text
+                            on_release: tableview.filter['stay_date'] = stay_date_input.text
                             on_release: tableview.filter['user_age_group'] = age_input.text
                             on_release: tableview.filter['review_count'] = count_input.text
                             on_release: tableview.filter['neg_review'] = nreview_input.text

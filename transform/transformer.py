@@ -7,14 +7,17 @@ from datetime import datetime
 
 
 class Transformer:
-    """Review class contains all necessary operations.
+    """
+    Review class contains all necessary operations.
+
     """
     def __init__(self):
         pass
 
     @staticmethod
     def transform_all(html_review_list, hotel_name, hotel_address):
-        """Main transforming method'.
+        """
+        Main transforming method.
 
         Args:
             html_review_list (str): HTML content of Reviews.
@@ -30,11 +33,12 @@ class Transformer:
         for html_review in html_review_list:
             hotel["review"].append({"name": Transformer.extract_name(html_review),
                                     "date": Transformer.extract_date(html_review),
-                                    "header" :Transformer.extract_header(html_review),
+                                    "header":Transformer.extract_header(html_review),
                                     "country": Transformer.extract_country(html_review),
                                     "user_age_group": Transformer.extract_user_age_group(html_review),
                                     "review_count": Transformer.extract_review_count(html_review),
                                     "score": Transformer.extract_score(html_review),
+                                    "stay_date": Transformer.extract_stay_date(html_review),
                                     "info_tags":  Transformer.extract_info_tags(html_review),
                                     "pos_review": Transformer.extract_pos_review_body(html_review),
                                     "neg_review": Transformer.extract_neg_review_body(html_review)})
@@ -60,7 +64,8 @@ class Transformer:
 
     @staticmethod
     def extract_hotel_name(raw_hotel):
-        """Extracting data from raw HTML.
+        """
+        Extracting data from raw HTML.
 
         Args:
             raw_hotel (object): HTML content with Hotel data.
@@ -73,7 +78,8 @@ class Transformer:
 
     @staticmethod
     def extract_hotel_link(raw_hotel):
-        """Extracting data from raw HTML.
+        """
+        Extracting data from raw HTML.
 
         Args:
             raw_hotel (object): HTML content with Hotel data.
@@ -89,7 +95,8 @@ class Transformer:
 
     @staticmethod
     def extract_date(hml_review):
-        """Extracting date from raw HTML.
+        """
+        Extracting date from raw HTML.
 
         Args:
             hml_review (object): HTML content with Review data.
@@ -103,8 +110,27 @@ class Transformer:
         return date
 
     @staticmethod
+    def extract_stay_date(hml_review):
+        """
+        Extracting stay_date from raw HTML.
+
+        Args:
+            hml_review (object): HTML content with Review data.
+
+        Returns:
+            Review stay date.
+
+        """
+        date_raw = hml_review.find("p", {"class": "review_staydate "})
+        date = None
+        if date_raw:
+            date = datetime.strptime(date_raw.get_text(strip=True), 'Stayed in %B %Y')
+        return date
+
+    @staticmethod
     def extract_name(hml_review):
-        """Extracting name from raw HTML.
+        """
+        Extracting name from raw HTML.
 
         Args:
             hml_review (object): HTML content with Review data.
@@ -118,7 +144,8 @@ class Transformer:
 
     @staticmethod
     def extract_country(hml_review):
-        """Extracting country from raw HTML.
+        """
+        Extracting country from raw HTML.
 
         Args:
             hml_review (object): HTML content with Review data.
@@ -133,7 +160,8 @@ class Transformer:
 
     @staticmethod
     def extract_user_age_group(hml_review):
-        """Extracting age group from raw HTML.
+        """
+        Extracting age group from raw HTML.
 
         Args:
             hml_review (object): HTML content with Review data.
@@ -147,7 +175,8 @@ class Transformer:
         
     @staticmethod
     def extract_review_count(hml_review):
-        """Extracting review count from raw HTML.
+        """
+        Extracting review count from raw HTML.
 
         Args:
             hml_review (object): HTML content with Review data.
@@ -162,7 +191,8 @@ class Transformer:
 
     @staticmethod
     def extract_score(hml_review):
-        """Extracting review score from raw HTML.
+        """
+        Extracting review score from raw HTML.
 
         Args:
             hml_review (object): HTML content with Review data.
@@ -176,7 +206,8 @@ class Transformer:
 
     @staticmethod
     def extract_info_tags(hml_review):
-        """Extracting info tags from raw HTML.
+        """
+        Extracting info tags from raw HTML.
 
         Args:
             hml_review (object): HTML content with Review data.
@@ -196,7 +227,8 @@ class Transformer:
         
     @staticmethod
     def extract_header(hml_review):
-        """Extracting review header from raw HTML.
+        """
+        Extracting review header from raw HTML.
 
         Args:
             hml_review (object): HTML content with Review data.
@@ -211,7 +243,8 @@ class Transformer:
 
     @staticmethod
     def extract_neg_review_body(hml_review):
-        """Extracting review negative opinion from raw HTML.
+        """
+        Extracting review negative opinion from raw HTML.
 
         Args:
             hml_review (object): HTML content with Review data.
@@ -232,7 +265,8 @@ class Transformer:
 
     @staticmethod
     def extract_pos_review_body(hml_review):
-        """Extracting review positive opinion from raw HTML.
+        """
+        Extracting review positive opinion from raw HTML.
 
         Args:
             hml_review (object): HTML content with Review data.

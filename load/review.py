@@ -4,7 +4,8 @@ from load.hotel import Hotel
 
 
 class Review(db.Entity):
-    """Represent Review entity from database.
+    """
+    Represent Review entity from database.
 
     """
     _table_ = 'reviews'
@@ -16,6 +17,7 @@ class Review(db.Entity):
     country = Optional(str)
     info_tags = Optional(str)
     score = Required(float)
+    stay_date = Optional(datetime)
     user_age_group = Optional(str)
     review_count = Required(int)
     neg_review = Optional(LongUnicode, nullable=True)
@@ -30,6 +32,7 @@ class Review(db.Entity):
                 self.user_age_group,
                 self.review_count,
                 self.score,
+                self.stay_date,
                 self.info_tags,
                 self.pos_review,
                 self.neg_review]

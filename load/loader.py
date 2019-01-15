@@ -15,6 +15,15 @@ import csv
 
 @db_session
 def export_to_csv(hotel_name):
+    """
+    If all reviews from hotel are necessary.
+
+    Args:
+        hotel_name (str): The name of the Hotel.
+
+    Returns:
+        list of serialized data from Reviews of None if no data or no such Hotel.
+    """
     loc_hotel = Hotel.get(name=hotel_name)
     fields = ['id', 'hotel', 'date', 'name', 'header', 'country', 'info_tags', 'score', 'user_age_group', 'review_count', 'neg_review', 'pos_review']
 
@@ -29,9 +38,22 @@ def export_to_csv(hotel_name):
 
 @db_session
 def export_to_csv_by_id(id):
+    """
+    If all reviews from hotel are necessary.
 
-    loc_review = Review.get(id=id)
-    fields = ['id', 'hotel', 'date', 'name', 'header', 'country', 'info_tags', 'score', 'user_age_group', 'review_count', 'neg_review', 'pos_review']
+    Args:
+        hotel_name (str): The name of the Hotel.
+
+    Returns:
+        list of serialized data from Reviews of None if no data or no such Hotel.
+    """
+    loc_review = None
+    try:
+        loc_review = Review.get(id=id)
+    except ValueError as e:
+        print(e)
+
+    fields = ['id', 'hotel', 'date', 'name', 'header', 'country', 'info_tags', 'score', 'stay_date', 'user_age_group', 'review_count', 'neg_review', 'pos_review']
 
     csv_file = open("Review" + str(id) + '.csv', 'w',  encoding='utf-8')
     if loc_review:
@@ -42,7 +64,8 @@ def export_to_csv_by_id(id):
 
 
 def init_connection():
-    """Initialize default connection to database, and create tables if necessary.
+    """
+    Initialize default connection to database, and create tables if necessary.
 
     """
 
@@ -51,6 +74,15 @@ def init_connection():
 
 
 def generate_raw_filer(filter_dic):
+    """
+    If all reviews from hotel are necessary.
+
+    Args:
+        hotel_name (str): The name of the Hotel.
+
+    Returns:
+        list of serialized data from Reviews of None if no data or no such Hotel.
+    """
     if len(filter_dic) == 0:
         return ""
 
@@ -63,7 +95,8 @@ def generate_raw_filer(filter_dic):
 
 @db_session
 def get_data_for_hotel(hotel_name, filter):
-    """If all reviews from hotel are necessary.
+    """
+    If all reviews from hotel are necessary.
 
     Args:
         hotel_name (str): The name of the Hotel.
@@ -87,7 +120,8 @@ def get_data_for_hotel(hotel_name, filter):
 
 @db_session
 def clear_data_for_hotel(hotel_name):
-    """Deletes all reviews linked to Hotel.
+    """
+    Deletes all reviews linked to Hotel.
 
     Args:
         hotel_name (str): The name of the Hotel.
@@ -98,6 +132,15 @@ def clear_data_for_hotel(hotel_name):
 
 @db_session
 def get_hotel_address(name):
+    """
+    If all reviews from hotel are necessary.
+
+    Args:
+        hotel_name (str): The name of the Hotel.
+
+    Returns:
+        list of serialized data from Reviews of None if no data or no such Hotel.
+    """
     loc_hotel = Hotel.get(name=name)
 
     return loc_hotel.address if loc_hotel else ''
@@ -107,7 +150,7 @@ def get_all_hotels():
     """
     Gives all hotels from database.
 
-    :returns:
+    Returns::
         List of all Hotels (objects).
     """
     hotels = select(hotel for hotel in Hotel)
@@ -116,7 +159,8 @@ def get_all_hotels():
 
 @db_session
 def update_hotel_with_data(hotel_data):
-    """Just clean all data if so, and create new Review entities in database.
+    """
+    Just clean all data if so, and create new Review entities in database.
 
     Args:
         hotel_data: The dictionary with all hotel data (also connected Reviews).
@@ -126,7 +170,6 @@ def update_hotel_with_data(hotel_data):
 
     if loc_hotel is None:
         loc_hotel = Hotel(name=hotel_data["name"], address=hotel_data["address"])
-        obj_count += 1
     else:
         clear_data_for_hotel(loc_hotel.name)
 
@@ -139,12 +182,9 @@ def update_hotel_with_data(hotel_data):
                user_age_group=review_data['user_age_group'],
                review_count=review_data['review_count'],
                score=review_data['score'],
+               stay_date=review_data['stay_date'],
                info_tags=review_data['info_tags'],
                pos_review=review_data['pos_review'],
                neg_review=review_data['neg_review'])
         obj_count += 1
     return obj_count
-
-
-
-
