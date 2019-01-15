@@ -53,11 +53,19 @@ Popup:
                 id: id_input
                 multiline: False
                 input_filter: 'int'
-
-        Label:
-            id: nolabel
-            text: 'Number of reviews:' + tableview.row_number
-            size_hint: (.2,.1)
+        BoxLayout:
+            #size_hint: (.0,.1)
+            pos_hint: {'x': .0}
+            size_hint_y : .1
+            orientation: "vertical"
+            Label:
+                id: nolabel
+                pos_hint: {'x': .0}
+                text: 'Number of reviews:' + tableview.row_number
+            Label:
+                id: hotel_info
+                pos_hint: {'x': .0}
+                text: 'Hotel:' + tableview.hotel_full_data
         TabbedPanel:
             do_default_tab: False
             TabbedPanelItem:
@@ -74,7 +82,7 @@ Popup:
 
                             Label:
                                 text: "ID"
-
+                                width: 10
                             Label:
                                 text: "Name"
                             Label:
@@ -106,6 +114,7 @@ Popup:
                                     size_hint_y: None
                                     height: self.minimum_height
                                     orientation: 'vertical'
+                                    spacing: 3,3
             TabbedPanelItem:
                 text: "Filter"
                 BoxLayout:
@@ -190,8 +199,8 @@ Popup:
 <ScrollView>:
     scroll_type: ['bars']
     bar_width: 10
-    bar_color: (200,0,0, 1.0)
-    bar_inactive_color: (50,0,0, 1.0)
+    bar_color: (0,0,255, 1.0)
+    bar_inactive_color: (0,0,200, 1.0)
 
 <HotelButton>:
     size_hint_y: None

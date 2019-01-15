@@ -41,10 +41,14 @@ class HotelsDropDown(DropDown):
 
     """
     def create_hotels_list(self):
-        """Creation Hotel list for DropDown.
+        """
+        Creation Hotel list for DropDown.
 
         """
+
         hotels = load.loader.get_all_hotels()
+
+        self.clear_widgets()
 
         for hotel in hotels:
             btn = HotelButton(text=hotel.name)
@@ -143,6 +147,7 @@ class TableView(RecycleView):
     data_items = ListProperty([])
     hotel_name = ''
     row_number = StringProperty()
+    hotel_full_data = StringProperty()
 
     filter = DictProperty({})
 
@@ -167,6 +172,8 @@ class TableView(RecycleView):
                 for col in row:
                     self.data_items.append(col)
         self.row_number = str(self.get_row_number())
+
+        self.hotel_full_data = self.hotel_name + ' ' + load.loader.get_hotel_address(self.hotel_name)
 
     def csv_export(self):
         if self.hotel_name:
@@ -225,6 +232,9 @@ class ETLApp(App):
     load_count = 0
     hotel_address = ''
 
+    def on_stop(self):
+        scrapper.remove_driver()
+
     def build(self):
         """Build all graphical elements.
 
@@ -261,8 +271,10 @@ class ETLApp(App):
         button_show_database_content.bind(on_press=self.on_show_database)
 
         load.loader.init_connection()
+        scrapper.init_driver()
         self.tablepopup = Builder.load_file('ux/tablepopup.kv')
         self.citypopup = Builder.load_file('ux/citespopup.kv')
+
         return layout
 
     def on_complete(self, _):

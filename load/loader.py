@@ -40,6 +40,7 @@ def export_to_csv_by_id(id):
         writer.writerow(loc_review.to_dict(fields))
     csv_file.close()
 
+
 def init_connection():
     """Initialize default connection to database, and create tables if necessary.
 
@@ -95,12 +96,18 @@ def clear_data_for_hotel(hotel_name):
     if loc_hotel:
         delete(rev for rev in Review if rev.hotel.id == loc_hotel.id)
 
+@db_session
+def get_hotel_address(name):
+    loc_hotel = Hotel.get(name=name)
+
+    return loc_hotel.address if loc_hotel else ''
 
 @db_session
 def get_all_hotels():
-    """Gives all hotels from database.
+    """
+    Gives all hotels from database.
 
-    Returns:
+    :returns:
         List of all Hotels (objects).
     """
     hotels = select(hotel for hotel in Hotel)

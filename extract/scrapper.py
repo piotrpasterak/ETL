@@ -8,12 +8,15 @@ extracting reviews from hotels in www.booking.com page. Mainly Selenium web driv
 """
 
 from selenium import webdriver
-import re
+from selenium.webdriver.support.ui import Select
 from selenium.webdriver.firefox.options import Options
 from selenium.common.exceptions import WebDriverException, NoSuchElementException
 from webdriverdownloader import GeckoDriverDownloader
 from bs4 import BeautifulSoup
 import os
+import re
+
+web_driver = None
 
 
 def get_driver_path():
@@ -25,7 +28,7 @@ def get_driver_path():
     """
 
     firefox_downloader = GeckoDriverDownloader()
-    return firefox_downloader.get_download_path() + '\\' + os.listdir(firefox_downloader.get_download_path())[
+    return firefox_downloader.get_download_path(version="v0.23.0") + '\\' + os.listdir(firefox_downloader.get_download_path(version="v0.23.0"))[
         0] + '\\' + firefox_downloader.get_driver_filename()
 
 
@@ -43,9 +46,7 @@ def force_english_version(driver):
     driver.get(eng_site)
 
 
-def get_driver():
-    """Returns web Firefox driver created in headless mode (no visible browser).
-    """
+def init_driver():
     options = Options()
     options.headless = True
     profile = webdriver.FirefoxProfile()
@@ -54,11 +55,26 @@ def get_driver():
     # 3 - Block 3rd party images
     profile.set_preference("permissions.default.image", 2)
 
+    global web_driver
     try:
-        return webdriver.Firefox(executable_path=get_driver_path(), options=options, firefox_profile=profile)
+        if web_driver is None:
+            web_driver = webdriver.Firefox(executable_path=get_driver_path(), options=options, firefox_profile=profile)
     except WebDriverException as e:
         print(e)
-        return None
+
+
+def remove_driver():
+    global web_driver
+    if web_driver:
+        web_driver.close()
+        web_driver = None
+
+
+def get_driver():
+    """Returns:
+        Web Firefox driver created in headless mode (no visible browser).
+    """
+    return web_driver
 
 
 def collect_reviews(driver, review_list):
@@ -124,7 +140,6 @@ def get_hotels_from_city(city):
     hotels_list = []
     collect_hotels(driver, hotels_list)
 
-    driver.close()
     return hotels_list[:10]
 
 
@@ -148,6 +163,21 @@ def make_hotel_review_url(hotel_href):
     return hotel_loc_part.group(0).replace("/hotel/", "/reviews/") + "hotel/" + result_stage_one[1];
 
 
+def set_all_language(driver):
+    try:
+        select = Select(driver.find_element_by_id('language'))
+        select.select_by_value('all')
+
+        input_button = driver.find_elements_by_css_selector("input[type='submit'][value='Submit']")
+        input_button[0].click()
+
+    except NoSuchElementException as e:
+        print(e)
+        return
+
+
+
+
 def scrap(url):
     """Main scrapping function, in general this function collects and returns all reviews from all pages.
     For navigation between pages "review_next_page_link" button is used.
@@ -162,6 +192,8 @@ def scrap(url):
 
     driver.get(url)
 
+    set_all_language(driver)
+
     review_list = []
     collect_reviews(driver, review_list)
 
@@ -173,7 +205,5 @@ def scrap(url):
         collect_reviews(driver, review_list)
 
     hotel_address = get_hotel_address(driver)
-
-    driver.quit()
 
     return review_list, hotel_address

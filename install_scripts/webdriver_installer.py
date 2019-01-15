@@ -5,7 +5,7 @@ from webdriverdownloader import GeckoDriverDownloader
 
 def install():
     dd = GeckoDriverDownloader()
-    dd.download_and_install()
+    dd.download_and_install(version="v0.23.0")
 
 
 if __name__ == '__main__':
