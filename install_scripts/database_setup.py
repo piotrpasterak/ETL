@@ -1,6 +1,6 @@
 """Tiny module for create database during installation process.
 
-Note:
+.. note::
     Expected is that in database user "root" with password 'root' exists.
     Mysql is required.
 

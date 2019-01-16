@@ -1,9 +1,13 @@
 """Installer.
 
 This module support automatic installation all necessary dependency.
+
+.. note::
+Unfortunately, could be needed to manually add path to firefox.exe into system PATH (if such exception occurs)
+
 """
 import subprocess
-# TODO: Unfortunately you will need to manually add path to firefox.exe into system PATH
+
 
 modules = [
     ['--upgrade', 'pip', 'wheel', 'setuptools'],
