@@ -32,8 +32,8 @@ class Transformer:
 
         for html_review in html_review_list:
             hotel["review"].append({"name": Transformer.extract_name(html_review),
-                                    "date": Transformer.extract_date(html_review),
-                                    "header":Transformer.extract_header(html_review),
+                                    "rev_date": Transformer.extract_date(html_review),
+                                    "header": Transformer.extract_header(html_review),
                                     "country": Transformer.extract_country(html_review),
                                     "user_age_group": Transformer.extract_user_age_group(html_review),
                                     "review_count": Transformer.extract_review_count(html_review),

@@ -19,7 +19,7 @@ Popup:
                 text: 'Number of reviews:' + tableview.row_number
             Label:
                 id: hotel_info
-                pos_hint: {'x': -.1 'y': -.4}
+                pos_hint: {'x': -.1, 'y': -.4}
                 text: 'Hotel:' + tableview.hotel_full_data
             Button:
                 id: btn
@@ -188,7 +188,7 @@ Popup:
                             text: 'Apply'
                             on_release: tableview.get_data()
                             on_release: tableview.filter['name'] = name_input.text
-                            on_release: tableview.filter['date'] = date_input.text
+                            on_release: tableview.filter['rev_date'] = date_input.text
                             on_release: tableview.filter['header'] = header_input.text
                             on_release: tableview.filter['country'] = country_input.text
                             on_release: tableview.filter['info_tags'] = tags_input.text

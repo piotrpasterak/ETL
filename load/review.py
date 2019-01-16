@@ -1,4 +1,5 @@
 from datetime import datetime
+from datetime import date
 from load import *
 from load.hotel import Hotel
 
@@ -11,13 +12,13 @@ class Review(db.Entity):
     _table_ = 'reviews'
     id = PrimaryKey(int, auto=True)
     hotel = Required(Hotel)
-    date = Required(datetime)
+    rev_date = Required(datetime)
     name = Required(str)
     header = Required(str)
     country = Optional(str)
     info_tags = Optional(str)
     score = Required(float)
-    stay_date = Optional(datetime)
+    stay_date = Optional(date)
     user_age_group = Optional(str)
     review_count = Required(int)
     neg_review = Optional(LongUnicode, nullable=True)
@@ -26,13 +27,13 @@ class Review(db.Entity):
     def serialize_data(self):
         return [self.id,
                 self.name,
-                self.date.strftime('%d.%m.%Y'),
+                self.rev_date.strftime('%d-%m-%Y'),
                 self.header,
                 self.country,
                 self.user_age_group,
                 self.review_count,
                 self.score,
-                self.stay_date,
+                self.stay_date.strftime('%m-%Y'),
                 self.info_tags,
                 self.pos_review,
                 self.neg_review]

@@ -53,7 +53,7 @@ def export_to_csv_by_id(id):
     except ValueError as e:
         print(e)
 
-    fields = ['id', 'hotel', 'date', 'name', 'header', 'country', 'info_tags', 'score', 'stay_date', 'user_age_group', 'review_count', 'neg_review', 'pos_review']
+    fields = ['id', 'hotel', 'rev_date', 'name', 'header', 'country', 'info_tags', 'score', 'stay_date', 'user_age_group', 'review_count', 'neg_review', 'pos_review']
 
     csv_file = open("Review" + str(id) + '.csv', 'w',  encoding='utf-8')
     if loc_review:
@@ -176,7 +176,7 @@ def update_hotel_with_data(hotel_data):
     for review_data in hotel_data["review"]:
         Review(hotel=loc_hotel,
                name=review_data['name'],
-               date=review_data['date'],
+               rev_date=review_data['rev_date'],
                header=review_data['header'],
                country=review_data['country'],
                user_age_group=review_data['user_age_group'],
