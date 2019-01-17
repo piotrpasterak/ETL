@@ -107,6 +107,18 @@ Data are Extract module and Load module is receiver of adapted data.</p>
 </dd></dl>
 
 <dl class="staticmethod">
+<dt id="transform.transformer.Transformer.extract_info_tags">
+<em class="property">static </em><code class="descname">extract_info_tags</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_info_tags"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_info_tags" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracting info tags from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hml_review (object): HTML content with Review data.</dd>
+<dt>Returns:</dt>
+<dd>Review item info tags.</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
 <dt id="transform.transformer.Transformer.extract_name">
 <em class="property">static </em><code class="descname">extract_name</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_name" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracting name from raw HTML.</p>
@@ -167,6 +179,18 @@ Data are Extract module and Load module is receiver of adapted data.</p>
 </dd></dl>
 
 <dl class="staticmethod">
+<dt id="transform.transformer.Transformer.extract_stay_date">
+<em class="property">static </em><code class="descname">extract_stay_date</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_stay_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_stay_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Extracting stay_date from raw HTML.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hml_review (object): HTML content with Review data.</dd>
+<dt>Returns:</dt>
+<dd>Review stay date.</dd>
+</dl>
+</dd></dl>
+
+<dl class="staticmethod">
 <dt id="transform.transformer.Transformer.extract_user_age_group">
 <em class="property">static </em><code class="descname">extract_user_age_group</code><span class="sig-paren">(</span><em>hml_review</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.extract_user_age_group"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.extract_user_age_group" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracting age group from raw HTML.</p>
@@ -180,8 +204,8 @@ Data are Extract module and Load module is receiver of adapted data.</p>
 
 <dl class="staticmethod">
 <dt id="transform.transformer.Transformer.transform_all">
-<em class="property">static </em><code class="descname">transform_all</code><span class="sig-paren">(</span><em>html_review_list</em>, <em>hotel_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.transform_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.transform_all" title="Permalink to this definition">¶</a></dt>
-<dd><p>Main transforming method’.</p>
+<em class="property">static </em><code class="descname">transform_all</code><span class="sig-paren">(</span><em>html_review_list</em>, <em>hotel_name</em>, <em>hotel_address</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/transform/transformer.html#Transformer.transform_all"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#transform.transformer.Transformer.transform_all" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main transforming method.</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd>html_review_list (str): HTML content of Reviews.

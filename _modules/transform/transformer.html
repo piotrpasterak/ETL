@@ -41,14 +41,17 @@
 
 
 <div class="viewcode-block" id="Transformer"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer">[docs]</a><span class="k">class</span> <span class="nc">Transformer</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Review class contains all necessary operations.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Review class contains all necessary operations.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span>
 
 <div class="viewcode-block" id="Transformer.transform_all"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.transform_all">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">transform_all</span><span class="p">(</span><span class="n">html_review_list</span><span class="p">,</span> <span class="n">hotel_name</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Main transforming method&#39;.</span>
+    <span class="k">def</span> <span class="nf">transform_all</span><span class="p">(</span><span class="n">html_review_list</span><span class="p">,</span> <span class="n">hotel_name</span><span class="p">,</span> <span class="n">hotel_address</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Main transforming method.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            html_review_list (str): HTML content of Reviews.</span>
@@ -59,17 +62,18 @@
 
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="n">hotel</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">hotel_name</span><span class="p">,</span> <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="s2">&quot;Fake Address&quot;</span><span class="p">,</span> <span class="s1">&#39;review&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+        <span class="n">hotel</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">hotel_name</span><span class="p">,</span> <span class="s2">&quot;address&quot;</span><span class="p">:</span> <span class="n">hotel_address</span><span class="p">,</span> <span class="s1">&#39;review&#39;</span><span class="p">:</span> <span class="p">[]}</span>
 
         <span class="k">for</span> <span class="n">html_review</span> <span class="ow">in</span> <span class="n">html_review_list</span><span class="p">:</span>
             <span class="n">hotel</span><span class="p">[</span><span class="s2">&quot;review&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">extract_name</span><span class="p">(</span><span class="n">html_review</span><span class="p">),</span>
-                                    <span class="s2">&quot;date&quot;</span><span class="p">:</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">extract_date</span><span class="p">(</span><span class="n">html_review</span><span class="p">),</span>
-                                    <span class="s2">&quot;header&quot;</span> <span class="p">:</span><span class="n">Transformer</span><span class="o">.</span><span class="n">extract_header</span><span class="p">(</span><span class="n">html_review</span><span class="p">),</span>
+                                    <span class="s2">&quot;rev_date&quot;</span><span class="p">:</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">extract_date</span><span class="p">(</span><span class="n">html_review</span><span class="p">),</span>
+                                    <span class="s2">&quot;header&quot;</span><span class="p">:</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">extract_header</span><span class="p">(</span><span class="n">html_review</span><span class="p">),</span>
                                     <span class="s2">&quot;country&quot;</span><span class="p">:</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">extract_country</span><span class="p">(</span><span class="n">html_review</span><span class="p">),</span>
                                     <span class="s2">&quot;user_age_group&quot;</span><span class="p">:</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">extract_user_age_group</span><span class="p">(</span><span class="n">html_review</span><span class="p">),</span>
                                     <span class="s2">&quot;review_count&quot;</span><span class="p">:</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">extract_review_count</span><span class="p">(</span><span class="n">html_review</span><span class="p">),</span>
                                     <span class="s2">&quot;score&quot;</span><span class="p">:</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">extract_score</span><span class="p">(</span><span class="n">html_review</span><span class="p">),</span>
-                                    <span class="c1">#TODO review_item_info_tags,</span>
+                                    <span class="s2">&quot;stay_date&quot;</span><span class="p">:</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">extract_stay_date</span><span class="p">(</span><span class="n">html_review</span><span class="p">),</span>
+                                    <span class="s2">&quot;info_tags&quot;</span><span class="p">:</span>  <span class="n">Transformer</span><span class="o">.</span><span class="n">extract_info_tags</span><span class="p">(</span><span class="n">html_review</span><span class="p">),</span>
                                     <span class="s2">&quot;pos_review&quot;</span><span class="p">:</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">extract_pos_review_body</span><span class="p">(</span><span class="n">html_review</span><span class="p">),</span>
                                     <span class="s2">&quot;neg_review&quot;</span><span class="p">:</span> <span class="n">Transformer</span><span class="o">.</span><span class="n">extract_neg_review_body</span><span class="p">(</span><span class="n">html_review</span><span class="p">)})</span>
 
@@ -94,7 +98,8 @@
 
 <div class="viewcode-block" id="Transformer.extract_hotel_name"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_hotel_name">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extract_hotel_name</span><span class="p">(</span><span class="n">raw_hotel</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Extracting data from raw HTML.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting data from raw HTML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            raw_hotel (object): HTML content with Hotel data.</span>
@@ -107,7 +112,8 @@
 
 <div class="viewcode-block" id="Transformer.extract_hotel_link"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_hotel_link">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extract_hotel_link</span><span class="p">(</span><span class="n">raw_hotel</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Extracting data from raw HTML.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting data from raw HTML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            raw_hotel (object): HTML content with Hotel data.</span>
@@ -123,7 +129,8 @@
 
 <div class="viewcode-block" id="Transformer.extract_date"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_date">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extract_date</span><span class="p">(</span><span class="n">hml_review</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Extracting date from raw HTML.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting date from raw HTML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            hml_review (object): HTML content with Review data.</span>
@@ -136,9 +143,28 @@
         <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_raw</span><span class="p">,</span> <span class="s1">&#39;Reviewed: </span><span class="si">%d</span><span class="s1"> %B %Y&#39;</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">date</span></div>
 
+<div class="viewcode-block" id="Transformer.extract_stay_date"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_stay_date">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">extract_stay_date</span><span class="p">(</span><span class="n">hml_review</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting stay_date from raw HTML.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            hml_review (object): HTML content with Review data.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Review stay date.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">date_raw</span> <span class="o">=</span> <span class="n">hml_review</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;p&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;review_staydate &quot;</span><span class="p">})</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">date_raw</span><span class="p">:</span>
+            <span class="n">date</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_raw</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span> <span class="s1">&#39;Stayed in %B %Y&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">date</span></div>
+
 <div class="viewcode-block" id="Transformer.extract_name"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_name">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extract_name</span><span class="p">(</span><span class="n">hml_review</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Extracting name from raw HTML.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting name from raw HTML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            hml_review (object): HTML content with Review data.</span>
@@ -152,7 +178,8 @@
 
 <div class="viewcode-block" id="Transformer.extract_country"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_country">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extract_country</span><span class="p">(</span><span class="n">hml_review</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Extracting country from raw HTML.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting country from raw HTML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            hml_review (object): HTML content with Review data.</span>
@@ -167,7 +194,8 @@
 
 <div class="viewcode-block" id="Transformer.extract_user_age_group"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_user_age_group">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extract_user_age_group</span><span class="p">(</span><span class="n">hml_review</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Extracting age group from raw HTML.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting age group from raw HTML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            hml_review (object): HTML content with Review data.</span>
@@ -181,7 +209,8 @@
         
 <div class="viewcode-block" id="Transformer.extract_review_count"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_review_count">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extract_review_count</span><span class="p">(</span><span class="n">hml_review</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Extracting review count from raw HTML.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting review count from raw HTML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            hml_review (object): HTML content with Review data.</span>
@@ -196,7 +225,8 @@
 
 <div class="viewcode-block" id="Transformer.extract_score"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_score">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extract_score</span><span class="p">(</span><span class="n">hml_review</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Extracting review score from raw HTML.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting review score from raw HTML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            hml_review (object): HTML content with Review data.</span>
@@ -207,10 +237,32 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">score</span> <span class="o">=</span> <span class="n">hml_review</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;span&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;review-score-badge&quot;</span><span class="p">})</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
         <span class="k">return</span> <span class="nb">float</span><span class="p">(</span><span class="n">score</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Transformer.extract_info_tags"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_info_tags">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">extract_info_tags</span><span class="p">(</span><span class="n">hml_review</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting info tags from raw HTML.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            hml_review (object): HTML content with Review data.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Review item info tags.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">info_tags_data</span> <span class="o">=</span> <span class="n">hml_review</span><span class="o">.</span><span class="n">findAll</span><span class="p">(</span><span class="s2">&quot;li&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;review_info_tag &quot;</span><span class="p">})</span>
+
+        <span class="n">info_tags_list</span> <span class="o">=</span> <span class="p">[</span><span class="n">tag</span><span class="o">.</span><span class="n">get_text</span><span class="p">(</span><span class="n">strip</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="k">for</span> <span class="n">tag</span> <span class="ow">in</span> <span class="n">info_tags_data</span><span class="p">]</span>
+
+        <span class="n">info_tags</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">info_tags_list</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">info_tags</span></div>
         
 <div class="viewcode-block" id="Transformer.extract_header"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_header">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extract_header</span><span class="p">(</span><span class="n">hml_review</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Extracting review header from raw HTML.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting review header from raw HTML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            hml_review (object): HTML content with Review data.</span>
@@ -225,7 +277,8 @@
 
 <div class="viewcode-block" id="Transformer.extract_neg_review_body"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_neg_review_body">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extract_neg_review_body</span><span class="p">(</span><span class="n">hml_review</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Extracting review negative opinion from raw HTML.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting review negative opinion from raw HTML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            hml_review (object): HTML content with Review data.</span>
@@ -246,7 +299,8 @@
 
 <div class="viewcode-block" id="Transformer.extract_pos_review_body"><a class="viewcode-back" href="../../transform.html#transform.transformer.Transformer.extract_pos_review_body">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">extract_pos_review_body</span><span class="p">(</span><span class="n">hml_review</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Extracting review positive opinion from raw HTML.</span>
+        <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Extracting review positive opinion from raw HTML.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            hml_review (object): HTML content with Review data.</span>

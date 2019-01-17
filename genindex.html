@@ -46,6 +46,7 @@
  | <a href="#H"><strong>H</strong></a>
  | <a href="#I"><strong>I</strong></a>
  | <a href="#L"><strong>L</strong></a>
+ | <a href="#M"><strong>M</strong></a>
  | <a href="#N"><strong>N</strong></a>
  | <a href="#O"><strong>O</strong></a>
  | <a href="#P"><strong>P</strong></a>
@@ -95,19 +96,25 @@
 </li>
       <li><a href="etl.html#etl.ETLApp.clear_temporary_data">clear_temporary_data() (etl.ETLApp method)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="etl.html#etl.ETLApp.close_button">close_button (etl.ETLApp attribute)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="extract.html#extract.scrapper.collect_hotels">collect_hotels() (in module extract.scrapper)</a>
 </li>
       <li><a href="extract.html#extract.scrapper.collect_reviews">collect_reviews() (in module extract.scrapper)</a>
+</li>
+      <li><a href="etl.html#etl.ETLApp.count_funct">count_funct (etl.ETLApp attribute)</a>
 </li>
       <li><a href="load.html#load.review.Review.country">country (load.review.Review attribute)</a>
 </li>
       <li><a href="database_setup.html#database_setup.create_database">create_database() (in module database_setup)</a>
 </li>
       <li><a href="etl.html#etl.HotelsDropDown.create_hotels_list">create_hotels_list() (etl.HotelsDropDown method)</a>
+</li>
+      <li><a href="etl.html#etl.TableView.csv_export">csv_export() (etl.TableView method)</a>
+</li>
+      <li><a href="etl.html#etl.TableView.csv_export_by_id">csv_export_by_id() (etl.TableView method)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -121,8 +128,6 @@
 </li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="load.html#load.review.Review.date">date (load.review.Review attribute)</a>
-</li>
       <li><a href="etl.html#etl.TableView.delete_all_reviews">delete_all_reviews() (etl.TableView method)</a>
 </li>
       <li><a href="dependecy_installer.html#module-dependecy_installer">dependecy_installer (module)</a>
@@ -136,6 +141,10 @@
       <li><a href="etl.html#module-etl">etl (module)</a>
 </li>
       <li><a href="etl.html#etl.ETLApp">ETLApp (class in etl)</a>
+</li>
+      <li><a href="load.html#load.loader.export_to_csv">export_to_csv() (in module load.loader)</a>
+</li>
+      <li><a href="load.html#load.loader.export_to_csv_by_id">export_to_csv_by_id() (in module load.loader)</a>
 </li>
       <li><a href="extract.html#module-extract">extract (module)</a>
 </li>
@@ -153,6 +162,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="transform.html#transform.transformer.Transformer.extract_hotel_name">extract_hotel_name() (transform.transformer.Transformer static method)</a>
 </li>
+      <li><a href="transform.html#transform.transformer.Transformer.extract_info_tags">extract_info_tags() (transform.transformer.Transformer static method)</a>
+</li>
       <li><a href="etl.html#etl.ETLApp.extract_list">extract_list (etl.ETLApp attribute)</a>
 </li>
       <li><a href="transform.html#transform.transformer.Transformer.extract_name">extract_name() (transform.transformer.Transformer static method)</a>
@@ -165,6 +176,8 @@
 </li>
       <li><a href="transform.html#transform.transformer.Transformer.extract_score">extract_score() (transform.transformer.Transformer static method)</a>
 </li>
+      <li><a href="transform.html#transform.transformer.Transformer.extract_stay_date">extract_stay_date() (transform.transformer.Transformer static method)</a>
+</li>
       <li><a href="etl.html#etl.ETLApp.extract_thread">extract_thread() (etl.ETLApp method)</a>
 </li>
       <li><a href="transform.html#transform.transformer.Transformer.extract_user_age_group">extract_user_age_group() (transform.transformer.Transformer static method)</a>
@@ -175,6 +188,10 @@
 <h2 id="F">F</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="etl.html#etl.TableView.filter">filter (etl.TableView attribute)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="extract.html#extract.scrapper.force_english_version">force_english_version() (in module extract.scrapper)</a>
 </li>
   </ul></td>
@@ -183,7 +200,11 @@
 <h2 id="G">G</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="load.html#load.loader.generate_raw_filer">generate_raw_filer() (in module load.loader)</a>
+</li>
       <li><a href="load.html#load.loader.get_all_hotels">get_all_hotels() (in module load.loader)</a>
+</li>
+      <li><a href="etl.html#etl.TableView.get_data">get_data() (etl.TableView method)</a>
 </li>
       <li><a href="load.html#load.loader.get_data_for_hotel">get_data_for_hotel() (in module load.loader)</a>
 </li>
@@ -193,9 +214,13 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="extract.html#extract.scrapper.get_driver_path">get_driver_path() (in module extract.scrapper)</a>
 </li>
-      <li><a href="extract.html#extract.scrapper.get_hotels_from_city">get_hotels_from_city() (in module extract.scrapper)</a>
+      <li><a href="extract.html#extract.scrapper.get_hotel_address">get_hotel_address() (in module extract.scrapper)</a>
+
+      <ul>
+        <li><a href="load.html#load.loader.get_hotel_address">(in module load.loader)</a>
 </li>
-      <li><a href="etl.html#etl.TableView.get_reviews">get_reviews() (etl.TableView method)</a>
+      </ul></li>
+      <li><a href="extract.html#extract.scrapper.get_hotels_from_city">get_hotels_from_city() (in module extract.scrapper)</a>
 </li>
       <li><a href="etl.html#etl.TableView.get_row_number">get_row_number() (etl.TableView method)</a>
 </li>
@@ -211,8 +236,12 @@
 </li>
       <li><a href="load.html#load.review.Review.hotel">hotel (load.review.Review attribute)</a>
 </li>
+      <li><a href="etl.html#etl.ETLApp.hotel_address">hotel_address (etl.ETLApp attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="etl.html#etl.TableView.hotel_full_data">hotel_full_data (etl.TableView attribute)</a>
+</li>
       <li><a href="etl.html#etl.TableView.hotel_name">hotel_name (etl.TableView attribute)</a>
 </li>
       <li><a href="etl.html#etl.HotelButton">HotelButton (class in etl)</a>
@@ -237,9 +266,13 @@
         <li><a href="etl.html#etl.SelectableLabel.index">(etl.SelectableLabel attribute)</a>
 </li>
       </ul></li>
+      <li><a href="load.html#load.review.Review.info_tags">info_tags (load.review.Review attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="load.html#load.loader.init_connection">init_connection() (in module load.loader)</a>
+</li>
+      <li><a href="extract.html#extract.scrapper.init_driver">init_driver() (in module extract.scrapper)</a>
 </li>
       <li><a href="webdriver_installer.html#webdriver_installer.install">install() (in module webdriver_installer)</a>
 </li>
@@ -257,13 +290,23 @@
 </li>
       <li><a href="load.html#module-load.hotel">load.hotel (module)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="load.html#module-load.loader">load.loader (module)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="load.html#module-load.review">load.review (module)</a>
 </li>
+      <li><a href="etl.html#etl.ETLApp.load_count">load_count (etl.ETLApp attribute)</a>
+</li>
       <li><a href="etl.html#etl.ETLApp.load_thread">load_thread() (etl.ETLApp method)</a>
+</li>
+  </ul></td>
+</tr></table>
+
+<h2 id="M">M</h2>
+<table style="width: 100%" class="indextable genindextable"><tr>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="extract.html#extract.scrapper.make_hotel_review_url">make_hotel_review_url() (in module extract.scrapper)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -299,6 +342,8 @@
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="etl.html#etl.ETLApp.on_show_database">on_show_database() (etl.ETLApp method)</a>
 </li>
+      <li><a href="etl.html#etl.ETLApp.on_stop">on_stop() (etl.ETLApp method)</a>
+</li>
       <li><a href="etl.html#etl.SelectableButton.on_touch_down">on_touch_down() (etl.SelectableButton method)</a>
 
       <ul>
@@ -327,6 +372,10 @@
         <li><a href="etl.html#etl.SelectableLabel.refresh_view_attrs">(etl.SelectableLabel method)</a>
 </li>
       </ul></li>
+      <li><a href="extract.html#extract.scrapper.remove_driver">remove_driver() (in module extract.scrapper)</a>
+</li>
+      <li><a href="load.html#load.review.Review.rev_date">rev_date (load.review.Review attribute)</a>
+</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="load.html#load.review.Review">Review (class in load.review)</a>
@@ -334,6 +383,8 @@
       <li><a href="load.html#load.review.Review.review_count">review_count (load.review.Review attribute)</a>
 </li>
       <li><a href="load.html#load.hotel.Hotel.reviews">reviews (load.hotel.Hotel attribute)</a>
+</li>
+      <li><a href="etl.html#etl.TableView.row_number">row_number (etl.TableView attribute)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -357,10 +408,10 @@
 </li>
       <li><a href="etl.html#etl.SelectableLabel">SelectableLabel (class in etl)</a>
 </li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="etl.html#etl.SelectableRecycleBoxLayout">SelectableRecycleBoxLayout (class in etl)</a>
 </li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li><a href="etl.html#etl.SelectableRecycleGridLayout">SelectableRecycleGridLayout (class in etl)</a>
 </li>
       <li><a href="etl.html#etl.SelectableButton.selected">selected (etl.SelectableButton attribute)</a>
@@ -373,7 +424,13 @@
 </li>
       <li><a href="load.html#load.review.Review.serialize_data">serialize_data() (load.review.Review method)</a>
 </li>
+      <li><a href="extract.html#extract.scrapper.set_all_language">set_all_language() (in module extract.scrapper)</a>
+</li>
+      <li><a href="etl.html#etl.TableView.set_hotel_name">set_hotel_name() (etl.TableView method)</a>
+</li>
       <li><a href="etl.html#etl.ETLApp.show_popup">show_popup() (etl.ETLApp method)</a>
+</li>
+      <li><a href="load.html#load.review.Review.stay_date">stay_date (load.review.Review attribute)</a>
 </li>
   </ul></td>
 </tr></table>

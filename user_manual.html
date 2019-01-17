@@ -35,117 +35,223 @@
             
   <div class="section" id="user-manual">
 <h1>User Manual<a class="headerlink" href="#user-manual" title="Permalink to this headline">¶</a></h1>
+<p>ETL Project application collecting all user reviews from given hotel.
+Hotels and reviews data are read from travel fare aggregator website Booking.com (<a class="reference external" href="https://www.booking.com">https://www.booking.com</a>).
+Collected Data are stored into MySql database and are displayed also in application.</p>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<blockquote>
-<div><p>Application requires Python environment in version 3.6+. Firefox 63.0+ web browser is             also required, in case of malfunction (exceptions about lack of access to this binary), please add firefox.exe binary path to system PATH.</p>
-<p>For environment in which application can work additional python package (see appendix) are required.</p>
-<p>However, by execute dependecy_installer.py script all necessary packages shall be automatically downloaded and installed.</p>
-<p>For database server mysql is required, with “root” named user and password “root”.</p>
-</div></blockquote>
+<p>Application requires Python environment in version 3.6+. Firefox 63.0+ web browser is             also required, in case of malfunction (exceptions about lack of access to this binary), please add firefox.exe binary path to system PATH.
+Application require additional python packages listed in appendix.</p>
+<p>Python script dependecy_installer.py installs automatically all necessary packages.</p>
+<p>Installing mysql is required, and  “root” named user with password “root” must be present.</p>
 </div>
-<div class="section" id="features-description">
-<h2>Features description<a class="headerlink" href="#features-description" title="Permalink to this headline">¶</a></h2>
-<ul>
-<li><dl class="first docutils">
-<dt>How to start application:</dt>
-<dd><p class="first">Application is started as Python application by following command:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">py</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">etl</span><span class="o">&gt;</span><span class="n">etl</span><span class="o">.</span><span class="n">py</span>
+<div class="section" id="how-to-start-application">
+<h2>How to start application<a class="headerlink" href="#how-to-start-application" title="Permalink to this headline">¶</a></h2>
+<p>Application is started as Python application by following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span><span class="o">&gt;</span>\<span class="n">python</span><span class="o">.</span><span class="n">exe</span> <span class="o">&lt;</span><span class="n">path</span> <span class="n">to</span> <span class="n">etl</span><span class="o">&gt;</span><span class="n">etl</span><span class="o">.</span><span class="n">py</span>
 </pre></div>
 </div>
 <p>In result such main window shall appear:</p>
-<img alt="_images/main.png" class="last" src="_images/main.png" />
+<img alt="_images/main.png" src="_images/main.png" />
+</div>
+<div class="section" id="features-description">
+<h2>Features description<a class="headerlink" href="#features-description" title="Permalink to this headline">¶</a></h2>
+<dl class="docutils">
+<dt>Application is combined from following features:</dt>
+<dd><ul class="first last simple">
+<li>Hotel choosing dialog</li>
+<li>Extraction</li>
+<li>Transform</li>
+<li>Load</li>
+<li>Presentation and filtering dialog</li>
+</ul>
 </dd>
 </dl>
-</li>
-<li><dl class="first docutils">
-<dt>Setup city for searching:</dt>
-<dd><p class="first">First, enter of chosen city is necessary:</p>
-<img alt="_images/city_text_box.png" src="_images/city_text_box.png" />
-<p>Next, push button “Enter”:</p>
-<img alt="_images/city_enter.png" class="last" src="_images/city_enter.png" />
+<div class="section" id="hotel-choosing-dialog">
+<h3>Hotel choosing dialog<a class="headerlink" href="#hotel-choosing-dialog" title="Permalink to this headline">¶</a></h3>
+<p>This dialog gives possibility of choice hotel form 10 hotels in given city.</p>
+</div>
+<div class="section" id="extraction">
+<h3>Extraction<a class="headerlink" href="#extraction" title="Permalink to this headline">¶</a></h3>
+<p>Extraction functionality analyse web site content and collects all hotel and review information as XMLS.
+Selenium web driver as a driver engine and Beautiful soup as XML parser are use.</p>
+<p>Requires that hotel is defined in Hotel choosing dialog.</p>
+</div>
+<div class="section" id="transform">
+<h3>Transform<a class="headerlink" href="#transform" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>Transform functionality receives data from extraction module (in XML form)</dt>
+<dd>and transforming them info format acceptable by load module (Pony ORM  format).</dd>
+</dl>
+<p>Requires data from Extract.</p>
+</div>
+<div class="section" id="load">
+<h3>Load<a class="headerlink" href="#load" title="Permalink to this headline">¶</a></h3>
+<p>Load functionality is dedicated for load data into database.
+In general all operations on database are implemented in this module.</p>
+<p>This functionality is implemented by usage Pony Object Relation Mapper (ORM).</p>
+<p>Requires data from Transform.</p>
+</div>
+<div class="section" id="presentation-and-filtering-dialog">
+<h3>Presentation and filtering dialog<a class="headerlink" href="#presentation-and-filtering-dialog" title="Permalink to this headline">¶</a></h3>
+<dl class="docutils">
+<dt>This dialog contains following features:</dt>
+<dd><ul class="first last simple">
+<li>shows data from database for given hotel</li>
+<li>choice hotel and expose them data</li>
+<li>delete all reviews from database (for given hotel)</li>
+<li>export data to CSV file, all reviews for given hotel, or only one review</li>
+<li>filtering data in exposed table, as a pattern can be use also string with wildcard (%).</li>
+</ul>
 </dd>
 </dl>
-</li>
-<li><dl class="first docutils">
-<dt>Hotel choosing:</dt>
-<dd><p class="first last">If city name has been correctly entered, then list of no more then 10 most commented hotels appears.
-One of them shall be selected.</p>
-</dd>
-</dl>
-</li>
-<li><dl class="first docutils">
-<dt>Extract</dt>
-<dd><p class="first">When hotel has been chosen then extract of review data is possible:</p>
+</div>
+</div>
+<div class="section" id="use-scenarios-description">
+<h2>Use scenarios description<a class="headerlink" href="#use-scenarios-description" title="Permalink to this headline">¶</a></h2>
+<p>For just collecting data from web two possible scenarios are possible:</p>
+<blockquote>
+<div><ul>
+<li><p class="first">ETL process divided by separated actions.</p>
+<blockquote>
+<div><ul class="simple">
+<li>Choose city.</li>
+</ul>
+<img alt="_images/example_city_enter.png" src="_images/example_city_enter.png" />
+<ul class="simple">
+<li>Choice hotel.</li>
+</ul>
+<img alt="_images/example_city_select.png" src="_images/example_city_select.png" />
+<ul class="simple">
+<li>Extract reviews from hotel.</li>
+</ul>
 <img alt="_images/extract.png" src="_images/extract.png" />
-<p>During this process, modal dialog is visible, and after processing “OK” button is active.</p>
-<img alt="_images/modal_extract.png" class="last" src="_images/modal_extract.png" />
-</dd>
-</dl>
-</li>
-<li><p class="first">Transform</p>
-<blockquote>
-<div><img alt="_images/transform.png" src="_images/transform.png" />
-<p>During this process, modal dialog is visible, and after processing, “OK” button is active (as above).</p>
+<ul class="simple">
+<li>Transform data.</li>
+</ul>
+<img alt="_images/transform.png" src="_images/transform.png" />
+<ul class="simple">
+<li>Load into database.</li>
+</ul>
+<img alt="_images/load.png" src="_images/load.png" />
+<ul class="simple">
+<li>Expose data.</li>
+</ul>
+<img alt="_images/database_content_simple.png" src="_images/database_content_simple.png" />
 </div></blockquote>
 </li>
-<li><p class="first">Load</p>
+<li><p class="first">one ETL process as one action.</p>
 <blockquote>
-<div><img alt="_images/load.png" src="_images/load.png" />
-<p>During this process, modal dialog is visible, and after processing, “OK” button is active (as above).</p>
-</div></blockquote>
-</li>
-<li><p class="first">Whole process</p>
-<blockquote>
-<div><img alt="_images/whole.png" src="_images/whole.png" />
-<p>During this process, modal dialog is visible, and after processing, “OK” button is active (as above).</p>
-</div></blockquote>
-</li>
-<li><p class="first">Display database content:</p>
-<blockquote>
-<div><img alt="_images/show_database.png" src="_images/show_database.png" />
-<p>When button “Show Database” is clicked than, in dialog, after hotel choose,
-content of database for given hotel is shown. Also there is button “Clear” by which database can be cleared.</p>
+<div><ul class="simple">
+<li>Choose city.</li>
+</ul>
+<img alt="_images/example_city_enter.png" src="_images/example_city_enter.png" />
+<ul class="simple">
+<li>Click Whole process button</li>
+</ul>
+<img alt="_images/whole.png" src="_images/whole.png" />
+<ul class="simple">
+<li>Expose data.</li>
+</ul>
+<img alt="_images/database_content_simple.png" src="_images/database_content_simple.png" />
 </div></blockquote>
 </li>
 </ul>
+</div></blockquote>
 </div>
-<div class="section" id="usage-example">
-<h2>Usage example<a class="headerlink" href="#usage-example" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="application-s-menus-and-views-description">
+<h2>Application’s Menus and Views description<a class="headerlink" href="#application-s-menus-and-views-description" title="Permalink to this headline">¶</a></h2>
 <ul>
 <li><dl class="first docutils">
-<dt>Choose city.</dt>
-<dd><img alt="_images/example_city_enter.png" class="first last" src="_images/example_city_enter.png" />
+<dt>Main application window:</dt>
+<dd><img alt="_images/main.png" class="first last" src="_images/main.png" />
 </dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>Choice hotel.</dt>
-<dd><img alt="_images/example_city_select.png" class="first last" src="_images/example_city_select.png" />
+<dt>Setup city dialog:</dt>
+<dd><p class="first">City can be defined be enter city name:</p>
+<img alt="_images/city_text_box.png" src="_images/city_text_box.png" />
+<p>Button “Enter” accepts city choice:</p>
+<img alt="_images/city_enter.png" src="_images/city_enter.png" />
+<p>If city with that name exist, list of no more then 10 most commented hotels appears.
+One of them can be selected, and accepted by button “Confirm” .</p>
+<blockquote class="last">
+<div><img alt="_images/example_city_select.png" src="_images/example_city_select.png" />
+</div></blockquote>
 </dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>Extract reviews from hotel.</dt>
-<dd><img alt="_images/extract.png" class="first last" src="_images/extract.png" />
+<dt>Extract Button</dt>
+<dd><p class="first">When hotel has been chosen then extract of review data is possible:</p>
+<img alt="_images/extract.png" src="_images/extract.png" />
+<p>During this process, modal dialog is visible and then button “OK” is not active:</p>
+<img alt="_images/modal_processing_extract.png" src="_images/modal_processing_extract.png" />
+<p>When process ends, then button “OK” becomes active and ifo about number of processed records is visible:</p>
+<img alt="_images/modal_end.png" class="last" src="_images/modal_end.png" />
 </dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>Transform data.</dt>
-<dd><img alt="_images/transform.png" class="first last" src="_images/transform.png" />
+<dt>Transform Button</dt>
+<dd><blockquote class="first">
+<div><p>When Extract process has been successfully done then transform of review data is possible:</p>
+</div></blockquote>
+<img alt="_images/transform.png" src="_images/transform.png" />
+<p>During this process, modal dialog is visible and then button “OK” is not active:</p>
+<img alt="_images/modal_processing_transform.png" src="_images/modal_processing_transform.png" />
+<p>When process ends, then button “OK” becomes active and ifo about number of processed records is visible:</p>
+<img alt="_images/modal_end.png" class="last" src="_images/modal_end.png" />
 </dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>Load into database.</dt>
-<dd><img alt="_images/load.png" class="first last" src="_images/load.png" />
+<dt>Load</dt>
+<dd><p class="first">When Extract process has been successfully done then transform of review data is possible:</p>
+<img alt="_images/load.png" src="_images/load.png" />
+<p>During this process, modal dialog is visible and then button “OK” is not active:</p>
+<img alt="_images/modal_processing_load.png" src="_images/modal_processing_load.png" />
+<p>When process ends, then button “OK” becomes active and ifo about number of processed records is visible:</p>
+<img alt="_images/modal_end.png" class="last" src="_images/modal_end.png" />
 </dd>
 </dl>
 </li>
 <li><dl class="first docutils">
-<dt>Check data.</dt>
-<dd><img alt="_images/example_database_content.png" class="first last" src="_images/example_database_content.png" />
+<dt>Whole process</dt>
+<dd><p class="first">When hotel has been chosen then also whole ETL process of review data is possible:</p>
+<img alt="_images/modal_processing_whole.png" src="_images/modal_processing_whole.png" />
+<p>When process ends, then button “OK” becomes active and ifo about number of processed records is visible:</p>
+<img alt="_images/modal_end.png" class="last" src="_images/modal_end.png" />
+</dd>
+</dl>
+</li>
+<li><dl class="first docutils">
+<dt>Presenting and filtering database dialog:</dt>
+<dd><p class="first">Displaying database content for one hotel</p>
+<img alt="_images/show_database.png" src="_images/show_database.png" />
+<ul class="simple">
+<li>Hotel choice button allow to choice hotel, data in table are loaded automatically after choice:</li>
+</ul>
+<img alt="_images/database_content_hotel_data.png" src="_images/database_content_hotel_data.png" />
+<ul class="simple">
+<li>Export CSV buttons, exports all data from given hotel</li>
+</ul>
+<img alt="_images/database_content_export_to_cvs.png" src="_images/database_content_export_to_cvs.png" />
+<p>or only for one review ID if set:</p>
+<img alt="_images/database_content_export_to_cvs_by_ID.png" src="_images/database_content_export_to_cvs_by_ID.png" />
+<ul class="simple">
+<li>Filtering tab, when Apply button is clicked table content is filtered (% wildcard allowed):</li>
+</ul>
+<img alt="_images/database_content_filter.png" src="_images/database_content_filter.png" />
+<ul class="simple">
+<li>Delete Reviews button, if clicked removes all review for given hotel:</li>
+</ul>
+<img alt="_images/database_content_delete_all.png" src="_images/database_content_delete_all.png" />
+<ul class="simple">
+<li>Close button, just close dialog:</li>
+</ul>
+<img alt="_images/database_content_close.png" class="last" src="_images/database_content_close.png" />
 </dd>
 </dl>
 </li>
@@ -176,8 +282,10 @@ content of database for given hotel is shown. Also there is button “Clear” b
 <li class="toctree-l1"><a class="reference internal" href="arch.html">Architecture</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">User Manual</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#installation">Installation</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#how-to-start-application">How to start application</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#features-description">Features description</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#usage-example">Usage example</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#use-scenarios-description">Use scenarios description</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#application-s-menus-and-views-description">Application’s Menus and Views description</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="appendix.html">Appendix</a></li>

@@ -42,31 +42,38 @@
 <span class="sd">&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">selenium</span> <span class="k">import</span> <span class="n">webdriver</span>
+<span class="kn">from</span> <span class="nn">selenium.webdriver.support.ui</span> <span class="k">import</span> <span class="n">Select</span>
 <span class="kn">from</span> <span class="nn">selenium.webdriver.firefox.options</span> <span class="k">import</span> <span class="n">Options</span>
 <span class="kn">from</span> <span class="nn">selenium.common.exceptions</span> <span class="k">import</span> <span class="n">WebDriverException</span><span class="p">,</span> <span class="n">NoSuchElementException</span>
 <span class="kn">from</span> <span class="nn">webdriverdownloader</span> <span class="k">import</span> <span class="n">GeckoDriverDownloader</span>
-<span class="kn">from</span> <span class="nn">selenium.webdriver.support.ui</span> <span class="k">import</span> <span class="n">WebDriverWait</span>
-<span class="kn">from</span> <span class="nn">selenium.webdriver.common.by</span> <span class="k">import</span> <span class="n">By</span>
-<span class="kn">from</span> <span class="nn">selenium.webdriver.support</span> <span class="k">import</span> <span class="n">expected_conditions</span> <span class="k">as</span> <span class="n">EC</span>
 <span class="kn">from</span> <span class="nn">bs4</span> <span class="k">import</span> <span class="n">BeautifulSoup</span>
 <span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">re</span>
+
+<span class="n">web_driver</span> <span class="o">=</span> <span class="kc">None</span>
 
 
 <div class="viewcode-block" id="get_driver_path"><a class="viewcode-back" href="../../extract.html#extract.scrapper.get_driver_path">[docs]</a><span class="k">def</span> <span class="nf">get_driver_path</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Reconstructs correct path to Firefox driver.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Reconstructs correct path to Firefox driver.</span>
 
-<span class="sd">    Note:</span>
+<span class="sd">    .. note::</span>
 <span class="sd">        Because GeckoDriverDownloader has been used for driver download,</span>
 <span class="sd">        then GeckoDriverDownloader is also use for determine path to driver</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">firefox_downloader</span> <span class="o">=</span> <span class="n">GeckoDriverDownloader</span><span class="p">()</span>
-    <span class="k">return</span> <span class="n">firefox_downloader</span><span class="o">.</span><span class="n">get_download_path</span><span class="p">()</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">firefox_downloader</span><span class="o">.</span><span class="n">get_download_path</span><span class="p">())[</span>
+    <span class="k">return</span> <span class="n">firefox_downloader</span><span class="o">.</span><span class="n">get_download_path</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;v0.23.0&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">firefox_downloader</span><span class="o">.</span><span class="n">get_download_path</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="s2">&quot;v0.23.0&quot;</span><span class="p">))[</span>
         <span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="s1">&#39;</span><span class="se">\\</span><span class="s1">&#39;</span> <span class="o">+</span> <span class="n">firefox_downloader</span><span class="o">.</span><span class="n">get_driver_filename</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="force_english_version"><a class="viewcode-back" href="../../extract.html#extract.scrapper.force_english_version">[docs]</a><span class="k">def</span> <span class="nf">force_english_version</span><span class="p">(</span><span class="n">driver</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Makes site source coherently in english.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Makes site source coherently in English.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        driver: gecko web driver.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="k">try</span><span class="p">:</span>
@@ -79,21 +86,52 @@
     <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">eng_site</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="get_driver"><a class="viewcode-back" href="../../extract.html#extract.scrapper.get_driver">[docs]</a><span class="k">def</span> <span class="nf">get_driver</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Returns web Firefox driver created in headless mode (no visible browser).</span>
+<div class="viewcode-block" id="init_driver"><a class="viewcode-back" href="../../extract.html#extract.scrapper.init_driver">[docs]</a><span class="k">def</span> <span class="nf">init_driver</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialise main web driver.</span>
+<span class="sd">    Effectively also headless web browser is started.</span>
+
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="n">options</span> <span class="o">=</span> <span class="n">Options</span><span class="p">()</span>
     <span class="n">options</span><span class="o">.</span><span class="n">headless</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">profile</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">FirefoxProfile</span><span class="p">()</span>
+    <span class="c1"># 2 - Block all images</span>
+    <span class="n">profile</span><span class="o">.</span><span class="n">set_preference</span><span class="p">(</span><span class="s2">&quot;permissions.default.image&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
 
+    <span class="k">global</span> <span class="n">web_driver</span>
     <span class="k">try</span><span class="p">:</span>
-        <span class="k">return</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">get_driver_path</span><span class="p">(),</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">web_driver</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">web_driver</span> <span class="o">=</span> <span class="n">webdriver</span><span class="o">.</span><span class="n">Firefox</span><span class="p">(</span><span class="n">executable_path</span><span class="o">=</span><span class="n">get_driver_path</span><span class="p">(),</span> <span class="n">options</span><span class="o">=</span><span class="n">options</span><span class="p">,</span> <span class="n">firefox_profile</span><span class="o">=</span><span class="n">profile</span><span class="p">)</span>
     <span class="k">except</span> <span class="n">WebDriverException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
-        <span class="k">return</span> <span class="kc">None</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="remove_driver"><a class="viewcode-back" href="../../extract.html#extract.scrapper.remove_driver">[docs]</a><span class="k">def</span> <span class="nf">remove_driver</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Close web driver.</span>
+<span class="sd">    Effectively also headless web browser is closed here.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">global</span> <span class="n">web_driver</span>
+    <span class="k">if</span> <span class="n">web_driver</span><span class="p">:</span>
+        <span class="n">web_driver</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+        <span class="n">web_driver</span> <span class="o">=</span> <span class="kc">None</span></div>
+
+
+<div class="viewcode-block" id="get_driver"><a class="viewcode-back" href="../../extract.html#extract.scrapper.get_driver">[docs]</a><span class="k">def</span> <span class="nf">get_driver</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Just returned web driver instance.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        Web Firefox driver created in headless mode (no visible browser).</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">return</span> <span class="n">web_driver</span></div>
 
 
 <div class="viewcode-block" id="collect_reviews"><a class="viewcode-back" href="../../extract.html#extract.scrapper.collect_reviews">[docs]</a><span class="k">def</span> <span class="nf">collect_reviews</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">review_list</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Attach all reviews present on one page(also archived).</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Attach all reviews present on one page(also archived).</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        driver: The web driver which gives ability to search in web content.</span>
@@ -106,7 +144,8 @@
 
 
 <div class="viewcode-block" id="collect_hotels"><a class="viewcode-back" href="../../extract.html#extract.scrapper.collect_hotels">[docs]</a><span class="k">def</span> <span class="nf">collect_hotels</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">hotel_list</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Colect all hotels from given HTML page.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Collect all hotels from given HTML page.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        driver: the web driver which gives ability to search in web content.</span>
@@ -114,11 +153,22 @@
 <span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="n">content</span> <span class="o">=</span> <span class="n">BeautifulSoup</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">page_source</span><span class="p">,</span> <span class="s1">&#39;lxml&#39;</span><span class="p">)</span>
-    <span class="n">hotel_list</span><span class="o">.</span><span class="n">extend</span><span class="p">(</span><span class="n">content</span><span class="o">.</span><span class="n">findAll</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;hotel_name_link url&quot;</span><span class="p">}))</span></div>
+    <span class="n">hotel_item</span> <span class="o">=</span> <span class="n">content</span><span class="o">.</span><span class="n">find</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;hotel_name_link url&quot;</span><span class="p">})</span>
+    <span class="k">if</span> <span class="n">hotel_item</span><span class="p">:</span>
+        <span class="n">hotel_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hotel_item</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">hotel_item</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">9</span><span class="p">):</span>
+            <span class="n">hotel_item</span> <span class="o">=</span> <span class="n">hotel_item</span><span class="o">.</span><span class="n">find_next</span><span class="p">(</span><span class="s2">&quot;a&quot;</span><span class="p">,</span> <span class="p">{</span><span class="s2">&quot;class&quot;</span><span class="p">:</span> <span class="s2">&quot;hotel_name_link url&quot;</span><span class="p">})</span>
+            <span class="k">if</span> <span class="n">hotel_item</span><span class="p">:</span>
+                <span class="n">hotel_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">hotel_item</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">break</span></div>
 
 
 <div class="viewcode-block" id="get_hotels_from_city"><a class="viewcode-back" href="../../extract.html#extract.scrapper.get_hotels_from_city">[docs]</a><span class="k">def</span> <span class="nf">get_hotels_from_city</span><span class="p">(</span><span class="n">city</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Colect all hotels from given city name.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Collect all hotels from given city name.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        city (str): the web driver which gives ability to search in web content.</span>
@@ -148,8 +198,64 @@
     <span class="k">return</span> <span class="n">hotels_list</span><span class="p">[:</span><span class="mi">10</span><span class="p">]</span></div>
 
 
+<div class="viewcode-block" id="get_hotel_address"><a class="viewcode-back" href="../../extract.html#extract.scrapper.get_hotel_address">[docs]</a><span class="k">def</span> <span class="nf">get_hotel_address</span><span class="p">(</span><span class="n">driver</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Return hotel address from web data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        driver: gecko web driver.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        string: hotel address.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="n">address</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">address</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_class_name</span><span class="p">(</span><span class="s2">&quot;hotel_address&quot;</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">NoSuchElementException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">address</span><span class="o">.</span><span class="n">text</span> <span class="k">if</span> <span class="n">address</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span></div>
+
+
+<div class="viewcode-block" id="make_hotel_review_url"><a class="viewcode-back" href="../../extract.html#extract.scrapper.make_hotel_review_url">[docs]</a><span class="k">def</span> <span class="nf">make_hotel_review_url</span><span class="p">(</span><span class="n">hotel_href</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Create link to hotel&#39;s review by replace /hotel/xx/ by /reviews/xx/.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        hotel_href: web link to hotel.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        string:web link to hotel&#39;s review.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">result_stage_one</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;/hotel/[a-z]*/&quot;</span><span class="p">,</span> <span class="n">hotel_href</span><span class="p">)</span>
+
+    <span class="n">hotel_loc_part</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s2">&quot;/hotel/[a-z]*/&quot;</span><span class="p">,</span> <span class="n">hotel_href</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">hotel_loc_part</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/hotel/&quot;</span><span class="p">,</span> <span class="s2">&quot;/reviews/&quot;</span><span class="p">)</span> <span class="o">+</span> <span class="s2">&quot;hotel/&quot;</span> <span class="o">+</span> <span class="n">result_stage_one</span><span class="p">[</span><span class="mi">1</span><span class="p">];</span></div>
+
+
+<div class="viewcode-block" id="set_all_language"><a class="viewcode-back" href="../../extract.html#extract.scrapper.set_all_language">[docs]</a><span class="k">def</span> <span class="nf">set_all_language</span><span class="p">(</span><span class="n">driver</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Set all language for reviews.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        driver: gecko web driver.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">select</span> <span class="o">=</span> <span class="n">Select</span><span class="p">(</span><span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s1">&#39;language&#39;</span><span class="p">))</span>
+        <span class="n">select</span><span class="o">.</span><span class="n">select_by_value</span><span class="p">(</span><span class="s1">&#39;all&#39;</span><span class="p">)</span>
+
+        <span class="n">input_button</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_elements_by_css_selector</span><span class="p">(</span><span class="s2">&quot;input[type=&#39;submit&#39;][value=&#39;Submit&#39;]&quot;</span><span class="p">)</span>
+        <span class="n">input_button</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+
+    <span class="k">except</span> <span class="n">NoSuchElementException</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span></div>
+
+
 <div class="viewcode-block" id="scrap"><a class="viewcode-back" href="../../extract.html#extract.scrapper.scrap">[docs]</a><span class="k">def</span> <span class="nf">scrap</span><span class="p">(</span><span class="n">url</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Main scrapping function, in general this function collects and returns all reviews from all pages.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main scrapping function, in general this function collects and returns all reviews from all pages.</span>
 <span class="sd">    For navigation between pages &quot;review_next_page_link&quot; button is used.</span>
 
 <span class="sd">    Args:</span>
@@ -162,31 +268,21 @@
 
     <span class="n">driver</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span>
 
-    <span class="n">force_english_version</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
-
-    <span class="n">warning_dialog</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_class_name</span><span class="p">(</span><span class="s2">&quot;close_warning&quot;</span><span class="p">)</span>
-
-    <span class="k">if</span> <span class="n">warning_dialog</span><span class="p">:</span>
-        <span class="n">element</span> <span class="o">=</span> <span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">EC</span><span class="o">.</span><span class="n">element_to_be_clickable</span><span class="p">((</span><span class="n">By</span><span class="o">.</span><span class="n">CLASS_NAME</span><span class="p">,</span> <span class="s2">&quot;close_warning&quot;</span><span class="p">)))</span>
-        <span class="n">element</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
-        <span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">EC</span><span class="o">.</span><span class="n">invisibility_of_element</span><span class="p">(</span><span class="n">element</span><span class="p">))</span>
-
-    <span class="n">WebDriverWait</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="mi">20</span><span class="p">)</span><span class="o">.</span><span class="n">until</span><span class="p">(</span><span class="n">EC</span><span class="o">.</span><span class="n">element_to_be_clickable</span><span class="p">((</span><span class="n">By</span><span class="o">.</span><span class="n">CLASS_NAME</span><span class="p">,</span> <span class="s2">&quot;show_all_reviews_btn&quot;</span><span class="p">)))</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
+    <span class="n">set_all_language</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
 
     <span class="n">review_list</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="n">collect_reviews</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">review_list</span><span class="p">)</span>
 
     <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">button</span> <span class="o">=</span> <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_class_name</span><span class="p">(</span><span class="s2">&quot;review_next_page_link&quot;</span><span class="p">)</span>
+            <span class="n">driver</span><span class="o">.</span><span class="n">find_element_by_id</span><span class="p">(</span><span class="s2">&quot;review_next_page_link&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
         <span class="k">except</span> <span class="n">NoSuchElementException</span><span class="p">:</span>
             <span class="k">break</span>
-        <span class="n">button</span><span class="o">.</span><span class="n">click</span><span class="p">()</span>
         <span class="n">collect_reviews</span><span class="p">(</span><span class="n">driver</span><span class="p">,</span> <span class="n">review_list</span><span class="p">)</span>
 
-    <span class="n">driver</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+    <span class="n">hotel_address</span> <span class="o">=</span> <span class="n">get_hotel_address</span><span class="p">(</span><span class="n">driver</span><span class="p">)</span>
 
-    <span class="k">return</span> <span class="n">review_list</span></div>
+    <span class="k">return</span> <span class="n">review_list</span><span class="p">,</span> <span class="n">hotel_address</span></div>
 </pre></div>
 
           </div>

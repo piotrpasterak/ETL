@@ -57,7 +57,7 @@
 <dt id="etl.ETLApp">
 <em class="property">class </em><code class="descclassname">etl.</code><code class="descname">ETLApp</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#ETLApp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.ETLApp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">kivy.app.App</span></code></p>
-<p>Main application.</p>
+<p>Main application class.</p>
 <dl class="method">
 <dt id="etl.ETLApp.build">
 <code class="descname">build</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#ETLApp.build"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.ETLApp.build" title="Permalink to this definition">¶</a></dt>
@@ -92,6 +92,12 @@
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="etl.ETLApp.count_funct">
+<code class="descname">count_funct</code><a class="headerlink" href="#etl.ETLApp.count_funct" title="Permalink to this definition">¶</a></dt>
+<dd><p>alias of <code class="xref py py-class docutils literal notranslate"><span class="pre">builtins.classmethod</span></code></p>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="etl.ETLApp.extract_list">
 <code class="descname">extract_list</code><em class="property"> = []</em><a class="headerlink" href="#etl.ETLApp.extract_list" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -102,6 +108,11 @@
 <dd><p>worker “extract” thread function.</p>
 </dd></dl>
 
+<dl class="attribute">
+<dt id="etl.ETLApp.hotel_address">
+<code class="descname">hotel_address</code><em class="property"> = ''</em><a class="headerlink" href="#etl.ETLApp.hotel_address" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="method">
 <dt id="etl.ETLApp.is_default_city_name">
 <code class="descname">is_default_city_name</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#ETLApp.is_default_city_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.ETLApp.is_default_city_name" title="Permalink to this definition">¶</a></dt>
@@ -111,6 +122,11 @@
 <dd>True if city name is default, false if not.</dd>
 </dl>
 </dd></dl>
+
+<dl class="attribute">
+<dt id="etl.ETLApp.load_count">
+<code class="descname">load_count</code><em class="property"> = 0</em><a class="headerlink" href="#etl.ETLApp.load_count" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
 
 <dl class="method">
 <dt id="etl.ETLApp.load_thread">
@@ -166,6 +182,14 @@
 <dt>Args:</dt>
 <dd>_: Ignored argument, Button (Button is not needed).</dd>
 </dl>
+</dd></dl>
+
+<dl class="method">
+<dt id="etl.ETLApp.on_stop">
+<code class="descname">on_stop</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#ETLApp.on_stop"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.ETLApp.on_stop" title="Permalink to this definition">¶</a></dt>
+<dd><p>Event handler for the <cite>on_stop</cite> event which is fired when the
+application has finished running (i.e. the window is about to be
+closed).</p>
 </dd></dl>
 
 <dl class="method">
@@ -236,7 +260,7 @@ label_info (str): popup header.</dd>
 <dt id="etl.ScrollLabel">
 <em class="property">class </em><code class="descclassname">etl.</code><code class="descname">ScrollLabel</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#ScrollLabel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.ScrollLabel" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">kivy.uix.scrollview.ScrollView</span></code></p>
-<p>Represent Scrolling Label graphical element</p>
+<p>Represents Scrolling Label graphical element</p>
 <dl class="attribute">
 <dt id="etl.ScrollLabel.text">
 <code class="descname">text</code><a class="headerlink" href="#etl.ScrollLabel.text" title="Permalink to this definition">¶</a></dt>
@@ -277,7 +301,7 @@ label_info (str): popup header.</dd>
 <dl class="method">
 <dt id="etl.SelectableButton.on_touch_down">
 <code class="descname">on_touch_down</code><span class="sig-paren">(</span><em>touch</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#SelectableButton.on_touch_down"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.SelectableButton.on_touch_down" title="Permalink to this definition">¶</a></dt>
-<dd><p>Add selection on touch down .</p>
+<dd><p>Add selection on touch down.</p>
 </dd></dl>
 
 <dl class="method">
@@ -418,6 +442,16 @@ label_info (str): popup header.</dd>
 <em class="property">class </em><code class="descclassname">etl.</code><code class="descname">TableView</code><span class="sig-paren">(</span><em>**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#TableView"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.TableView" title="Permalink to this definition">¶</a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">kivy.uix.recycleview.RecycleView</span></code></p>
 <p>Table selectable View.</p>
+<dl class="method">
+<dt id="etl.TableView.csv_export">
+<code class="descname">csv_export</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#TableView.csv_export"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.TableView.csv_export" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="method">
+<dt id="etl.TableView.csv_export_by_id">
+<code class="descname">csv_export_by_id</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#TableView.csv_export_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.TableView.csv_export_by_id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
 <dl class="attribute">
 <dt id="etl.TableView.data_items">
 <code class="descname">data_items</code><a class="headerlink" href="#etl.TableView.data_items" title="Permalink to this definition">¶</a></dt>
@@ -466,12 +500,43 @@ since the property uses a shallow copy of my_list.</p>
 <dl class="method">
 <dt id="etl.TableView.delete_all_reviews">
 <code class="descname">delete_all_reviews</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#TableView.delete_all_reviews"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.TableView.delete_all_reviews" title="Permalink to this definition">¶</a></dt>
-<dd><p>deleting all reviews from given hotel.</p>
+<dd><p>Deleting all reviews from given hotel.</p>
+</dd></dl>
+
+<dl class="attribute">
+<dt id="etl.TableView.filter">
+<code class="descname">filter</code><a class="headerlink" href="#etl.TableView.filter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that represents a dict.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><cite>defaultvalue</cite>: dict, defaults to None</dt>
+<dd><p class="first last">Specifies the default value of the property.</p>
+</dd>
+<dt><cite>rebind</cite>: bool, defaults to False</dt>
+<dd><p class="first last">See <code class="xref py py-class docutils literal notranslate"><span class="pre">ObjectProperty</span></code> for details.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+<div class="versionchanged">
+<p><span class="versionmodified">Changed in version 1.9.0: </span><cite>rebind</cite> has been introduced.</p>
+</div>
+<div class="admonition warning">
+<p class="first admonition-title">Warning</p>
+<p class="last">Similar to <code class="xref py py-class docutils literal notranslate"><span class="pre">ListProperty</span></code>, when assigning a dict to a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">DictProperty</span></code>, the dict stored in the property is a shallow copy of the
+dict and not the original dict. See <code class="xref py py-class docutils literal notranslate"><span class="pre">ListProperty</span></code> for details.</p>
+</div>
 </dd></dl>
 
 <dl class="method">
-<dt id="etl.TableView.get_reviews">
-<code class="descname">get_reviews</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#TableView.get_reviews"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.TableView.get_reviews" title="Permalink to this definition">¶</a></dt>
+<dt id="etl.TableView.get_data">
+<code class="descname">get_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#TableView.get_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.TableView.get_data" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracting review for given Hotel name and update attribute.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -484,14 +549,57 @@ since the property uses a shallow copy of my_list.</p>
 <code class="descname">get_row_number</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#TableView.get_row_number"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.TableView.get_row_number" title="Permalink to this definition">¶</a></dt>
 <dd><p>Extracting number or rows of data.</p>
 <dl class="docutils">
-<dt>Returns:</dt>
+<dt>Args:urns</dt>
 <dd>Rows number.</dd>
 </dl>
 </dd></dl>
 
 <dl class="attribute">
+<dt id="etl.TableView.hotel_full_data">
+<code class="descname">hotel_full_data</code><a class="headerlink" href="#etl.TableView.hotel_full_data" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that represents a string value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><cite>defaultvalue</cite>: string, defaults to ‘’</dt>
+<dd><p class="first last">Specifies the default value of the property.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="attribute">
 <dt id="etl.TableView.hotel_name">
 <code class="descname">hotel_name</code><em class="property"> = ''</em><a class="headerlink" href="#etl.TableView.hotel_name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="etl.TableView.row_number">
+<code class="descname">row_number</code><a class="headerlink" href="#etl.TableView.row_number" title="Permalink to this definition">¶</a></dt>
+<dd><p>Property that represents a string value.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><dl class="first last docutils">
+<dt><cite>defaultvalue</cite>: string, defaults to ‘’</dt>
+<dd><p class="first last">Specifies the default value of the property.</p>
+</dd>
+</dl>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="etl.TableView.set_hotel_name">
+<code class="descname">set_hotel_name</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/etl.html#TableView.set_hotel_name"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#etl.TableView.set_hotel_name" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 </dd></dl>

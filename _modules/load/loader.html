@@ -44,10 +44,62 @@
 <span class="kn">from</span> <span class="nn">load.hotel</span> <span class="k">import</span> <span class="n">Hotel</span>
 <span class="kn">from</span> <span class="nn">load.review</span> <span class="k">import</span> <span class="n">Review</span>
 <span class="kn">from</span> <span class="nn">load</span> <span class="k">import</span> <span class="o">*</span>
+<span class="kn">import</span> <span class="nn">csv</span>
+
+
+<div class="viewcode-block" id="export_to_csv"><a class="viewcode-back" href="../../load.html#load.loader.export_to_csv">[docs]</a><span class="nd">@db_session</span>
+<span class="k">def</span> <span class="nf">export_to_csv</span><span class="p">(</span><span class="n">hotel_name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If all reviews from hotel are necessary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        hotel_name (str): The name of the Hotel.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of serialized data from Reviews of None if no data or no such Hotel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">loc_hotel</span> <span class="o">=</span> <span class="n">Hotel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">hotel_name</span><span class="p">)</span>
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;hotel&#39;</span><span class="p">,</span> <span class="s1">&#39;date&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;header&#39;</span><span class="p">,</span> <span class="s1">&#39;country&#39;</span><span class="p">,</span> <span class="s1">&#39;info_tags&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="s1">&#39;user_age_group&#39;</span><span class="p">,</span> <span class="s1">&#39;review_count&#39;</span><span class="p">,</span> <span class="s1">&#39;neg_review&#39;</span><span class="p">,</span> <span class="s1">&#39;pos_review&#39;</span><span class="p">]</span>
+
+    <span class="n">csv_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">hotel_name</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span>  <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">loc_hotel</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
+        <span class="k">for</span> <span class="n">rev</span> <span class="ow">in</span> <span class="n">loc_hotel</span><span class="o">.</span><span class="n">reviews</span><span class="p">:</span>
+            <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">rev</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">fields</span><span class="p">))</span>
+    <span class="n">csv_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="export_to_csv_by_id"><a class="viewcode-back" href="../../load.html#load.loader.export_to_csv_by_id">[docs]</a><span class="nd">@db_session</span>
+<span class="k">def</span> <span class="nf">export_to_csv_by_id</span><span class="p">(</span><span class="nb">id</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If all reviews from hotel are necessary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        hotel_name (str): The name of the Hotel.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of serialized data from Reviews of None if no data or no such Hotel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">loc_review</span> <span class="o">=</span> <span class="kc">None</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">loc_review</span> <span class="o">=</span> <span class="n">Review</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="nb">id</span><span class="o">=</span><span class="nb">id</span><span class="p">)</span>
+    <span class="k">except</span> <span class="ne">ValueError</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+
+    <span class="n">fields</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;id&#39;</span><span class="p">,</span> <span class="s1">&#39;hotel&#39;</span><span class="p">,</span> <span class="s1">&#39;rev_date&#39;</span><span class="p">,</span> <span class="s1">&#39;name&#39;</span><span class="p">,</span> <span class="s1">&#39;header&#39;</span><span class="p">,</span> <span class="s1">&#39;country&#39;</span><span class="p">,</span> <span class="s1">&#39;info_tags&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="s1">&#39;stay_date&#39;</span><span class="p">,</span> <span class="s1">&#39;user_age_group&#39;</span><span class="p">,</span> <span class="s1">&#39;review_count&#39;</span><span class="p">,</span> <span class="s1">&#39;neg_review&#39;</span><span class="p">,</span> <span class="s1">&#39;pos_review&#39;</span><span class="p">]</span>
+
+    <span class="n">csv_file</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;Review&quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="nb">id</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;.csv&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">,</span>  <span class="n">encoding</span><span class="o">=</span><span class="s1">&#39;utf-8&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">loc_review</span><span class="p">:</span>
+        <span class="n">writer</span> <span class="o">=</span> <span class="n">csv</span><span class="o">.</span><span class="n">DictWriter</span><span class="p">(</span><span class="n">csv_file</span><span class="p">,</span> <span class="n">fields</span><span class="p">)</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writeheader</span><span class="p">()</span>
+        <span class="n">writer</span><span class="o">.</span><span class="n">writerow</span><span class="p">(</span><span class="n">loc_review</span><span class="o">.</span><span class="n">to_dict</span><span class="p">(</span><span class="n">fields</span><span class="p">))</span>
+    <span class="n">csv_file</span><span class="o">.</span><span class="n">close</span><span class="p">()</span></div>
 
 
 <div class="viewcode-block" id="init_connection"><a class="viewcode-back" href="../../load.html#load.loader.init_connection">[docs]</a><span class="k">def</span> <span class="nf">init_connection</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Initialize default connection to database, and create tables if necessary.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Initialize default connection to database, and create tables if necessary.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
@@ -55,9 +107,30 @@
     <span class="n">db</span><span class="o">.</span><span class="n">generate_mapping</span><span class="p">(</span><span class="n">create_tables</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span></div>
 
 
+<div class="viewcode-block" id="generate_raw_filer"><a class="viewcode-back" href="../../load.html#load.loader.generate_raw_filer">[docs]</a><span class="k">def</span> <span class="nf">generate_raw_filer</span><span class="p">(</span><span class="n">filter_dic</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If all reviews from hotel are necessary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        hotel_name (str): The name of the Hotel.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of serialized data from Reviews of None if no data or no such Hotel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">filter_dic</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="s2">&quot;&quot;</span>
+
+    <span class="n">result_sql</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">filter_dic</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">if</span> <span class="n">value</span> <span class="ow">and</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">result_sql</span> <span class="o">+=</span> <span class="s2">&quot; AND &quot;</span> <span class="o">+</span> <span class="n">key</span> <span class="o">+</span> <span class="s1">&#39; LIKE &#39;</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&#39;</span><span class="s2">&quot;</span> <span class="o">+</span> <span class="n">value</span> <span class="o">+</span> <span class="s2">&quot;</span><span class="se">\&#39;</span><span class="s2">&quot;</span>
+    <span class="k">return</span> <span class="n">result_sql</span></div>
+
+
 <div class="viewcode-block" id="get_data_for_hotel"><a class="viewcode-back" href="../../load.html#load.loader.get_data_for_hotel">[docs]</a><span class="nd">@db_session</span>
-<span class="k">def</span> <span class="nf">get_data_for_hotel</span><span class="p">(</span><span class="n">hotel_name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;If all reviews from hotel are necessary.</span>
+<span class="k">def</span> <span class="nf">get_data_for_hotel</span><span class="p">(</span><span class="n">hotel_name</span><span class="p">,</span> <span class="nb">filter</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If all reviews from hotel are necessary.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        hotel_name (str): The name of the Hotel.</span>
@@ -69,12 +142,20 @@
     <span class="k">if</span> <span class="n">loc_hotel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="kc">None</span>
     <span class="k">else</span><span class="p">:</span>
-        <span class="k">return</span> <span class="p">[</span><span class="n">rev</span><span class="o">.</span><span class="n">serialize_data</span><span class="p">()</span> <span class="k">for</span> <span class="n">rev</span> <span class="ow">in</span> <span class="n">loc_hotel</span><span class="o">.</span><span class="n">reviews</span><span class="p">]</span></div>
+        <span class="n">raw_sql_filter</span> <span class="o">=</span> <span class="n">generate_raw_filer</span><span class="p">(</span><span class="nb">filter</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_sql_filter</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">rev</span><span class="o">.</span><span class="n">serialize_data</span><span class="p">()</span> <span class="k">for</span> <span class="n">rev</span> <span class="ow">in</span> <span class="n">loc_hotel</span><span class="o">.</span><span class="n">reviews</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">sqlquery</span> <span class="o">=</span> <span class="s2">&quot;SELECT * FROM reviews WHERE reviews.hotel = &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">loc_hotel</span><span class="o">.</span><span class="n">id</span><span class="p">)</span>
+            <span class="n">sqlquery</span> <span class="o">+=</span> <span class="n">raw_sql_filter</span>
+            <span class="n">revlist</span> <span class="o">=</span> <span class="n">Review</span> <span class="o">.</span><span class="n">select_by_sql</span><span class="p">(</span><span class="n">sqlquery</span><span class="p">)</span>
+            <span class="k">return</span> <span class="p">[</span><span class="n">rev</span><span class="o">.</span><span class="n">serialize_data</span><span class="p">()</span> <span class="k">for</span> <span class="n">rev</span> <span class="ow">in</span> <span class="n">revlist</span><span class="p">]</span></div>
 
 
 <div class="viewcode-block" id="clear_data_for_hotel"><a class="viewcode-back" href="../../load.html#load.loader.clear_data_for_hotel">[docs]</a><span class="nd">@db_session</span>
 <span class="k">def</span> <span class="nf">clear_data_for_hotel</span><span class="p">(</span><span class="n">hotel_name</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Deletes all reviews linked to Hotel.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Deletes all reviews linked to Hotel.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        hotel_name (str): The name of the Hotel.</span>
@@ -83,12 +164,27 @@
     <span class="k">if</span> <span class="n">loc_hotel</span><span class="p">:</span>
         <span class="n">delete</span><span class="p">(</span><span class="n">rev</span> <span class="k">for</span> <span class="n">rev</span> <span class="ow">in</span> <span class="n">Review</span> <span class="k">if</span> <span class="n">rev</span><span class="o">.</span><span class="n">hotel</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="n">loc_hotel</span><span class="o">.</span><span class="n">id</span><span class="p">)</span></div>
 
+<div class="viewcode-block" id="get_hotel_address"><a class="viewcode-back" href="../../load.html#load.loader.get_hotel_address">[docs]</a><span class="nd">@db_session</span>
+<span class="k">def</span> <span class="nf">get_hotel_address</span><span class="p">(</span><span class="n">name</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    If all reviews from hotel are necessary.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        hotel_name (str): The name of the Hotel.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list of serialized data from Reviews of None if no data or no such Hotel.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">loc_hotel</span> <span class="o">=</span> <span class="n">Hotel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">loc_hotel</span><span class="o">.</span><span class="n">address</span> <span class="k">if</span> <span class="n">loc_hotel</span> <span class="k">else</span> <span class="s1">&#39;&#39;</span></div>
 
 <div class="viewcode-block" id="get_all_hotels"><a class="viewcode-back" href="../../load.html#load.loader.get_all_hotels">[docs]</a><span class="nd">@db_session</span>
 <span class="k">def</span> <span class="nf">get_all_hotels</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Gives all hotels from database.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Gives all hotels from database.</span>
 
-<span class="sd">    Returns:</span>
+<span class="sd">    Returns::</span>
 <span class="sd">        List of all Hotels (objects).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">hotels</span> <span class="o">=</span> <span class="n">select</span><span class="p">(</span><span class="n">hotel</span> <span class="k">for</span> <span class="n">hotel</span> <span class="ow">in</span> <span class="n">Hotel</span><span class="p">)</span>
@@ -97,12 +193,14 @@
 
 <div class="viewcode-block" id="update_hotel_with_data"><a class="viewcode-back" href="../../load.html#load.loader.update_hotel_with_data">[docs]</a><span class="nd">@db_session</span>
 <span class="k">def</span> <span class="nf">update_hotel_with_data</span><span class="p">(</span><span class="n">hotel_data</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Just clean all data if so, and create new Review entities in database.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Just clean all data if so, and create new Review entities in database.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        hotel_data: The dictionary with all hotel data (also connected Reviews).</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">loc_hotel</span> <span class="o">=</span> <span class="n">Hotel</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">hotel_data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+    <span class="n">obj_count</span> <span class="o">=</span> <span class="mi">0</span>
 
     <span class="k">if</span> <span class="n">loc_hotel</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="n">loc_hotel</span> <span class="o">=</span> <span class="n">Hotel</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">hotel_data</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">],</span> <span class="n">address</span><span class="o">=</span><span class="n">hotel_data</span><span class="p">[</span><span class="s2">&quot;address&quot;</span><span class="p">])</span>
@@ -112,20 +210,18 @@
     <span class="k">for</span> <span class="n">review_data</span> <span class="ow">in</span> <span class="n">hotel_data</span><span class="p">[</span><span class="s2">&quot;review&quot;</span><span class="p">]:</span>
         <span class="n">Review</span><span class="p">(</span><span class="n">hotel</span><span class="o">=</span><span class="n">loc_hotel</span><span class="p">,</span>
                <span class="n">name</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;name&#39;</span><span class="p">],</span>
-               <span class="n">date</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;date&#39;</span><span class="p">],</span>
+               <span class="n">rev_date</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;rev_date&#39;</span><span class="p">],</span>
                <span class="n">header</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;header&#39;</span><span class="p">],</span>
                <span class="n">country</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;country&#39;</span><span class="p">],</span>
                <span class="n">user_age_group</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;user_age_group&#39;</span><span class="p">],</span>
                <span class="n">review_count</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;review_count&#39;</span><span class="p">],</span>
                <span class="n">score</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">],</span>
-               <span class="c1"># TODO review_item_info_tags,</span>
+               <span class="n">stay_date</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;stay_date&#39;</span><span class="p">],</span>
+               <span class="n">info_tags</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;info_tags&#39;</span><span class="p">],</span>
                <span class="n">pos_review</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;pos_review&#39;</span><span class="p">],</span>
-               <span class="n">neg_review</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;neg_review&#39;</span><span class="p">])</span></div>
-
-
-
-
-
+               <span class="n">neg_review</span><span class="o">=</span><span class="n">review_data</span><span class="p">[</span><span class="s1">&#39;neg_review&#39;</span><span class="p">])</span>
+        <span class="n">obj_count</span> <span class="o">+=</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">obj_count</span></div>
 </pre></div>
 
           </div>

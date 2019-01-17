@@ -82,18 +82,66 @@ Mainly Pony ORM web drive is in use.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="load.loader.export_to_csv">
+<code class="descclassname">load.loader.</code><code class="descname">export_to_csv</code><span class="sig-paren">(</span><em>hotel_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/loader.html#export_to_csv"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.loader.export_to_csv" title="Permalink to this definition">¶</a></dt>
+<dd><p>If all reviews from hotel are necessary.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hotel_name (str): The name of the Hotel.</dd>
+<dt>Returns:</dt>
+<dd>list of serialized data from Reviews of None if no data or no such Hotel.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="load.loader.export_to_csv_by_id">
+<code class="descclassname">load.loader.</code><code class="descname">export_to_csv_by_id</code><span class="sig-paren">(</span><em>id</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/loader.html#export_to_csv_by_id"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.loader.export_to_csv_by_id" title="Permalink to this definition">¶</a></dt>
+<dd><p>If all reviews from hotel are necessary.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hotel_name (str): The name of the Hotel.</dd>
+<dt>Returns:</dt>
+<dd>list of serialized data from Reviews of None if no data or no such Hotel.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="load.loader.generate_raw_filer">
+<code class="descclassname">load.loader.</code><code class="descname">generate_raw_filer</code><span class="sig-paren">(</span><em>filter_dic</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/loader.html#generate_raw_filer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.loader.generate_raw_filer" title="Permalink to this definition">¶</a></dt>
+<dd><p>If all reviews from hotel are necessary.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hotel_name (str): The name of the Hotel.</dd>
+<dt>Returns:</dt>
+<dd>list of serialized data from Reviews of None if no data or no such Hotel.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="load.loader.get_all_hotels">
 <code class="descclassname">load.loader.</code><code class="descname">get_all_hotels</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/loader.html#get_all_hotels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.loader.get_all_hotels" title="Permalink to this definition">¶</a></dt>
 <dd><p>Gives all hotels from database.</p>
 <dl class="docutils">
-<dt>Returns:</dt>
+<dt>Returns::</dt>
 <dd>List of all Hotels (objects).</dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="load.loader.get_data_for_hotel">
-<code class="descclassname">load.loader.</code><code class="descname">get_data_for_hotel</code><span class="sig-paren">(</span><em>hotel_name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/loader.html#get_data_for_hotel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.loader.get_data_for_hotel" title="Permalink to this definition">¶</a></dt>
+<code class="descclassname">load.loader.</code><code class="descname">get_data_for_hotel</code><span class="sig-paren">(</span><em>hotel_name</em>, <em>filter</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/loader.html#get_data_for_hotel"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.loader.get_data_for_hotel" title="Permalink to this definition">¶</a></dt>
+<dd><p>If all reviews from hotel are necessary.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hotel_name (str): The name of the Hotel.</dd>
+<dt>Returns:</dt>
+<dd>list of serialized data from Reviews of None if no data or no such Hotel.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="load.loader.get_hotel_address">
+<code class="descclassname">load.loader.</code><code class="descname">get_hotel_address</code><span class="sig-paren">(</span><em>name</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/loader.html#get_hotel_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.loader.get_hotel_address" title="Permalink to this definition">¶</a></dt>
 <dd><p>If all reviews from hotel are necessary.</p>
 <dl class="docutils">
 <dt>Args:</dt>
@@ -133,11 +181,6 @@ Mainly Pony ORM web drive is in use.</p>
 <dd></dd></dl>
 
 <dl class="attribute">
-<dt id="load.review.Review.date">
-<code class="descname">date</code><a class="headerlink" href="#load.review.Review.date" title="Permalink to this definition">¶</a></dt>
-<dd></dd></dl>
-
-<dl class="attribute">
 <dt id="load.review.Review.header">
 <code class="descname">header</code><a class="headerlink" href="#load.review.Review.header" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -150,6 +193,11 @@ Mainly Pony ORM web drive is in use.</p>
 <dl class="attribute">
 <dt id="load.review.Review.id">
 <code class="descname">id</code><a class="headerlink" href="#load.review.Review.id" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="load.review.Review.info_tags">
+<code class="descname">info_tags</code><a class="headerlink" href="#load.review.Review.info_tags" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">
@@ -168,6 +216,11 @@ Mainly Pony ORM web drive is in use.</p>
 <dd></dd></dl>
 
 <dl class="attribute">
+<dt id="load.review.Review.rev_date">
+<code class="descname">rev_date</code><a class="headerlink" href="#load.review.Review.rev_date" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
 <dt id="load.review.Review.review_count">
 <code class="descname">review_count</code><a class="headerlink" href="#load.review.Review.review_count" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
@@ -180,6 +233,11 @@ Mainly Pony ORM web drive is in use.</p>
 <dl class="method">
 <dt id="load.review.Review.serialize_data">
 <code class="descname">serialize_data</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/load/review.html#Review.serialize_data"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#load.review.Review.serialize_data" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="attribute">
+<dt id="load.review.Review.stay_date">
+<code class="descname">stay_date</code><a class="headerlink" href="#load.review.Review.stay_date" title="Permalink to this definition">¶</a></dt>
 <dd></dd></dl>
 
 <dl class="attribute">

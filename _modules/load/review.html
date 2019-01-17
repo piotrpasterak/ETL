@@ -33,35 +33,42 @@
             
   <h1>Source code for load.review</h1><div class="highlight"><pre>
 <span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">date</span>
 <span class="kn">from</span> <span class="nn">load</span> <span class="k">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">load.hotel</span> <span class="k">import</span> <span class="n">Hotel</span>
 
 
 <div class="viewcode-block" id="Review"><a class="viewcode-back" href="../../load.html#load.review.Review">[docs]</a><span class="k">class</span> <span class="nc">Review</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represent Review entity from database.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represent Review entity from database.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_table_</span> <span class="o">=</span> <span class="s1">&#39;reviews&#39;</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">PrimaryKey</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">hotel</span> <span class="o">=</span> <span class="n">Required</span><span class="p">(</span><span class="n">Hotel</span><span class="p">)</span>
-    <span class="n">date</span> <span class="o">=</span> <span class="n">Required</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span>
+    <span class="n">rev_date</span> <span class="o">=</span> <span class="n">Required</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span>
     <span class="n">name</span> <span class="o">=</span> <span class="n">Required</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="n">header</span> <span class="o">=</span> <span class="n">Required</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
-    <span class="n">country</span> <span class="o">=</span> <span class="n">Required</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">country</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+    <span class="n">info_tags</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="n">score</span> <span class="o">=</span> <span class="n">Required</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+    <span class="n">stay_date</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">(</span><span class="n">date</span><span class="p">)</span>
     <span class="n">user_age_group</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
     <span class="n">review_count</span> <span class="o">=</span> <span class="n">Required</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
     <span class="n">neg_review</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">(</span><span class="n">LongUnicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">pos_review</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">(</span><span class="n">LongUnicode</span><span class="p">,</span> <span class="n">nullable</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
 <div class="viewcode-block" id="Review.serialize_data"><a class="viewcode-back" href="../../load.html#load.review.Review.serialize_data">[docs]</a>    <span class="k">def</span> <span class="nf">serialize_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">.%m.%Y&#39;</span><span class="p">),</span>
+        <span class="k">return</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">rev_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;</span><span class="si">%d</span><span class="s1">-%m-%Y&#39;</span><span class="p">),</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">header</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">country</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">user_age_group</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">review_count</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">score</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">stay_date</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s1">&#39;%m-%Y&#39;</span><span class="p">),</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">info_tags</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">pos_review</span><span class="p">,</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">neg_review</span><span class="p">]</span></div></div>
 </pre></div>

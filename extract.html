@@ -44,7 +44,7 @@ extracting reviews from hotels in www.booking.com page. Mainly Selenium web driv
 <dl class="function">
 <dt id="extract.scrapper.collect_hotels">
 <code class="descclassname">extract.scrapper.</code><code class="descname">collect_hotels</code><span class="sig-paren">(</span><em>driver</em>, <em>hotel_list</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#collect_hotels"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.collect_hotels" title="Permalink to this definition">¶</a></dt>
-<dd><p>Colect all hotels from given HTML page.</p>
+<dd><p>Collect all hotels from given HTML page.</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd>driver: the web driver which gives ability to search in web content.
@@ -66,36 +66,82 @@ review_list: List of partial search results, function extends this list with new
 <dl class="function">
 <dt id="extract.scrapper.force_english_version">
 <code class="descclassname">extract.scrapper.</code><code class="descname">force_english_version</code><span class="sig-paren">(</span><em>driver</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#force_english_version"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.force_english_version" title="Permalink to this definition">¶</a></dt>
-<dd><p>Makes site source coherently in english.</p>
+<dd><p>Makes site source coherently in English.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>driver: gecko web driver.</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="extract.scrapper.get_driver">
 <code class="descclassname">extract.scrapper.</code><code class="descname">get_driver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#get_driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.get_driver" title="Permalink to this definition">¶</a></dt>
-<dd><p>Returns web Firefox driver created in headless mode (no visible browser).</p>
+<dd><p>Just returned web driver instance.</p>
+<dl class="docutils">
+<dt>Returns:</dt>
+<dd>Web Firefox driver created in headless mode (no visible browser).</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="extract.scrapper.get_driver_path">
 <code class="descclassname">extract.scrapper.</code><code class="descname">get_driver_path</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#get_driver_path"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.get_driver_path" title="Permalink to this definition">¶</a></dt>
 <dd><p>Reconstructs correct path to Firefox driver.</p>
+<div class="admonition note">
+<p class="first admonition-title">Note</p>
+<p class="last">Because GeckoDriverDownloader has been used for driver download,
+then GeckoDriverDownloader is also use for determine path to driver</p>
+</div>
+</dd></dl>
+
+<dl class="function">
+<dt id="extract.scrapper.get_hotel_address">
+<code class="descclassname">extract.scrapper.</code><code class="descname">get_hotel_address</code><span class="sig-paren">(</span><em>driver</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#get_hotel_address"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.get_hotel_address" title="Permalink to this definition">¶</a></dt>
+<dd><p>Return hotel address from web data.</p>
 <dl class="docutils">
-<dt>Note:</dt>
-<dd>Because GeckoDriverDownloader has been used for driver download,
-then GeckoDriverDownloader is also use for determine path to driver</dd>
+<dt>Args:</dt>
+<dd>driver: gecko web driver.</dd>
+<dt>Returns:</dt>
+<dd>string: hotel address.</dd>
 </dl>
 </dd></dl>
 
 <dl class="function">
 <dt id="extract.scrapper.get_hotels_from_city">
 <code class="descclassname">extract.scrapper.</code><code class="descname">get_hotels_from_city</code><span class="sig-paren">(</span><em>city</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#get_hotels_from_city"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.get_hotels_from_city" title="Permalink to this definition">¶</a></dt>
-<dd><p>Colect all hotels from given city name.</p>
+<dd><p>Collect all hotels from given city name.</p>
 <dl class="docutils">
 <dt>Args:</dt>
 <dd>city (str): the web driver which gives ability to search in web content.</dd>
 <dt>Returns:</dt>
 <dd>Only 10 hotels’ list are returned. Content of this list is hotels data in HTML format.</dd>
 </dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="extract.scrapper.init_driver">
+<code class="descclassname">extract.scrapper.</code><code class="descname">init_driver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#init_driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.init_driver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Initialise main web driver.
+Effectively also headless web browser is started.</p>
+</dd></dl>
+
+<dl class="function">
+<dt id="extract.scrapper.make_hotel_review_url">
+<code class="descclassname">extract.scrapper.</code><code class="descname">make_hotel_review_url</code><span class="sig-paren">(</span><em>hotel_href</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#make_hotel_review_url"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.make_hotel_review_url" title="Permalink to this definition">¶</a></dt>
+<dd><p>Create link to hotel’s review by replace /hotel/xx/ by /reviews/xx/.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>hotel_href: web link to hotel.</dd>
+<dt>Returns:</dt>
+<dd>string:web link to hotel’s review.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="extract.scrapper.remove_driver">
+<code class="descclassname">extract.scrapper.</code><code class="descname">remove_driver</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#remove_driver"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.remove_driver" title="Permalink to this definition">¶</a></dt>
+<dd><p>Close web driver.
+Effectively also headless web browser is closed here.</p>
 </dd></dl>
 
 <dl class="function">
@@ -108,6 +154,16 @@ For navigation between pages “review_next_page_link” button is used.</p>
 <dd>url (str): the url address to hotel page.</dd>
 <dt>Returns:</dt>
 <dd>List of reviews in HTML format.</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="extract.scrapper.set_all_language">
+<code class="descclassname">extract.scrapper.</code><code class="descname">set_all_language</code><span class="sig-paren">(</span><em>driver</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/extract/scrapper.html#set_all_language"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#extract.scrapper.set_all_language" title="Permalink to this definition">¶</a></dt>
+<dd><p>Set all language for reviews.</p>
+<dl class="docutils">
+<dt>Args:</dt>
+<dd>driver: gecko web driver.</dd>
 </dl>
 </dd></dl>
 

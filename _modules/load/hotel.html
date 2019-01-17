@@ -36,12 +36,13 @@
 
 
 <div class="viewcode-block" id="Hotel"><a class="viewcode-back" href="../../load.html#load.hotel.Hotel">[docs]</a><span class="k">class</span> <span class="nc">Hotel</span><span class="p">(</span><span class="n">db</span><span class="o">.</span><span class="n">Entity</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Represent Hotel entity from database.</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represent Hotel entity from database.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">_table_</span> <span class="o">=</span> <span class="s1">&#39;hotels&#39;</span>
     <span class="nb">id</span> <span class="o">=</span> <span class="n">PrimaryKey</span><span class="p">(</span><span class="nb">int</span><span class="p">,</span> <span class="n">auto</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-    <span class="n">name</span> <span class="o">=</span> <span class="n">Optional</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="n">Required</span><span class="p">(</span><span class="nb">str</span><span class="p">,</span> <span class="n">unique</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
     <span class="n">reviews</span> <span class="o">=</span> <span class="n">Set</span><span class="p">(</span><span class="s1">&#39;Review&#39;</span><span class="p">)</span>
     <span class="n">address</span> <span class="o">=</span> <span class="n">Required</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span></div>
 </pre></div>
