@@ -21,7 +21,7 @@ sys.path.insert(0, os.path.abspath('../../install_scripts/'))
 # -- Project information -----------------------------------------------------
 
 project = 'ETL Project'
-copyright = '2018, Piotr Pasterak'
+copyright = '2018, Piotr Pasterak, Jaroslaw Wojtys, Marcin Szponder'
 author = 'Piotr Pasterak, Jaroslaw Wojtys, Marcin Szponder'
 
 # The short X.Y version
