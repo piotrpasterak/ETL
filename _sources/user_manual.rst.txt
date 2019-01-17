@@ -8,10 +8,12 @@ Collected Data are stored into MySql database and are displayed also in applicat
 
 Installation
 ------------
-Application requires Python environment in version 3.6+. Firefox 63.0+ web browser is             also required, in case of malfunction (exceptions about lack of access to this binary), please add firefox.exe binary path to system PATH.
+Application requires Python environment in version 3.6+.
+Firefox 63.0+ web browser is also required, in case of malfunction (exceptions about lack of access to this binary),
+please add firefox.exe binary path to system PATH.
 Application require additional python packages listed in appendix.
 
-Python script dependecy_installer.py installs automatically all necessary packages.
+Python script dependecy_installer.py installs automatically all necessary packages and database on server.
 
 Installing mysql is required, and  "root" named user with password "root" must be present.
 
@@ -144,7 +146,7 @@ Application's Menus and Views description
 
     .. image:: assets/modal_processing_extract.png
 
-    When process ends, then button "OK" becomes active and ifo about number of processed records is visible:
+    When process ends, then button "OK" becomes active and info about number of processed records is visible:
 
     .. image:: assets/modal_end.png
 
@@ -157,7 +159,7 @@ Application's Menus and Views description
 
     .. image:: assets/modal_processing_transform.png
 
-    When process ends, then button "OK" becomes active and ifo about number of processed records is visible:
+    When process ends, then button "OK" becomes active and info about number of processed records is visible:
 
     .. image:: assets/modal_end.png
 
@@ -171,7 +173,7 @@ Application's Menus and Views description
 
     .. image:: assets/modal_processing_load.png
 
-    When process ends, then button "OK" becomes active and ifo about number of processed records is visible:
+    When process ends, then button "OK" becomes active and info about number of processed records is visible:
 
     .. image:: assets/modal_end.png
 
@@ -184,7 +186,7 @@ Application's Menus and Views description
 
     .. image:: assets/modal_processing_whole.png
 
-    When process ends, then button "OK" becomes active and ifo about number of processed records is visible:
+    When process ends, then button "OK" becomes active and info about number of processed records is visible:
 
     .. image:: assets/modal_end.png
 
@@ -193,7 +195,9 @@ Application's Menus and Views description
 
     .. image:: assets/show_database.png
 
-    - Hotel choice button allow to choice hotel, data in table are loaded automatically after choice:
+    - Hotel choice button allow to choice hotel, data in table are loaded automatically after choice.
+      Hotel name and address are visible.
+      Also number of presented rows record is visible, that can be useful during analyse with filter.
 
     .. image:: assets/database_content_hotel_data.png
 

@@ -40,9 +40,11 @@ Hotels and reviews data are read from travel fare aggregator website Booking.com
 Collected Data are stored into MySql database and are displayed also in application.</p>
 <div class="section" id="installation">
 <h2>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h2>
-<p>Application requires Python environment in version 3.6+. Firefox 63.0+ web browser is             also required, in case of malfunction (exceptions about lack of access to this binary), please add firefox.exe binary path to system PATH.
+<p>Application requires Python environment in version 3.6+.
+Firefox 63.0+ web browser is also required, in case of malfunction (exceptions about lack of access to this binary),
+please add firefox.exe binary path to system PATH.
 Application require additional python packages listed in appendix.</p>
-<p>Python script dependecy_installer.py installs automatically all necessary packages.</p>
+<p>Python script dependecy_installer.py installs automatically all necessary packages and database on server.</p>
 <p>Installing mysql is required, and  “root” named user with password “root” must be present.</p>
 </div>
 <div class="section" id="how-to-start-application">
@@ -188,7 +190,7 @@ One of them can be selected, and accepted by button “Confirm” .</p>
 <img alt="_images/extract.png" src="_images/extract.png" />
 <p>During this process, modal dialog is visible and then button “OK” is not active:</p>
 <img alt="_images/modal_processing_extract.png" src="_images/modal_processing_extract.png" />
-<p>When process ends, then button “OK” becomes active and ifo about number of processed records is visible:</p>
+<p>When process ends, then button “OK” becomes active and info about number of processed records is visible:</p>
 <img alt="_images/modal_end.png" class="last" src="_images/modal_end.png" />
 </dd>
 </dl>
@@ -201,7 +203,7 @@ One of them can be selected, and accepted by button “Confirm” .</p>
 <img alt="_images/transform.png" src="_images/transform.png" />
 <p>During this process, modal dialog is visible and then button “OK” is not active:</p>
 <img alt="_images/modal_processing_transform.png" src="_images/modal_processing_transform.png" />
-<p>When process ends, then button “OK” becomes active and ifo about number of processed records is visible:</p>
+<p>When process ends, then button “OK” becomes active and info about number of processed records is visible:</p>
 <img alt="_images/modal_end.png" class="last" src="_images/modal_end.png" />
 </dd>
 </dl>
@@ -212,7 +214,7 @@ One of them can be selected, and accepted by button “Confirm” .</p>
 <img alt="_images/load.png" src="_images/load.png" />
 <p>During this process, modal dialog is visible and then button “OK” is not active:</p>
 <img alt="_images/modal_processing_load.png" src="_images/modal_processing_load.png" />
-<p>When process ends, then button “OK” becomes active and ifo about number of processed records is visible:</p>
+<p>When process ends, then button “OK” becomes active and info about number of processed records is visible:</p>
 <img alt="_images/modal_end.png" class="last" src="_images/modal_end.png" />
 </dd>
 </dl>
@@ -221,7 +223,7 @@ One of them can be selected, and accepted by button “Confirm” .</p>
 <dt>Whole process</dt>
 <dd><p class="first">When hotel has been chosen then also whole ETL process of review data is possible:</p>
 <img alt="_images/modal_processing_whole.png" src="_images/modal_processing_whole.png" />
-<p>When process ends, then button “OK” becomes active and ifo about number of processed records is visible:</p>
+<p>When process ends, then button “OK” becomes active and info about number of processed records is visible:</p>
 <img alt="_images/modal_end.png" class="last" src="_images/modal_end.png" />
 </dd>
 </dl>
@@ -231,7 +233,9 @@ One of them can be selected, and accepted by button “Confirm” .</p>
 <dd><p class="first">Displaying database content for one hotel</p>
 <img alt="_images/show_database.png" src="_images/show_database.png" />
 <ul class="simple">
-<li>Hotel choice button allow to choice hotel, data in table are loaded automatically after choice:</li>
+<li>Hotel choice button allow to choice hotel, data in table are loaded automatically after choice.
+Hotel name and address are visible.
+Also number of presented rows record is visible, that can be useful during analyse with filter.</li>
 </ul>
 <img alt="_images/database_content_hotel_data.png" src="_images/database_content_hotel_data.png" />
 <ul class="simple">
