@@ -20,3 +20,5 @@ Application can be installed on each computer with Python 3.7 support,
 and has been tested on Windows operation system.
 
 Kivy has been chosen as Ux framework, also Kivy language (.kv) is in use.
+
+For documentation generation from reStructuredText (.rst) files Sphinx documentation generator is used.

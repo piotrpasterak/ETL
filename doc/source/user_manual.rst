@@ -98,7 +98,7 @@ For just collecting data from web two possible scenarios are possible:
 
         - Expose data.
 
-        .. image:: assets/example_database_content.png
+        .. image:: assets/database_content_simple.png
 
     - one ETL process as one action.
 
@@ -108,9 +108,11 @@ For just collecting data from web two possible scenarios are possible:
 
         - Click Whole process button
 
+        .. image:: assets/whole.png
+
         - Expose data.
 
-        .. image:: assets/example_database_content.png
+        .. image:: assets/database_content_simple.png
 
 
 Application's Menus and Views description
@@ -140,9 +142,11 @@ Application's Menus and Views description
 
     During this process, modal dialog is visible and then button "OK" is not active:
 
-    .. image:: assets/modal_extract.png
+    .. image:: assets/modal_processing_extract.png
 
     When process ends, then button "OK" becomes active and ifo about number of processed records is visible:
+
+    .. image:: assets/modal_end.png
 
 - Transform Button
      When Extract process has been successfully done then transform of review data is possible:
@@ -151,9 +155,12 @@ Application's Menus and Views description
 
     During this process, modal dialog is visible and then button "OK" is not active:
 
-    .. image:: assets/modal_transform.png
+    .. image:: assets/modal_processing_transform.png
 
     When process ends, then button "OK" becomes active and ifo about number of processed records is visible:
+
+    .. image:: assets/modal_end.png
+
 
 - Load
     When Extract process has been successfully done then transform of review data is possible:
@@ -162,9 +169,11 @@ Application's Menus and Views description
 
     During this process, modal dialog is visible and then button "OK" is not active:
 
-    .. image:: assets/modal_transform.png
+    .. image:: assets/modal_processing_load.png
 
     When process ends, then button "OK" becomes active and ifo about number of processed records is visible:
+
+    .. image:: assets/modal_end.png
 
 - Whole process
     When hotel has been chosen then also whole ETL process of review data is possible:
@@ -173,15 +182,38 @@ Application's Menus and Views description
 
      During this process, modal dialog is visible and then button "OK" is not active:
 
-    .. image:: assets/modal_whole.png
+    .. image:: assets/modal_processing_whole.png
 
     When process ends, then button "OK" becomes active and ifo about number of processed records is visible:
 
+    .. image:: assets/modal_end.png
+
 - Presenting and filtering database dialog:
     Displaying database content for one hotel
+
     .. image:: assets/show_database.png
 
     - Hotel choice button allow to choice hotel, data in table are loaded automatically after choice:
-    - Export CSV buttons, exports all data from given hotel or only for one review ID if applayed:
-    - Filtering tab, when Apply button is clicked table content is filtered.
+
+    .. image:: assets/database_content_hotel_data.png
+
+    - Export CSV buttons, exports all data from given hotel
+
+    .. image:: assets/database_content_export_to_cvs.png
+
+    or only for one review ID if set:
+
+    .. image:: assets/database_content_export_to_cvs_by_ID.png
+
+    - Filtering tab, when Apply button is clicked table content is filtered (% wildcard allowed):
+
+    .. image:: assets/database_content_filter.png
+
     - Delete Reviews button, if clicked removes all review for given hotel:
+
+    .. image:: assets/database_content_delete_all.png
+
+    - Close button, just close dialog:
+
+    .. image:: assets/database_content_close.png
+
