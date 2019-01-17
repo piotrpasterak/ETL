@@ -197,7 +197,7 @@ Application's Menus and Views description
 
     - Hotel choice button allow to choice hotel, data in table are loaded automatically after choice.
       Hotel name and address are visible.
-      Also number of presented rows record is visible, what can be useful during analyse with filter.
+      Also number of presented rows record is visible, that can be useful during analyse with filter.
 
     .. image:: assets/database_content_hotel_data.png
 
