@@ -25,7 +25,7 @@ def export_to_csv(hotel_name):
         list of serialized data from Reviews of None if no data or no such Hotel.
     """
     loc_hotel = Hotel.get(name=hotel_name)
-    fields = ['id', 'hotel', 'date', 'name', 'header', 'country', 'info_tags', 'score', 'user_age_group', 'review_count', 'neg_review', 'pos_review']
+    fields = ['id', 'hotel', 'rev_date', 'name', 'header', 'country', 'info_tags', 'score', 'user_age_group', 'review_count', 'neg_review', 'pos_review']
 
     csv_file = open(hotel_name + '.csv', 'w',  encoding='utf-8')
     if loc_hotel:
